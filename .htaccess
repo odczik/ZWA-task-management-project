@@ -1,0 +1,13 @@
+# Enable mod_rewrite
+RewriteEngine On
+
+# Allow access to the index.php file in the root folder
+RewriteCond %{REQUEST_URI} ^/index\.php$ [NC]
+RewriteRule ^(.*)$ - [L]
+
+# Allow access to the public directory
+RewriteCond %{REQUEST_URI} ^/public/ [NC]
+RewriteRule ^(.*)$ - [L]
+
+# Deny access to everything else
+RewriteRule ^(.*)$ - [F,L]
