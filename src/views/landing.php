@@ -26,7 +26,15 @@
         // Create JWT
         $jwt = $jwtHandler->createJWT($payload);
         echo "Generated JWT: " . $jwt . "<br>";
-        
+
+        // // Set the token cookie
+        // setcookie("token", $jwt, [
+        //     'expires' => time() + (60 * 60 * 24),
+        //     'secure' => isset($_SERVER['HTTPS']),
+        //     'httponly' => true,
+        //     'samesite' => "Strict"  // "Strict", "Lax", or "None"
+        // ]);
+
         // Verify JWT (decode and validate)
         $decoded = $jwtHandler->verifyJWT($jwt);
         echo "Decoded JWT:";
