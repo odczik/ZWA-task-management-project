@@ -40,5 +40,14 @@ class JWTHandler {
             return ["error" => "Invalid token: " . $e->getMessage()];
         }
     }
+
+    // Function to check if user is logged in
+    public function isLoggedIn() {
+        if (isset($_COOKIE['token'])) {
+            $decoded = $this->verifyJWT($_COOKIE['token']);
+            return is_object($decoded) && isset($decoded->user_id);
+        }
+        return false;
+    }
 }
 ?>

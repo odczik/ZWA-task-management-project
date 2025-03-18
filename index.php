@@ -10,8 +10,8 @@ $router->get("/", function() {
     return render("./src/views/landing.php");
 });
 
-$router->get("/dashboard", function() use ($jwtHandler) {
-    return render("./src/views/dashboard.php", ["jwtHandler" => $jwtHandler]);
+$router->get("/dashboard", function() {
+    return render("./src/views/dashboard.php");
 });
 
 $router->get("/login", function() {
@@ -21,11 +21,17 @@ $router->post("/login", function($data) use ($jwtHandler) {
     if(!count($data)) return;
     return login($data, $jwtHandler);
 });
+$router->get("/logout", function() {
+    return logout();
+});
 
 $router->dispatch();
 
 // Helper function to render pages
 function render($path, $data = []) {
+    global $jwtHandler;
+    $data["jwtHandler"] = $jwtHandler;
+
     extract($data);
     ob_start();
     require $path;

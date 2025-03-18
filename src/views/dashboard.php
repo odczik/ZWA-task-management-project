@@ -2,6 +2,10 @@
 
 $token = $_COOKIE["token"];
 
+if(!$token) {
+    header("Location: /login");
+    exit;
+}
 
 // Verify JWT (decode and validate)
 $decoded = $jwtHandler->verifyJWT($token);

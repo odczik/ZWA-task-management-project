@@ -6,5 +6,9 @@
             <a href="#">Contact</a>
         </div>
     </div>
-    <a href="/login" class="nav-login">Login</a>
+    <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
+        <a href="/logout" class="nav-action">Logout</a>
+    <?php else: ?>
+        <a href="/login" class="nav-action">Login</a>
+    <?php endif; ?>
 </nav>

@@ -48,7 +48,7 @@ nav {
     width: 99%;
 }
 
-nav .nav-login {
+nav .nav-action {
     border: 3px solid var(--primary-color-dark);
     border-radius: 5px;
 
@@ -65,7 +65,7 @@ nav .nav-login {
 
     transition: 0.15s ease;
 }
-nav .nav-login:hover {
+nav .nav-action:hover {
     color: var(--primary-color);
     background-color: var(--primary-color-dark);
 }
