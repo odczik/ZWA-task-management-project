@@ -1,9 +1,16 @@
 <?php
 require 'php-jwt/JWT.php';
 require 'php-jwt/Key.php';
+require 'php-jwt/JWTExceptionWithPayloadInterface.php';
+require 'php-jwt/SignatureInvalidException.php';
+require 'php-jwt/ExpiredException.php';
+require 'php-jwt/BeforeValidException.php';
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Firebase\JWT\SignatureInvalidException;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\BeforeValidException;
 
 class JWTHandler {
     private $secret_key;
@@ -23,6 +30,12 @@ class JWTHandler {
             // Decode JWT
             $decoded = JWT::decode($jwt, new Key($this->secret_key, 'HS256'));
             return $decoded;
+        } catch (ExpiredException $e) {
+            return ["error" => "Token has expired: " . $e->getMessage()];
+        } catch (SignatureInvalidException $e) {
+            return ["error" => "Invalid signature: " . $e->getMessage()];
+        } catch (BeforeValidException $e) {
+            return ["error" => "Token is not yet valid: " . $e->getMessage()];
         } catch (Exception $e) {
             return ["error" => "Invalid token: " . $e->getMessage()];
         }
