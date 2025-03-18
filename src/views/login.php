@@ -11,16 +11,24 @@
 <body>
     <?php include 'src/views/components/navbar.phtml'; ?>
 
-    <h1>Login</H1>
-
-    <form action="/login" method="POST">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password">
-
-        <input type="submit" value="Login">
-    </form>
+    <div class="container">
+        <h1>Login</H1>
+    
+        <form action="/login" method="POST">
+            <div>
+                <span>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username">
+                </span>
+                <span>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                </span>
+            </div>
+        
+            <input type="submit" value="Login">
+        </form>
+    </div>
 
     <?php include 'src/views/components/footer.phtml'; ?>
 </body>
