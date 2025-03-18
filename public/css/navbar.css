@@ -48,7 +48,7 @@ nav {
     width: 99%;
 }
 
-nav button {
+nav .nav-login {
     border: 3px solid var(--primary-color-dark);
     border-radius: 5px;
 
@@ -59,12 +59,13 @@ nav button {
     padding: 5px;
 
     background: none;
+    text-decoration: none;
 
     cursor: pointer;
 
     transition: 0.15s ease;
 }
-nav button:hover {
+nav .nav-login:hover {
     color: var(--primary-color);
     background-color: var(--primary-color-dark);
 }
