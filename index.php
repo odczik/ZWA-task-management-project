@@ -7,6 +7,14 @@ $router->get("/", function() {
     return render("./src/views/landing.php");
 });
 
+$router->get("/login", function() {
+    return render("./src/views/login.php");
+});
+$router->post("/login", function($data) {
+    print_r($data);
+    return;
+});
+
 $router->dispatch();
 
 // Helper function to render pages
