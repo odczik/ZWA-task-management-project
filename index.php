@@ -11,6 +11,8 @@ $router->get("/login", function() {
     return render("./src/views/login.php");
 });
 $router->post("/login", function($data) {
+    if(!count($data)) return;
+    
     print_r($data);
     return;
 });
