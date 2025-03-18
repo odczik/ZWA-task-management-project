@@ -7,7 +7,7 @@ class Router {
     }
 
     public function post($path, $callback) {
-        $this->routes["POST"][$path] = $callback;
+        $this->routes["POST"][$path] = $callback($_POST);
     }
 
     public function dispatch() {
