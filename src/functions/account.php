@@ -3,7 +3,8 @@ function login($data, $jwtHandler) {
     $username = $data["username"];
     $password = $data["password"];
         
-    // Example Payload (data you want to store in the token)
+    // TODO: User authentication (needs db)
+
     $payload = [
         "user_id" => 123,
         "username" => $username,
@@ -18,7 +19,7 @@ function login($data, $jwtHandler) {
         'expires' => time() + (60 * 60),
         'secure' => isset($_SERVER['HTTPS']),
         'httponly' => true,
-        'samesite' => "Strict"  // "Strict", "Lax", or "None"
+        'samesite' => "Strict"
     ]);
 
     header("Location: /dashboard");

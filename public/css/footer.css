@@ -9,4 +9,8 @@ footer {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+
+    color: var(--primary-color-dark);
+    font-weight: 600;
+    font-size: 1rem;
 }
