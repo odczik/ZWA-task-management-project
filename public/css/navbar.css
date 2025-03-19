@@ -69,3 +69,43 @@ nav .nav-action:hover {
     color: var(--primary-color);
     background-color: var(--primary-color-dark);
 }
+
+dialog {
+    border: 3px solid var(--primary-color-dark);
+    border-radius: 5px;
+
+    padding: 20px;
+}
+/* Opening animation */
+dialog[open] {
+    animation: dialog-open 0.3s ease forwards;
+}
+
+/* Closing animation */
+dialog.closing {
+    animation: dialog-close 0.15s ease forwards;
+}
+
+/* Keyframes for opening */
+@keyframes dialog-open {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Keyframes for closing */
+@keyframes dialog-close {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}

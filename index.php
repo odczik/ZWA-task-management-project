@@ -14,9 +14,6 @@ $router->get("/dashboard", function() {
     return render("./src/views/dashboard.php");
 });
 
-$router->get("/login", function() {
-    return render("./src/views/login.php");
-});
 $router->post("/login", function($data) use ($jwtHandler) {
     if(!count($data)) return;
     return login($data, $jwtHandler);

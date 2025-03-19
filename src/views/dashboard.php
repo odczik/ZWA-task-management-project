@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/navbar.css">
+    <link rel="stylesheet" href="public/css/footer.css">
 </head>
 <body>
+    <?php include 'src/views/components/navbar.phtml'; ?>
+
+    <h1>Dashboard</H1>
+
     <?php
     
     $token = $_COOKIE["token"];
@@ -32,5 +39,7 @@
     echo "Username: " . $decoded->username . "<br>";
     
     ?>
+
+    <?php include 'src/views/components/footer.phtml'; ?>
 </body>
 </html>

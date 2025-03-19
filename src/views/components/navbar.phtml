@@ -9,6 +9,55 @@
     <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
         <a href="/logout" class="nav-action">Logout</a>
     <?php else: ?>
-        <a href="/login" class="nav-action">Login</a>
+        <button class="nav-action">Login</button>
+        <dialog>
+            <form action="/login" method="POST">
+                <div>
+                    <span>
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username">
+                    </span>
+                    <span>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password">
+                    </span>
+                </div>
+            
+                <input type="submit" value="Login">
+            </form>
+        </dialog>
+        <script>
+            const dialog = document.querySelector('dialog');
+            const loginButton = document.querySelector('.nav-action');
+
+            // Show the modal when the login button is clicked
+            loginButton.addEventListener('click', () => {
+                dialog.showModal();
+            });
+
+            // Close the modal when clicking outside of it
+            dialog.addEventListener('click', (event) => {
+                const rect = dialog.getBoundingClientRect();
+                const isInDialog = (
+                    event.clientX >= rect.left &&
+                    event.clientX <= rect.right &&
+                    event.clientY >= rect.top &&
+                    event.clientY <= rect.bottom
+                );
+
+                if (!isInDialog) {
+                    closeDialogWithAnimation();
+                }
+            });
+
+            // Function to close the dialog with animation
+            function closeDialogWithAnimation() {
+                dialog.classList.add('closing');
+                dialog.addEventListener('animationend', () => {
+                    dialog.classList.remove('closing');
+                    dialog.close();
+                }, { once: true });
+            }
+        </script>
     <?php endif; ?>
 </nav>

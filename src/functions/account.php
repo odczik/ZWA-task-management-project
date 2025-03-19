@@ -27,6 +27,6 @@ function login($data, $jwtHandler) {
 
 function logout() {
     setcookie("token", "", time() - 3600);
-    header("Location: /login");
+    header("Location: /");
     exit;
 }
