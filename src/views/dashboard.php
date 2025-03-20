@@ -13,6 +13,8 @@
 
     <h1>Dashboard</H1>
 
+    <?php include 'src/functions/db_connect.php'; ?>
+
     <?php
     
     $token = $_COOKIE["token"];
