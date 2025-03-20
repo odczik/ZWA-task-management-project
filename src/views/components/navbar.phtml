@@ -10,7 +10,7 @@
         <a href="/logout" class="nav-action">Logout</a>
     <?php else: ?>
         <button class="nav-action">Login</button>
-        <dialog>
+        <div class="nav-login-modal">
             <form action="/login" method="POST">
                 <div>
                     <span>
@@ -25,37 +25,32 @@
             
                 <input type="submit" value="Login">
             </form>
-        </dialog>
+        </div>
         <script>
-            const dialog = document.querySelector('dialog');
+            const modal = document.querySelector('.nav-login-modal');
+            const modalForm = modal.querySelector('form');
             const loginButton = document.querySelector('.nav-action');
 
             // Show the modal when the login button is clicked
             loginButton.addEventListener('click', () => {
-                dialog.showModal();
+                modal.style.visibility = 'visible';
+                modalForm.classList.add("open");
             });
 
             // Close the modal when clicking outside of it
-            dialog.addEventListener('click', (event) => {
-                const rect = dialog.getBoundingClientRect();
-                const isInDialog = (
-                    event.clientX >= rect.left &&
-                    event.clientX <= rect.right &&
-                    event.clientY >= rect.top &&
-                    event.clientY <= rect.bottom
-                );
-
-                if (!isInDialog) {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
                     closeDialogWithAnimation();
                 }
             });
 
             // Function to close the dialog with animation
             function closeDialogWithAnimation() {
-                dialog.classList.add('closing');
-                dialog.addEventListener('animationend', () => {
-                    dialog.classList.remove('closing');
-                    dialog.close();
+                modalForm.classList.remove("open");
+                modalForm.classList.add('closing');
+                modal.addEventListener('animationend', () => {
+                    modalForm.classList.remove('closing');
+                    modal.style.visibility = "hidden";
                 }, { once: true });
             }
         </script>

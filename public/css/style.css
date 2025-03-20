@@ -80,19 +80,35 @@ form input[type="submit"]:hover {
 }
 
 /* Dialog styles */
-dialog {
+.nav-login-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    visibility: hidden;
+}
+.nav-login-modal form {
     border: 3px solid var(--primary-color-dark);
     border-radius: 5px;
 
+    background-color: white;
+    opacity: 0;
+
     padding: 20px;
 }
-/* Opening animation */
-dialog[open] {
-    animation: dialog-open 0.3s ease forwards;
+.open {
+    animation: dialog-open 0.30s ease forwards;
 }
-
-/* Closing animation */
-dialog.closing {
+.closing {
     animation: dialog-close 0.15s ease forwards;
 }
 

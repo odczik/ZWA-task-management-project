@@ -18,7 +18,7 @@
     $token = $_COOKIE["token"];
     
     if(!$token) {
-        header("Location: /login");
+        header("Location: /");
         exit;
     }
     
