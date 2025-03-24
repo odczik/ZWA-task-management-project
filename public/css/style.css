@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
 
 :root {
-    --primary-color: #E7D8C9;
-    --primary-color-dark: #514538;
-    --green: #007562;
-    --green-light: #C3E1D3;
+    --background-color: #F9F5F1;
+    --primary-light: #E7D8C9;
+    --primary-dark: #514538;
+    --accent-dark: #2b7a6d;
+    --accent-light: #cbe1d6;
 }
+
+/* //////////////////////// */
+/*      Common styles       */
+/* //////////////////////// */
 
 body {
     padding: 0;
@@ -16,6 +21,8 @@ body {
 
     height: 100vh;
     width: 100vw;
+
+    background-color: var(--background-color);
 }
 
 .container {
@@ -33,55 +40,10 @@ body {
     justify-content: space-between;
 }
 
-form {
-    /* border: 1px solid red; */
+/* //////////////////////// */
+/*      Dialog styles       */
+/* //////////////////////// */
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-
-    font-weight: 600;
-}
-form div {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-form span {
-    display: flex;
-    flex-direction: column;
-}
-form input {
-    padding: 5px;
-    border: 3px solid var(--primary-color-dark);
-    border-radius: 5px;
-
-    font-size: 1rem;
-    font-weight: 500;
-
-    transition: 0.15s ease;
-}
-form input:not([type="submit"]):focus {
-    outline: none;
-    border: 3px solid var(--primary-color);
-    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
-}
-form input[type="submit"] {
-    cursor: pointer;
-    color: var(--primary-color-dark);
-    background-color: white;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: 0.15s ease;
-}
-form input[type="submit"]:hover {
-    color: var(--primary-color);
-    background: var(--primary-color-dark);
-}
-
-/* Dialog styles */
 .nav-login-modal {
     position: absolute;
     top: 0;
@@ -94,18 +56,63 @@ form input[type="submit"]:hover {
     align-items: center;
     justify-content: center;
 
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
 
     visibility: hidden;
 }
 .nav-login-modal form {
-    border: 3px solid var(--primary-color-dark);
+    border: 3px solid var(--primary-dark);
     border-radius: 5px;
 
-    background-color: white;
+    color: var(--primary-dark);
+    background-color: var(--background-color);
     opacity: 0;
 
     padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    font-weight: 600;
+}
+.nav-login-modal form div,
+.nav-login-modal form span {
+    display: flex;
+    flex-direction: column;
+}
+.nav-login-modal form div {
+    gap: 10px;
+}
+.nav-login-modal form input {
+    padding: 5px;
+    border: 3px solid var(--primary-dark);
+    border-radius: 5px;
+
+    background-color: var(--background-color);
+    color: var(--primary-dark);
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    transition: 0.15s ease;
+}
+.nav-login-modal form input:not([type="submit"]):focus {
+    outline: none;
+    border: 3px solid var(--primary-light);
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+}
+.nav-login-modal form input[type="submit"] {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: 0.15s ease;
+}
+.nav-login-modal form input[type="submit"]:hover {
+    color: var(--background-color);
+    background: var(--primary-dark);
 }
 .open {
     animation: dialog-open 0.30s ease forwards;

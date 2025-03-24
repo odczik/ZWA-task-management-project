@@ -3,14 +3,14 @@ footer {
     width: 100%;
     padding: 10px 30px;
 
-    background-color: var(--primary-color);
+    background-color: var(--accent-light);
 
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 
-    color: var(--primary-color-dark);
+    color: var(--accent-dark);
     font-weight: 600;
     font-size: 1rem;
 }

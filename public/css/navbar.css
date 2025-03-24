@@ -1,5 +1,5 @@
 nav {
-    background-color: var(--primary-color);
+    background-color: var(--primary-light);
     
     padding: 10px 30px;
 
@@ -27,7 +27,7 @@ nav {
 .nav-links a {
     position: relative;
 
-    color: var(--primary-color-dark);
+    color: var(--primary-dark);
     font-weight: 600;
     font-size: 1rem;
 
@@ -35,7 +35,7 @@ nav {
 }
 .nav-links a::after {
     content: '';
-    border-top: 3px solid var(--primary-color-dark);
+    border-top: 3px solid var(--primary-dark);
 
     position: absolute;
     left: 1px;
@@ -49,10 +49,10 @@ nav {
 }
 
 nav .nav-action {
-    border: 3px solid var(--primary-color-dark);
+    border: 3px solid var(--primary-dark);
     border-radius: 5px;
 
-    color: var(--primary-color-dark);
+    color: var(--primary-dark);
     font-weight: 600;
     font-size: 1rem;
 
@@ -66,6 +66,6 @@ nav .nav-action {
     transition: 0.15s ease;
 }
 nav .nav-action:hover {
-    color: var(--primary-color);
-    background-color: var(--primary-color-dark);
+    color: var(--primary-light);
+    background-color: var(--primary-dark);
 }
