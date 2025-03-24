@@ -11,7 +11,10 @@
 <body>
     <?php include 'src/views/components/navbar.phtml'; ?>
 
-    <h1>Dashboard</H1>
+    <header>
+        <h1>Dashboard</h1>
+        <p>This is the dashboard</p>
+    </header>
 
     <?php include 'src/functions/db_connect.php'; ?>
 
@@ -43,5 +46,7 @@
     ?>
 
     <?php include 'src/views/components/footer.phtml'; ?>
+    
+    <script src="public/js/sticky.js"></script>
 </body>
 </html>

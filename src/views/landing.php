@@ -11,8 +11,17 @@
 <body>
     <?php include 'src/views/components/navbar.phtml'; ?>
 
-    <h1>Welcome</H1>
+    <header>
+        <h1>Welcome</h1>
+        <p>This is the landing page</p>
+    </header>
+
+    <main>
+        Some content
+    </main>
 
     <?php include 'src/views/components/footer.phtml'; ?>
+
+    <script src="public/js/sticky.js"></script>
 </body>
 </html> 

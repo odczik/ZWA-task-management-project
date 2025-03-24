@@ -1,16 +1,18 @@
 footer {
     position: relative;
-    width: 100%;
-    padding: 10px 30px;
+    width: 90vw;
+    padding: 20px;
+    margin: 0 auto;
 
-    background-color: var(--accent-light);
+    background-color: var(--primary-light);
+    border-top: 2px solid var(--primary-dark);
 
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 
-    color: var(--accent-dark);
+    color: var(--primary-dark);
     font-weight: 600;
     font-size: 1rem;
 }

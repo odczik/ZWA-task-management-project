@@ -7,7 +7,18 @@
         </div>
     </div>
     <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
-        <a href="/logout" class="nav-action">Logout</a>
+        <!-- <a href="/logout" class="nav-action">Logout</a> -->
+        <div class="nav-logged-in-container">
+            <div class="nav-logged-in">
+                <div class="nav-logged-in-item">
+                    <span>user</span>
+                    <span>icon</span>
+                </div>
+                <div class="nav-logged-in-item">
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
     <?php else: ?>
         <button class="nav-action">Login</button>
         <div class="nav-login-modal">
