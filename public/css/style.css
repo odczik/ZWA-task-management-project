@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
 
 :root {
-    --primary-color: rgb(167, 167, 221);
-    --primary-color-dark: rgb(79, 79, 151);
+    --primary-color: #E7D8C9;
+    --primary-color-dark: #514538;
+    --green: #007562;
+    --green-light: #C3E1D3;
 }
 
 body {
