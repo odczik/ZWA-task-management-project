@@ -9,10 +9,13 @@
     <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
         <!-- <a href="/logout" class="nav-action">Logout</a> -->
         <div class="nav-logged-in-container">
-            <div class="nav-logged-in">
+            <div class="nav-logged-in-user">
+                <span class="nav-logged-in-username">username</span>
+                <span class="nav-logged-in-icon"></span>
+            </div>
+            <div class="nav-logged-in-items">
                 <div class="nav-logged-in-item">
-                    <span>user</span>
-                    <span>icon</span>
+                    <a href="#">Account</a>
                 </div>
                 <div class="nav-logged-in-item">
                     <a href="/logout">Logout</a>
