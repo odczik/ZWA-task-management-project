@@ -24,16 +24,14 @@ nav::after {
     
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(90vw + 40px);
 
     transition: 0.2s ease;
 }
 nav.is-sticky::after {
     border-bottom: 2px solid var(--primary-dark);
-
-    left: 2.5vw;
-    right: 2.5vw;
 }
 
 .nav-left {
@@ -142,44 +140,32 @@ nav .nav-logged-in-user {
 }
 nav .nav-logged-in-items {
     /* border: 1px solid blue; */
-    border-radius: 15px;
+    border-radius: 5px;
 
-    display: none;
+    pointer-events: none;
     opacity: 0;
 
+    /* margin-top: 10px; */
     /* padding: 15px; */
 
     background-color: var(--primary-light);
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 
     position: absolute;
     z-index: 999;
     top: 100%;
     width: 100%;
+    transform: translateY(10%);
 
-    animation: nav-menu 0.2s;
+    transition: 0.3s ease-out;
 }
 nav .nav-logged-in-container:hover .nav-logged-in-items {
-    display: block;
+    pointer-events: all;
     opacity: 1;
+    transform: translateY(0);
+    transition: 0.15s ease-out;
 }
-@keyframes nav-menu {
-    0% {
-        display: none;
-        opacity: 0;
-        transform: translateY(10%);
-    }
-    1% {
-        display: block;
-        opacity: 0;
-        transform: translateY(10%);
-    }
-    100% {
-        display: block;
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+
 nav .nav-logged-in-item {
     /* border: 1px solid magenta; */
 
@@ -207,4 +193,26 @@ nav .nav-logged-in-item::after {
 }
 nav .nav-logged-in-item:nth-last-child(1)::after {
     display: none;
+}
+nav .nav-logged-in-item a {
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 1rem;
+
+    text-decoration: none;
+    position: relative;
+}
+nav .nav-logged-in-item a::after {
+    content: '';
+    border-top: 3px solid var(--primary-dark);
+
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0%;
+
+    transition: 0.15s ease;
+}
+nav .nav-logged-in-item a:hover::after {
+    width: 100%;
 }
