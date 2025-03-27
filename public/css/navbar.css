@@ -143,7 +143,7 @@ nav .nav-logged-in-user {
 }
 /* Effect 1 START */
 nav .nav-logged-in-user:hover {
-    cursor: default;
+    cursor: pointer;
     /* box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3); */
 }
 /* Effect 1 END */
@@ -160,12 +160,12 @@ nav .nav-logged-in-user::after {
 
     transition: 0.15s ease;
 }
-nav .nav-logged-in-user:hover::after {
+nav .nav-logged-in-container:hover .nav-logged-in-user::after {
     border: 12px solid var(--primary-dark);
     width: 95%;
     z-index: 100;
 }
-nav .nav-logged-in-user:hover .nav-logged-in-username {
+nav .nav-logged-in-container:hover .nav-logged-in-username {
     color: var(--primary-light);
     z-index: 101;
 }
