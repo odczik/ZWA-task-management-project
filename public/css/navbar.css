@@ -4,7 +4,7 @@ nav {
     position: sticky;
     top: -1px;
     
-    padding: 20px 40px;
+    padding: 15px 40px;
     padding-top: 21px;
 
     display: flex;
@@ -15,8 +15,8 @@ nav {
     transition: 0.2s ease;
 }
 nav.is-sticky {
-    padding: 20px 80px;
-    padding-top: 21px;
+    padding: 15px 80px;
+    padding-top: 16px;
 }
 nav::after {
     content: '';
@@ -125,8 +125,9 @@ nav .nav-logged-in-icon {
 
 nav .nav-logged-in-user {
     /* border: 1px solid red; */
+    border-radius: 25px;
 
-    padding: 5px;
+    padding: 10px;
 
     width: 100%;
     height: 100%;
@@ -134,9 +135,46 @@ nav .nav-logged-in-user {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
     gap: 5px;
+
+    transition: 0.15s ease;
+}
+/* Effect 1 START */
+nav .nav-logged-in-user:hover {
+    cursor: default;
+    /* box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3); */
+}
+/* Effect 1 END */
+/* Effect 2 START */
+nav .nav-logged-in-user::after {
+    content: '';
+    border: 12px solid transparent;
+
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0%;
+
+    transition: 0.15s ease;
+}
+nav .nav-logged-in-user:hover::after {
+    border: 12px solid var(--primary-dark);
+    width: 95%;
+    z-index: 100;
+}
+nav .nav-logged-in-user:hover .nav-logged-in-username {
+    color: var(--primary-light);
+    z-index: 101;
+}
+/* Effect 2 END */
+nav .nav-logged-in-username {
+    flex-grow: 1;
+    text-align: center;
+
+    transition: 0.15s ease;
 }
 nav .nav-logged-in-items {
     /* border: 1px solid blue; */
