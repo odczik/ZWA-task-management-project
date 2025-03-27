@@ -26,7 +26,7 @@ nav::after {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: calc(90vw + 40px);
+    width: calc(100vw - 80px);
 
     transition: 0.2s ease;
 }
