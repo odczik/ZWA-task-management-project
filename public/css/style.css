@@ -97,7 +97,7 @@ main {
     border-radius: 5px;
 
     color: var(--primary-dark);
-    background-color: var(--background-color);
+    background-color: var(--primary-light);
     opacity: 0;
 
     padding: 20px;
@@ -123,7 +123,7 @@ main {
     border: 3px solid var(--primary-dark);
     border-radius: 5px;
 
-    background-color: var(--background-color);
+    background-color: var(--primary-light);
     color: var(--primary-dark);
 
     font-size: 1rem;
@@ -133,7 +133,7 @@ main {
 }
 .nav-login-modal form input:not([type="submit"]):focus {
     outline: none;
-    border: 3px solid var(--primary-light);
+    border: 3px solid var(--accent-dark);
     box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
 }
 .nav-login-modal form input[type="submit"] {
@@ -143,7 +143,7 @@ main {
     transition: 0.15s ease;
 }
 .nav-login-modal form input[type="submit"]:hover {
-    color: var(--background-color);
+    color: var(--primary-light);
     background: var(--primary-dark);
 }
 .open {
