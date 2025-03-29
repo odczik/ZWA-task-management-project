@@ -15,12 +15,31 @@
     <main>
         <nav class="sidebar">
             <h2>Dashboard</h2>
-            <ul>
-                <li><a href="#">Project 1</a></li>
-                <li><a href="#">Project 2</a></li>
-                <li><a href="#">Project 3</a></li>
-                <li><a href="#">Project 4</a></li>
-            </ul>
+            <div class="sidebar-items">
+                <a href="#" class="sidebar-item">Project 1</a>
+                <a href="#" class="sidebar-item active">Project 2</a>
+                <a href="#" class="sidebar-item">Project 3</a>
+                <a href="#" class="sidebar-item">Project 4</a>
+
+                <a href="#" class="sidebar-item">Project 1</a>
+                <a href="#" class="sidebar-item">Project 2</a>
+                <a href="#" class="sidebar-item">Project 3</a>
+                <a href="#" class="sidebar-item">Project 4</a>
+                <a href="#" class="sidebar-item">Project 1</a>
+                <a href="#" class="sidebar-item">Project 2</a>
+                <a href="#" class="sidebar-item">Project 3</a>
+                <a href="#" class="sidebar-item">Project 4</a>
+                <a href="#" class="sidebar-item">Project 1</a>
+                <a href="#" class="sidebar-item">Project 2</a>
+                <a href="#" class="sidebar-item">Project 3</a>
+                <a href="#" class="sidebar-item">Project 4</a>
+                <a href="#" class="sidebar-item">Project 1</a>
+                <a href="#" class="sidebar-item">Project 2</a>
+                <a href="#" class="sidebar-item">Project 3</a>
+                <a href="#" class="sidebar-item">Project 4</a>
+
+                <button href="#" class="sidebar-add-button">+</button>
+            </div>
         </nav>
         <div class="divider"></div>
         <div class="table">
