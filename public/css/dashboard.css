@@ -12,7 +12,7 @@ main {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 
     margin: 0;
     padding: 15px;
@@ -47,6 +47,8 @@ main .sidebar h2 {
     color: var(--primary-dark);
 }
 main .sidebar .sidebar-items {
+    /* border: 1px dashed red; */
+
     padding: 0;
     margin: 0;
     width: 100%;
@@ -64,8 +66,8 @@ main .sidebar .sidebar-items {
 }
 main .sidebar .sidebar-item {
     padding: 10px;
-    margin: 0 5px;
-    width: calc(100% - 10px);
+    margin: 0 7px;
+    width: calc(100% - 14px);
     box-sizing: border-box;
 
     display: flex;
@@ -120,12 +122,25 @@ main .sidebar .sidebar-add-button:hover {
 }
 
 main .divider {
+    /* border: 1px dashed red; */
+
     position: relative;
-    border: 1px solid var(--primary-dark);
     height: 95%;
+    width: 10px;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+
+    cursor: ew-resize;
+}
+main .divider::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    border: 1px solid var(--primary-dark);
 }
 
 main .table {

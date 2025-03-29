@@ -75,5 +75,6 @@
     ?> -->
 
     <script src="public/js/sticky.js"></script>
+    <script src="public/js/resize.js"></script>
 </body>
 </html>
