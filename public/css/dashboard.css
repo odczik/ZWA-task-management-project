@@ -12,7 +12,7 @@ main {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 
     margin: 0;
     padding: 15px;
@@ -43,6 +43,9 @@ main .sidebar {
     gap: 10px;
     width: 200px;
 }
+main .sidebar h2 {
+    color: var(--primary-dark);
+}
 main .sidebar .sidebar-items {
     padding: 0;
     margin: 0;
@@ -68,7 +71,7 @@ main .sidebar .sidebar-item {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 5px;
 
     font-size: 1rem;
@@ -80,11 +83,18 @@ main .sidebar .sidebar-item {
 
     transition: 0.1s ease-out;
 }
+main .sidebar .color {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
 main .sidebar .sidebar-item:hover,
 main .sidebar .sidebar-item.active {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
     cursor: pointer;
 }
+
 main .sidebar .sidebar-add-button {
     width: 100%;
 
