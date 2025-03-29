@@ -5,18 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/dashboard.css">
     <link rel="stylesheet" href="public/css/navbar.css">
     <link rel="stylesheet" href="public/css/footer.css">
 </head>
 <body>
     <?php include 'src/views/components/navbar.phtml'; ?>
 
-    <header>
-        <h1>Dashboard</h1>
-        <p>This is the dashboard</p>
-    </header>
+    <main>
+        <nav class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a href="#">Project 1</a></li>
+                <li><a href="#">Project 2</a></li>
+                <li><a href="#">Project 3</a></li>
+                <li><a href="#">Project 4</a></li>
+            </ul>
+        </nav>
+        <div class="divider"></div>
+        <div class="table">
 
-    <?php include 'src/functions/db_connect.php'; ?>
+        </div>
+    </main>
+    
+    <?php include 'src/views/components/footer.phtml'; ?>
+
+    <!-- <?php // include 'src/functions/db_connect.php'; ?>
 
     <?php
     
@@ -43,10 +57,8 @@
     echo "User ID: " . $decoded->user_id . "<br>";
     echo "Username: " . $decoded->username . "<br>";
     
-    ?>
+    ?> -->
 
-    <?php include 'src/views/components/footer.phtml'; ?>
-    
     <script src="public/js/sticky.js"></script>
 </body>
 </html>

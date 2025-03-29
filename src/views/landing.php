@@ -16,7 +16,7 @@
         <p>This is the landing page</p>
     </header>
 
-    <main>
+    <main class="home-content">
         Some content
     </main>
 

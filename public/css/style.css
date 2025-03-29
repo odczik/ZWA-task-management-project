@@ -42,7 +42,7 @@ header {
     color: var(--primary-dark);
 }
 
-main {
+.home-content {
     border: 1px solid red;
 
     width: 100%;

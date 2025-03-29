@@ -1,8 +1,9 @@
-nav {
+.navbar {
     background-color: var(--primary-light);
 
     position: sticky;
     top: -1px;
+    z-index: 100;
     
     padding: 20px 40px;
     padding-top: 21px;
@@ -14,11 +15,11 @@ nav {
 
     transition: 0.2s ease;
 }
-nav.is-sticky {
+.navbar.is-sticky {
     padding: 20px 80px;
     padding-top: 21px;
 }
-nav::after {
+.navbar::after {
     content: '';
     border-bottom: 2px solid transparent;
     
@@ -30,7 +31,7 @@ nav::after {
 
     transition: 0.2s ease;
 }
-nav.is-sticky::after {
+.navbar.is-sticky::after {
     border-bottom: 2px solid var(--primary-dark);
 }
 
@@ -73,7 +74,7 @@ nav.is-sticky::after {
     width: 99%;
 }
 
-nav .nav-action {
+.navbar .nav-action {
     border: 3px solid var(--primary-dark);
     border-radius: 5px;
 
@@ -90,7 +91,7 @@ nav .nav-action {
 
     transition: 0.15s ease;
 }
-nav .nav-action:hover {
+.navbar .nav-action:hover {
     color: var(--primary-light);
     background-color: var(--primary-dark);
 }
@@ -99,7 +100,7 @@ nav .nav-action:hover {
 /*   Account   */
 /* /////////// */
 
-nav .nav-logged-in-container {
+.navbar .nav-logged-in-container {
     /* border: 1px solid red; */
 
     position: relative;
@@ -113,7 +114,7 @@ nav .nav-logged-in-container {
     min-width: 120px;
 }
 
-nav .nav-logged-in-icon {
+.navbar .nav-logged-in-icon {
     background-color: grey;
     border-radius: 50%;
 
@@ -123,7 +124,7 @@ nav .nav-logged-in-icon {
     width: 30px;
 }
 
-nav .nav-logged-in-user {
+.navbar .nav-logged-in-user {
     /* border: 1px solid red; */
 
     padding: 5px;
@@ -140,35 +141,31 @@ nav .nav-logged-in-user {
 
     transition: 0.15s ease;
 }
-nav .nav-logged-in-user:hover {
+.navbar .nav-logged-in-user:hover {
     cursor: pointer;
 }
 /* Effect START */
-nav .nav-logged-in-container:hover .nav-logged-in-username {
+.navbar .nav-logged-in-container:hover .nav-logged-in-username {
     margin-right: -35px;
 }
-nav .nav-logged-in-container:hover .nav-logged-in-icon {
+.navbar .nav-logged-in-container:hover .nav-logged-in-icon {
     transform: scale(0);
 }
 /* Effect END */
-nav .nav-logged-in-username {
+.navbar .nav-logged-in-username {
     flex-grow: 1;
     text-align: center;
 
     transition: 0.25s ease;
 }
-nav .nav-logged-in-icon {
+.navbar .nav-logged-in-icon {
     transition: 0.15s ease;
 }
-nav .nav-logged-in-items {
-    /* border: 1px solid blue; */
+.navbar .nav-logged-in-items {
     border-radius: 5px;
 
     pointer-events: none;
     opacity: 0;
-
-    /* margin-top: 10px; */
-    /* padding: 15px; */
 
     background-color: var(--primary-light);
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
@@ -182,16 +179,14 @@ nav .nav-logged-in-items {
 
     transition: 0.3s ease-out;
 }
-nav .nav-logged-in-container:hover .nav-logged-in-items {
+.navbar .nav-logged-in-container:hover .nav-logged-in-items {
     pointer-events: all;
     opacity: 1;
     transform: translateY(0);
     transition: 0.15s ease-out;
 }
 
-nav .nav-logged-in-item {
-    /* border: 1px solid magenta; */
-
+.navbar .nav-logged-in-item {
     position: relative;
 
     padding: 20px 30px;
@@ -205,7 +200,7 @@ nav .nav-logged-in-item {
 
     gap: 5px;
 }
-nav .nav-logged-in-item::after {
+.navbar .nav-logged-in-item::after {
     content: '';
     border-top: 2px solid var(--primary-dark);
 
@@ -214,10 +209,10 @@ nav .nav-logged-in-item::after {
     right: 10px;
     bottom: -1px;
 }
-nav .nav-logged-in-item:nth-last-child(1)::after {
+.navbar .nav-logged-in-item:nth-last-child(1)::after {
     display: none;
 }
-nav .nav-logged-in-item a {
+.navbar .nav-logged-in-item a {
     color: var(--primary-dark);
     font-weight: 600;
     font-size: 1rem;
@@ -225,7 +220,7 @@ nav .nav-logged-in-item a {
     text-decoration: none;
     position: relative;
 }
-nav .nav-logged-in-item a::after {
+.navbar .nav-logged-in-item a::after {
     content: '';
     border-top: 3px solid var(--primary-dark);
 
@@ -236,6 +231,6 @@ nav .nav-logged-in-item a::after {
 
     transition: 0.15s ease;
 }
-nav .nav-logged-in-item a:hover::after {
+.navbar .nav-logged-in-item a:hover::after {
     width: 100%;
 }
