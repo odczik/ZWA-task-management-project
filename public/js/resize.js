@@ -14,8 +14,10 @@ divider.addEventListener('mousedown', (event) => {
 
 document.addEventListener('mousemove', (event) => {
     if (!isResizing) return;
-    
-    const newWidth = event.clientX - cursorOffset - sidebar.getBoundingClientRect().left;
+
+    let newWidth = event.clientX - cursorOffset - sidebar.getBoundingClientRect().left;
+
+    newWidth = Math.floor(newWidth / 10) * 10; // round to nearest 10px
 
     sidebar.style.width = `${newWidth}px`;
 });
