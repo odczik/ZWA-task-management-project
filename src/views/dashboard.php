@@ -17,23 +17,23 @@
         <nav class="sidebar">
             <h2>Projects</h2>
             <div class="sidebar-items">
-                <a href="#" class="sidebar-item"><span class="text">Project 1</span><span class="color" style="background-color: teal;"></span></a>
-                <a href="#" class="sidebar-item active"><span class="text">Project 2</span><span class="color" style="background-color: red;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 3</span><span class="color" style="background-color: green;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 4</span><span class="color" style="background-color: blue;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 1</span><span class="color" style="background-color: teal;"></span></a>
+                <a href="#" class="sidebar-item active"><span class="text" title="Project 1">Project 2</span><span class="color" style="background-color: red;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 3</span><span class="color" style="background-color: green;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 4</span><span class="color" style="background-color: blue;"></span></a>
                 
-                <a href="#" class="sidebar-item"><span class="text">Project 1 Project 1 Project 1</span><span class="color" style="background-color: teal;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 2</span><span class="color" style="background-color: red;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 3Project 3Project 3</span><span class="color" style="background-color: green;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 4</span><span class="color" style="background-color: blue;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 1</span><span class="color" style="background-color: teal;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 2</span><span class="color" style="background-color: red;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 3</span><span class="color" style="background-color: green;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 4</span><span class="color" style="background-color: blue;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 1</span><span class="color" style="background-color: teal;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 2</span><span class="color" style="background-color: red;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 3</span><span class="color" style="background-color: green;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text">Project 4</span><span class="color" style="background-color: blue;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 1 Project 1 Project 1</span><span class="color" style="background-color: teal;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 2</span><span class="color" style="background-color: red;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 3Project 3Project 3</span><span class="color" style="background-color: green;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 4</span><span class="color" style="background-color: blue;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 1</span><span class="color" style="background-color: teal;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 2</span><span class="color" style="background-color: red;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 3</span><span class="color" style="background-color: green;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 4</span><span class="color" style="background-color: blue;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 1</span><span class="color" style="background-color: teal;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 2</span><span class="color" style="background-color: red;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 3</span><span class="color" style="background-color: green;"></span></a>
+                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 4</span><span class="color" style="background-color: blue;"></span></a>
 
                 <button href="#" class="sidebar-add-button">+</button>
             </div>

@@ -86,6 +86,13 @@ main .sidebar .sidebar-item {
 
     transition: 0.1s ease-out;
 }
+main .sidebar .text {
+    flex-grow: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 main .sidebar .color {
     width: 25px;
     height: 25px;
