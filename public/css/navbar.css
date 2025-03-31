@@ -43,6 +43,11 @@
     gap: 45px;
 }
 
+.navbar img {
+    width: 50px;
+    height: 50px;
+}
+
 .nav-links {
     display: flex;
     flex-direction: row;
