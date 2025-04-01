@@ -276,6 +276,8 @@
     background-color: var(--primary-light);
     opacity: 0;
 
+    z-index: 101;
+
     padding: 20px;
 
     display: flex;
@@ -296,14 +298,22 @@
 }
 .nav-modal p {
     margin: 0;
-    margin-top: 10px;
+    margin-top: 5px;
     font-size: 0.9rem;
     text-align: left;
     width: 100%;
 }
-.nav-modal a {
+.nav-modal button {
     color: var(--accent-dark);
     font-weight: 600;
+    font-size: 0.9rem;
+    background: none;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
+.nav-modal button:hover {
+    text-decoration: underline;
 }
 .nav-modal .remember {
     flex-direction: row;

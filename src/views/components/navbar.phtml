@@ -42,7 +42,7 @@
                 </div>
             
                 <input type="submit" value="Login">
-                <p>Not a user yet? <a href="#">Register</a></p>
+                <p>Not a user yet? <button class="register-modal-button">Register</button></p>
             </form>
         </div>
         <div class="nav-modal nav-register-modal">
@@ -63,36 +63,66 @@
                 </div>
             
                 <input type="submit" value="Register">
-                <p>Already a user yet? <a href="#">Login</a></p>
+                <p>Already a user? <button class="login-modal-button">Login</button></p>
             </form>
         </div>
         <script>
             const loginModal = document.querySelector('.nav-login-modal');
             const registerModal = document.querySelector('.nav-register-modal');
+
             const loginModalForm = loginModal.querySelector('form');
             const registerModalForm = registerModal.querySelector('form');
+
             const loginButton = document.querySelector('.nav-action');
 
-            // Show the modal when the login button is clicked
+            const registerModalButton = document.querySelector('.register-modal-button');
+            const loginModalButton = document.querySelector('.login-modal-button');
+
+            // Show the modal
             loginButton.addEventListener('click', () => {
                 loginModal.style.visibility = 'visible';
                 loginModalForm.classList.add("open");
             });
+            registerModalButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                registerModal.style.visibility = 'visible';
+                registerModalForm.classList.add("open");
+                closeLoginDialogWithAnimation();
+            });
+            loginModalButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                loginModal.style.visibility = 'visible';
+                loginModalForm.classList.add("open");
+                closeRegisterDialogWithAnimation();
+            });
 
             // Close the modal when clicking outside of it
             loginModal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeDialogWithAnimation();
+                if (event.target === loginModal) {
+                    closeLoginDialogWithAnimation();
+                }
+            });
+            registerModal.addEventListener('click', (event) => {
+                if (event.target === registerModal) {
+                    closeRegisterDialogWithAnimation();
                 }
             });
 
             // Function to close the dialog with animation
-            function closeDialogWithAnimation() {
+            function closeLoginDialogWithAnimation() {
                 loginModalForm.classList.remove("open");
                 loginModalForm.classList.add('closing');
                 loginModal.addEventListener('animationend', () => {
                     loginModalForm.classList.remove('closing');
                     loginModal.style.visibility = "hidden";
+                }, { once: true });
+            }
+            function closeRegisterDialogWithAnimation() {
+                registerModalForm.classList.remove("open");
+                registerModalForm.classList.add('closing');
+                registerModal.addEventListener('animationend', () => {
+                    registerModalForm.classList.remove('closing');
+                    registerModal.style.visibility = "hidden";
                 }, { once: true });
             }
         </script>
