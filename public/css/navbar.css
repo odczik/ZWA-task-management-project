@@ -246,3 +246,127 @@
 .navbar .nav-logged-in-item a:hover::after {
     width: 100%;
 }
+
+
+/* //////////////////////// */
+/*      Dialog styles       */
+/* //////////////////////// */
+
+.nav-login-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.3);
+
+    visibility: hidden;
+}
+.nav-login-modal form {
+    border: 3px solid var(--primary-dark);
+    border-radius: 5px;
+
+    color: var(--primary-dark);
+    background-color: var(--primary-light);
+    opacity: 0;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    font-weight: 600;
+}
+.nav-login-modal form div,
+.nav-login-modal form span {
+    display: flex;
+    flex-direction: column;
+}
+.nav-login-modal form div {
+    gap: 10px;
+}
+.nav-login-modal p {
+    margin: 0;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    text-align: left;
+    width: 100%;
+}
+.nav-login-modal a {
+    color: var(--accent-dark);
+    font-weight: 600;
+}
+.nav-login-modal .remember {
+    flex-direction: row;
+    font-size: 0.9rem;
+}
+.nav-login-modal form input {
+    padding: 5px;
+    border: 3px solid var(--primary-dark);
+    border-radius: 5px;
+
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    transition: 0.15s ease;
+}
+.nav-login-modal form input:not([type="submit"]):focus {
+    outline: none;
+    border: 3px solid var(--accent-dark);
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+}
+.nav-login-modal form input[type="submit"] {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: 0.15s ease;
+}
+.nav-login-modal form input[type="submit"]:hover {
+    color: var(--primary-light);
+    background: var(--primary-dark);
+}
+.nav-login-modal form input[type="checkbox"] {
+    border: 2px solid var(--primary-dark);
+}
+.open {
+    animation: dialog-open 0.30s ease forwards;
+}
+.closing {
+    animation: dialog-close 0.15s ease forwards;
+}
+
+/* Keyframes for opening */
+@keyframes dialog-open {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Keyframes for closing */
+@keyframes dialog-close {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}

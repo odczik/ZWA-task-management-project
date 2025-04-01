@@ -2,13 +2,16 @@
 function login($data, $jwtHandler) {
     $username = $data["username"];
     $password = $data["password"];
+    $remember = $data["remember"];
+
+    $expiration = $remember ? time() + 3600 * 24 * 30 : time() + 3600;
         
     // TODO: User authentication (needs db)
 
     $payload = [
         "user_id" => 123,
         "username" => $username,
-        "exp" => time() + 3600 // 1-hour expiration
+        "exp" => $expiration // 30 day expiration
     ];
     
     // Create JWT
@@ -16,7 +19,7 @@ function login($data, $jwtHandler) {
 
     // Set the token cookie
     setcookie("token", $jwt, [
-        'expires' => time() + (60 * 60),
+        'expires' => $expiration,
         'secure' => isset($_SERVER['HTTPS']),
         'httponly' => true,
         'samesite' => "Strict"
