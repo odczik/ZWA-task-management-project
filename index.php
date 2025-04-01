@@ -26,6 +26,11 @@ $router->get("/logout", function() {
     return logout();
 });
 
+$router->get("/db", function() {
+    require "./src/functions/db_connect.php";
+    exit;
+});
+
 $router->dispatch();
 
 // Helper function to render pages

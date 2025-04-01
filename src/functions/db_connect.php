@@ -1,8 +1,8 @@
 <?php
-$host = "127.0.0.1";
-$dbname = "mysql";
-$username = "root";
-$password = "";
+$host = "138.2.132.129";
+$dbname = "mango";
+$username = "user";
+$password = "user";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password, [
