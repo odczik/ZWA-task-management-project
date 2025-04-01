@@ -24,7 +24,7 @@
         </div>
     <?php else: ?>
         <button class="nav-action">Login</button>
-        <div class="nav-login-modal">
+        <div class="nav-modal nav-login-modal">
             <form action="/login" method="POST">
                 <div>
                     <span>
@@ -45,19 +45,42 @@
                 <p>Not a user yet? <a href="#">Register</a></p>
             </form>
         </div>
+        <div class="nav-modal nav-register-modal">
+            <form action="/register" method="POST">
+                <div>
+                    <span>
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username">
+                    </span>
+                    <span>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password">
+                    </span>
+                    <span>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password">
+                    </span>
+                </div>
+            
+                <input type="submit" value="Register">
+                <p>Already a user yet? <a href="#">Login</a></p>
+            </form>
+        </div>
         <script>
-            const modal = document.querySelector('.nav-login-modal');
-            const modalForm = modal.querySelector('form');
+            const loginModal = document.querySelector('.nav-login-modal');
+            const registerModal = document.querySelector('.nav-register-modal');
+            const loginModalForm = loginModal.querySelector('form');
+            const registerModalForm = registerModal.querySelector('form');
             const loginButton = document.querySelector('.nav-action');
 
             // Show the modal when the login button is clicked
             loginButton.addEventListener('click', () => {
-                modal.style.visibility = 'visible';
-                modalForm.classList.add("open");
+                loginModal.style.visibility = 'visible';
+                loginModalForm.classList.add("open");
             });
 
             // Close the modal when clicking outside of it
-            modal.addEventListener('click', (event) => {
+            loginModal.addEventListener('click', (event) => {
                 if (event.target === modal) {
                     closeDialogWithAnimation();
                 }
@@ -65,11 +88,11 @@
 
             // Function to close the dialog with animation
             function closeDialogWithAnimation() {
-                modalForm.classList.remove("open");
-                modalForm.classList.add('closing');
-                modal.addEventListener('animationend', () => {
-                    modalForm.classList.remove('closing');
-                    modal.style.visibility = "hidden";
+                loginModalForm.classList.remove("open");
+                loginModalForm.classList.add('closing');
+                loginModal.addEventListener('animationend', () => {
+                    loginModalForm.classList.remove('closing');
+                    loginModal.style.visibility = "hidden";
                 }, { once: true });
             }
         </script>

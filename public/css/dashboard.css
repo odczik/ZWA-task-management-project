@@ -81,6 +81,8 @@ main .sidebar .sidebar-item {
     font-weight: 600;
     color: var(--primary-dark);
     text-decoration: none;
+    
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0);
 
     border-radius: 5px;
 
