@@ -29,6 +29,15 @@ function login($data, $jwtHandler) {
     exit;
 }
 
+function register($data, $jwtHandler) {
+    // register
+
+    // login
+
+    header("Location: /dashboard");
+    exit;
+}
+
 function logout() {
     setcookie("token", "", time() - 3600);
     header("Location: /");

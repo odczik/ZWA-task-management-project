@@ -18,6 +18,10 @@ $router->post("/login", function($data) use ($jwtHandler) {
     if(!count($data)) return;
     return login($data, $jwtHandler);
 });
+$router->post("/register", function($data) use ($jwtHandler) {
+    if(!count($data)) return;
+    return register($data, $jwtHandler);
+});
 $router->get("/logout", function() {
     return logout();
 });
