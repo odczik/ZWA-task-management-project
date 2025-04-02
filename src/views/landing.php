@@ -23,6 +23,6 @@
 
     <?php include 'src/views/components/footer.phtml'; ?>
 
-    <script src="public/js/sticky.js"></script>
+    <script src="public/js/navbar.js"></script>
 </body>
 </html> 

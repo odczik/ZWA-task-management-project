@@ -1,5 +1,9 @@
 <?php
 
+/* =================================== */
+/* This is awfull don't read this shit */
+/* =================================== */
+
 function login($data, $jwtHandler, $pdo) {
     $username = $data["username"];
     $password = $data["password"];
@@ -54,28 +58,44 @@ function register($data, $jwtHandler, $pdo) {
     // Hash the password (using bcrypt)
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-    // Prepare the SQL query to insert the user
-    $query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
-    
-    // Prepare the statement
-    $stmt = $pdo->prepare($query);
-
-    // Bind parameters to prevent SQL injection
-    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
-
     try {
+        // Check if the username is already taken
+        $query = "SELECT COUNT(*) FROM users WHERE username = :username";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->execute();
+        $usernameExists = $stmt->fetchColumn();
+
+        if ($usernameExists) {
+            echo "Username already exists!";
+            return;
+        }
+
+        // Prepare the SQL query to insert the user
+        $query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+        $stmt = $pdo->prepare($query);
+
+        // Bind parameters to prevent SQL injection
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+
         // Execute the query
         $stmt->execute();
         echo "Registration successful!";
+
+        // Login user
+        login($data, $jwtHandler, $pdo);
     } catch (PDOException $e) {
-        // Handle error
-        echo "Error: " . $e->getMessage();
+        // Handle duplicate email error
+        if ($e->errorInfo[1] == 1062) { // MySQL error code for duplicate entry
+            echo "Email already exists!";
+        } else {
+            // Handle other errors
+            echo "Error: " . $e->getMessage();
+        }
     }
 
-    // Login user
-    login($data, $jwtHandler, $pdo);
     exit;
 }
 

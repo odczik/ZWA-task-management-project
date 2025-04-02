@@ -1,3 +1,12 @@
+<?php
+
+if(!$jwtHandler->isLoggedIn()) {
+    header("Location: /");
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,36 +55,7 @@
     
     <?php include 'src/views/components/footer.phtml'; ?>
 
-    <!-- <?php // include 'src/functions/db_connect.php'; ?>
-
-    <?php
-    
-    $token = $_COOKIE["token"];
-    
-    if(!$token) {
-        header("Location: /");
-        exit;
-    }
-    
-    // Verify JWT (decode and validate)
-    $decoded = $jwtHandler->verifyJWT($token);
-    echo "Token: " . $token . "<br>";
-    echo "Decoded JWT:";
-    echo "<pre>";
-    print_r($decoded); // This will print the payload or error message
-    echo "</pre>";
-    
-    if(is_array($decoded) && isset($decoded["error"])) {
-        echo "Error: " . $decoded["error"];
-        exit;
-    }
-    
-    echo "User ID: " . $decoded->user_id . "<br>";
-    echo "Username: " . $decoded->username . "<br>";
-    
-    ?> -->
-
-    <script src="public/js/sticky.js"></script>
+    <script src="public/js/navbar.js"></script>
     <script src="public/js/resize.js"></script>
 </body>
 </html>
