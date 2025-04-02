@@ -10,7 +10,7 @@
         <!-- <a href="/logout" class="nav-action">Logout</a> -->
         <div class="nav-logged-in-container">
             <div class="nav-logged-in-user">
-                <span class="nav-logged-in-username">username</span>
+                <span class="nav-logged-in-username"><?php echo $jwtHandler->getUser()->username ?></span>
                 <span class="nav-logged-in-icon"></span>
             </div>
             <div class="nav-logged-in-items">
@@ -51,12 +51,16 @@
                         <input type="text" id="username" name="username">
                     </span>
                     <span>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email">
+                    </span>
+                    <span>
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password">
                     </span>
                     <span>
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password">
+                        <input type="password" id="password-match" name="password-match">
                     </span>
                 </div>
             

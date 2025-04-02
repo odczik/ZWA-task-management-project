@@ -43,11 +43,18 @@ class JWTHandler {
 
     // Function to check if user is logged in
     public function isLoggedIn() {
+        return $this->getUser() !== null;
+    }
+
+    // Function to get user from JWT
+    public function getUser() {
         if (isset($_COOKIE['token'])) {
             $decoded = $this->verifyJWT($_COOKIE['token']);
-            return is_object($decoded) && isset($decoded->user_id);
+            if (is_object($decoded) && isset($decoded->user_id)) {
+                return $decoded;
+            }
         }
-        return false;
+        return null;
     }
 }
 ?>

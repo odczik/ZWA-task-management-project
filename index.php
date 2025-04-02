@@ -16,11 +16,34 @@ $router->get("/dashboard", function() {
 
 $router->post("/login", function($data) use ($jwtHandler) {
     if(!count($data)) return;
-    return login($data, $jwtHandler);
+    // Check if the user is already logged in
+    if(isset($_COOKIE["token"])) {
+        $jwt = $_COOKIE["token"];
+        $payload = $jwtHandler->verifyJWT($jwt);
+        if($payload) {
+            header("Location: /dashboard");
+            exit;
+        }
+    }
+    // If not logged in, proceed with login
+    // Check data
+    if(!isset($data["username"]) || !isset($data["password"])) {
+        return;
+    }
+
+    require "./src/functions/db_connect.php";
+    return login($data, $jwtHandler, $pdo);
 });
 $router->post("/register", function($data) use ($jwtHandler) {
     if(!count($data)) return;
-    return register($data, $jwtHandler);
+
+    // Check data
+    if(!isset($data["username"]) || !isset($data["email"]) || !isset($data["password"])) {
+        return;
+    }
+
+    require "./src/functions/db_connect.php";
+    return register($data, $jwtHandler, $pdo);
 });
 $router->get("/logout", function() {
     return logout();
