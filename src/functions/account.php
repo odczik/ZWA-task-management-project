@@ -1,5 +1,4 @@
 <?php
-
 /* =================================== */
 /* This is awfull don't read this shit */
 /* =================================== */
@@ -18,13 +17,15 @@ function login($data, $jwtHandler, $pdo) {
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$user) {
-        echo "User not found!";
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(["message" => "User not found!"]);
         return;
     }
-    print_r($user);
+
     // Verify password
     if (!password_verify($password, $user['password'])) {
-        echo "Invalid password!";
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(["message" => "Invalid password!"]);
         return;
     }
 
@@ -67,7 +68,8 @@ function register($data, $jwtHandler, $pdo) {
         $usernameExists = $stmt->fetchColumn();
 
         if ($usernameExists) {
-            echo "Username already exists!";
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(["message" => "Username already exists!"]);
             return;
         }
 
@@ -82,17 +84,17 @@ function register($data, $jwtHandler, $pdo) {
 
         // Execute the query
         $stmt->execute();
-        echo "Registration successful!";
 
         // Login user
         login($data, $jwtHandler, $pdo);
     } catch (PDOException $e) {
+        header('Content-Type: application/json; charset=utf-8');
         // Handle duplicate email error
         if ($e->errorInfo[1] == 1062) { // MySQL error code for duplicate entry
-            echo "Email already exists!";
+            echo json_encode(["message" => "Email already exists!"]);
         } else {
             // Handle other errors
-            echo "Error: " . $e->getMessage();
+            echo json_encode(["error" => $e->getMessage()]);
         }
     }
 

@@ -6,23 +6,41 @@ const observer = new IntersectionObserver(
 observer.observe(stickyElement);
 
 
-
+// Password confirmation for registration
 const passwordInput = document.getElementById('register-password');
 const confirmPasswordInput = document.getElementById('password-match');
 const errorLabel = document.getElementById('error-label');
-
-confirmPasswordInput.addEventListener('input', function() {
+if(confirmPasswordInput != null) confirmPasswordInput.addEventListener('input', function() {
     if (confirmPasswordInput.value === passwordInput.value) {
-        confirmPasswordInput.setCustomValidity('');
-
         confirmPasswordInput.classList.remove('error');
         errorLabel.innerHTML = '&nbsp;';
     } else {
-        confirmPasswordInput.setCustomValidity('Passwords do not match');
-
         confirmPasswordInput.classList.add('error');
         errorLabel.innerText = 'Passwords do not match';
-
-        // confirmPasswordInput.reportValidity();
     }
+});
+
+// Registration AJAX
+const registerButton = document.getElementById('register-button');
+const registerForm = document.querySelector('.nav-register-modal');
+if(registerForm != null) registerForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(registerForm);
+
+    fetch('/register', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response:', data);
+    })
+    .catch(() => {
+        window.location.href = '/dashboard';
+    });
 });

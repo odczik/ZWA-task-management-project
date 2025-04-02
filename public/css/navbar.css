@@ -358,9 +358,6 @@
     cursor: pointer;
 }
 
-.nav-modal form .success {
-    border-color: var(--accent-dark);
-}
 .nav-modal form .error {
     border-color: var(--error-dark);
     color: var(--error-dark);
