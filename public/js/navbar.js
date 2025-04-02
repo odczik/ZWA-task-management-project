@@ -38,7 +38,7 @@ if(registerForm != null) registerForm.addEventListener('submit', function(event)
         return response.json();
     })
     .then(data => {
-        console.log('Response:', data);
+        alert(data.message);
     })
     .catch(() => {
         window.location.href = '/dashboard';

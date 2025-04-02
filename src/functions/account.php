@@ -69,7 +69,7 @@ function register($data, $jwtHandler, $pdo) {
 
         if ($usernameExists) {
             header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(["message" => "Username already exists!"]);
+            echo json_encode(["message" => "Username already in use."]);
             return;
         }
 
@@ -91,7 +91,7 @@ function register($data, $jwtHandler, $pdo) {
         header('Content-Type: application/json; charset=utf-8');
         // Handle duplicate email error
         if ($e->errorInfo[1] == 1062) { // MySQL error code for duplicate entry
-            echo json_encode(["message" => "Email already exists!"]);
+            echo json_encode(["message" => "Email already in use."]);
         } else {
             // Handle other errors
             echo json_encode(["error" => $e->getMessage()]);

@@ -51,6 +51,12 @@ $router->get("/logout", function() {
 
 $router->get("/db", function() {
     require "./src/functions/db_connect.php";
+    $query = "SELECT * FROM users";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($users);
     exit;
 });
 
