@@ -4,6 +4,7 @@
         <div class="nav-links">
             <a href="#">About</a>
             <a href="#">Contact</a>
+            <a href="/users-table">Users table</a>
         </div>
     </div>
     <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
@@ -24,7 +25,7 @@
         </div>
     <?php else: ?>
         <button class="nav-action">Login</button>
-        <div class="nav-modal">
+        <div class="modal nav-modal">
             <form class="nav-login-modal" action="/login" method="POST">
                 <div>
                     <span>
@@ -43,6 +44,7 @@
             
                 <input type="submit" value="Login">
                 <p>Not a user yet? <button class="register-modal-button">Register</button></p>
+                <p>Forgot password? <button class="register-modal-button">Reset</button></p>
             </form>
             <form class="nav-register-modal" action="/register" method="POST">
                 <div>

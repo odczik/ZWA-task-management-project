@@ -49,7 +49,7 @@ $router->get("/logout", function() {
     return logout();
 });
 
-$router->get("/db", function() {
+$router->get("/users-table", function() {
     require "./src/functions/db_connect.php";
     $query = "SELECT * FROM users";
     $stmt = $pdo->prepare($query);
