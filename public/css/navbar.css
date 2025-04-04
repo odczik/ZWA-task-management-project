@@ -292,22 +292,22 @@
 .nav-login-modal input[type="submit"] {
     margin-top: 15px;
 }
-.modal form div,
-.modal form span {
+.nav-modal form div,
+.nav-modal form span {
     display: flex;
     flex-direction: column;
 }
-.modal form div {
+.nav-modal form div {
     gap: 10px;
 }
-.modal p {
+.nav-modal p {
     margin: 0;
     margin-top: 5px;
     font-size: 0.9rem;
     text-align: left;
     width: 100%;
 }
-.modal button {
+.nav-modal button {
     color: var(--accent-dark);
     font-weight: 600;
     font-size: 0.9rem;
@@ -316,7 +316,7 @@
     border: none;
     cursor: pointer;
 }
-.modal button:hover {
+.nav-modal button:hover {
     text-decoration: underline;
 }
 .modal .remember {
@@ -336,7 +336,7 @@
 
     transition: 0.15s ease;
 }
-.modal form input:not([type="submit"]) {
+.nav-modal form input:not([type="submit"]) {
     height: 18px;
 }
 .modal form input:not([type="submit"]):focus {

@@ -2,6 +2,7 @@
 require "./src/functions/router.php";
 require "./src/functions/jwtHandler.php";
 require "./src/functions/account.php";
+require "./src/functions/api/projects.php";
 
 $jwtHandler = new JWTHandler("your_secret_key");
 $router = new Router();
@@ -49,9 +50,31 @@ $router->get("/logout", function() {
     return logout();
 });
 
+/* API Routes */
+$router->post("/api/projects", function($data) use ($jwtHandler) {
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return createProject($data, $user, $pdo);
+});
+
+/* DB DEBUG */
 $router->get("/users-table", function() {
     require "./src/functions/db_connect.php";
     $query = "SELECT * FROM users";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($users);
+    exit;
+});
+$router->get("/projects-table", function() {
+    require "./src/functions/db_connect.php";
+    $query = "SELECT * FROM projects";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);

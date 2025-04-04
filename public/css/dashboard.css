@@ -95,11 +95,33 @@ main .sidebar .text {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-main .sidebar .color {
+main .sidebar .color-container {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    flex-shrink: 0;
+
     width: 25px;
     height: 25px;
+
     border-radius: 5px;
-    flex-shrink: 0;
+    overflow: hidden;
+}
+main .sidebar .color {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 200%;
+    height: 200%;
+
+    cursor: pointer;
 }
 main .sidebar .sidebar-item:hover,
 main .sidebar .sidebar-item.active {
@@ -163,4 +185,78 @@ main .table {
     box-sizing: border-box;
 
     flex-grow: 1;
+}
+
+/* Add project modal */
+.modal h2 {
+    margin-top: 0;
+}
+.modal-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    text-align: left;
+}
+.modal-inputs label {
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+.modal-inputs span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+.modal-inputs input[type="text"] {
+    border-radius: 5px 0 0 5px;
+    flex-grow: 1;
+}
+.modal-inputs input[type="color"] {
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    flex-grow: 1;
+    padding: 0;
+    height: 34px;
+}
+
+.modal-buttons {
+    width: 100%;
+    padding: 0 10px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 7px;
+
+    margin-top: 20px;
+}
+.modal-buttons button {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-dark);
+    background: none;
+    border: none;
+    padding: 5px 7px;
+    cursor: pointer;
+
+    transition: 0.1s ease;
+}
+.modal-buttons button:not([type="submit"]):hover {
+    text-decoration: underline;
+}
+.modal-buttons button[type="submit"] {
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 3px solid var(--accent-dark);
+}
+.modal-buttons button[type="submit"]:hover {
+    background-color: var(--accent-dark);
+    color: var(--primary-light);
 }

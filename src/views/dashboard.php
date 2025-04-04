@@ -33,42 +33,36 @@ if(!$jwtHandler->isLoggedIn()) {
                 $user = $jwtHandler->getUser();
 
                 $stmt = $pdo->prepare("SELECT * FROM projects WHERE owner_id = :user_id");
-                $stmt->bindParam(':user_id', $user->id, PDO::PARAM_INT);
+                $stmt->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
                 $stmt->execute();
                 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $currentProject = isset($_GET['id']) ? $_GET['id'] : null;
+
                 foreach($projects as $project) {
-                    echo '<a href="#" class="sidebar-item"><span class="text" title="' . htmlspecialchars($project['name']) . '">' . htmlspecialchars($project['name']) . '</span><span class="color" style="background-color: ' . htmlspecialchars($project['color']) . ';"></span></a>';
+                    echo '<a href="?id=' . $project["id"] . '" class="sidebar-item' . ($currentProject == $project["id"] ? ' active' : null) . '"><span class="text" title="' . htmlspecialchars($project['name']) . '">' . htmlspecialchars($project['name']) . '</span><span class="color-container"><input type="color" class="color" value="#' . htmlspecialchars($project['color']) . '"></span></a>';
+                    // echo '<a href="#" class="sidebar-item"><span class="text" title="' . htmlspecialchars($project['name']) . '">' . htmlspecialchars($project['name']) . '</span><span class="color" style="background-color: #' . htmlspecialchars($project['color']) . ';"></span></a>';
                 }
                 if(count($projects) == 0) {
                     echo '<p class="sidebar-empty">No projects found</p>';
                 }
                 ?>
-                <!-- <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 1</span><input class="color" type="color"></a>
-                <a href="#" class="sidebar-item active"><span class="text" title="Project 1">Project 2</span><span class="color" style="background-color: red;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 3</span><span class="color" style="background-color: green;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 4</span><span class="color" style="background-color: blue;"></span></a>
                 
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 1 Project 1 Project 1</span><span class="color" style="background-color: teal;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 2</span><span class="color" style="background-color: red;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 3Project 3Project 3</span><span class="color" style="background-color: green;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 4</span><span class="color" style="background-color: blue;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 1</span><span class="color" style="background-color: teal;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 2</span><span class="color" style="background-color: red;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 3</span><span class="color" style="background-color: green;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 4</span><span class="color" style="background-color: blue;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 1</span><span class="color" style="background-color: teal;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 2</span><span class="color" style="background-color: red;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 3</span><span class="color" style="background-color: green;"></span></a>
-                <a href="#" class="sidebar-item"><span class="text" title="Project 1">Project 4</span><span class="color" style="background-color: blue;"></span></a> -->
-
                 <button href="#" class="sidebar-add-button">+</button>
                 <div class="modal project-modal">
                     <form class="create-project-modal" action="/api/projects" method="POST">
                         <h2>Create Project</h2>
-                        <input type="text" name="name" placeholder="Project Name" required>
-                        <input type="color" name="color" value="#000000">
-                        <button type="submit">Create</button>
-                        <button type="button" class="cancel-button">Cancel</button>
+                        <span class="modal-inputs">
+                            <label for="name">Project name</label>
+                            <span>
+                                <input type="text" id="name" name="name" placeholder="My awesome project" autocomplete="off" required>
+                                <input type="color" name="color" value="#000000">
+                            </span>
+                        </span>
+                        <span class="modal-buttons">
+                            <button type="button" class="cancel-button">Cancel</button>
+                            <button type="submit">Create</button>
+                        </span>
                     </form>
                 </div>
             </div>
