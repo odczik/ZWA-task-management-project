@@ -60,6 +60,10 @@ if(!$jwtHandler->isLoggedIn()) {
                                     <input type="color" name="color" class="color" value="#2b7a6d">
                                 </span>
                             </span>
+                            <label for="description">Description</label>
+                            <span>
+                                <input type="text" id="description" name="description" placeholder="My awesome project" autocomplete="off">
+                            </span>
                         </span>
                         <span class="modal-buttons">
                             <button type="button" class="cancel-button">Cancel</button>
@@ -83,9 +87,10 @@ if(!$jwtHandler->isLoggedIn()) {
                 if($project) {
                     echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
                     echo '<div class="table-header">';
-                    echo '<span class="table-item">Name</span>';
-                    echo '<span class="table-item">Description</span>';
-                    echo '<span class="table-item">Due date</span>';
+                    echo '<span class="table-item">Description: ' . ($project["description"] ? $project["description"] : 'No description') . '</span><br>';
+                    echo '<span class="table-item">Status: ' . ($project["is_public"] ? 'Public' : 'Private') . '</span><br>';
+                    echo '<span class="table-item">Anyone can edit: ' . ($project["anyone_can_edit"] ? "Yes" : "No") . '</span><br>';
+                    echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';
                     echo '</div>';
                     echo '<div class="table-body">';
                     // Fetch tasks for the project

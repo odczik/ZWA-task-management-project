@@ -60,6 +60,15 @@ $router->post("/api/projects", function($data) use ($jwtHandler) {
     }
     return createProject($data, $user, $pdo);
 });
+$router->delete("/api/projects", function($data) use ($jwtHandler) {
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return deleteProject($data, $user, $pdo);
+});
 
 /* DB DEBUG */
 $router->get("/users-table", function() {

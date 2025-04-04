@@ -213,8 +213,13 @@ main .table {
     align-items: center;
     justify-content: center;
     gap: 0;
+
+    width: 100%;
 }
-.modal-inputs input[type="text"] {
+.modal-inputs input {
+    width: 100%;
+}
+.modal-inputs input#name {
     border-radius: 5px 0 0 5px;
     flex-grow: 1;
 }
