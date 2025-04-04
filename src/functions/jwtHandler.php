@@ -30,6 +30,8 @@ class JWTHandler {
             // Decode JWT
             $decoded = JWT::decode($jwt, new Key($this->secret_key, 'HS256'));
             return $decoded;
+        } catch (exception $e) {    // Catch all exceptions to handle invalid tokens
+            return null;
         } catch (ExpiredException $e) {
             return ["error" => "Token has expired: " . $e->getMessage()];
         } catch (SignatureInvalidException $e) {

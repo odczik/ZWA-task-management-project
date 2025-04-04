@@ -14,7 +14,8 @@ function createProject($data, $user, $pdo) {
     $stmt->bindParam(':owner_id', $user->user_id);
     
     if($stmt->execute()) {
-        return header("Location: /dashboard?id=" . $pdo->lastInsertId());
+        header("HTTP/1.1 201 Created");
+        return json_encode(["message" => "Project created successfully", "project_id" => $pdo->lastInsertId()]);
     } else {
         header("HTTP/1.1 500 Internal Server Error");
         return json_encode(["error" => "Failed to create project"]);

@@ -188,6 +188,7 @@ main .table {
 }
 
 /* Add project modal */
+
 .modal h2 {
     margin-top: 0;
 }
@@ -217,12 +218,20 @@ main .table {
     border-radius: 5px 0 0 5px;
     flex-grow: 1;
 }
-.modal-inputs input[type="color"] {
+.modal-inputs .modal-color-container {
+    position: relative;
+
+    border: 3px solid var(--primary-dark);
     border-left: none;
     border-radius: 0 5px 5px 0;
     flex-grow: 1;
     padding: 0;
     height: 34px;
+    width: 34px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
 }
 
 .modal-buttons {

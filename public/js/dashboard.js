@@ -33,3 +33,25 @@ cancelButton.addEventListener("click", (event) => {
     event.preventDefault();
     closeModal();
 });
+
+modalForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(modalForm);
+
+    fetch('/api/projects', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        window.location.href = '/dashboard?id=' + data.project_id;
+    })
+    .catch(e => {
+        console.error(e);
+    });
+});

@@ -47,7 +47,7 @@ if(!$jwtHandler->isLoggedIn()) {
                     echo '<p class="sidebar-empty">No projects found</p>';
                 }
                 ?>
-                
+
                 <button href="#" class="sidebar-add-button">+</button>
                 <div class="modal project-modal">
                     <form class="create-project-modal" action="/api/projects" method="POST">
@@ -56,7 +56,9 @@ if(!$jwtHandler->isLoggedIn()) {
                             <label for="name">Project name</label>
                             <span>
                                 <input type="text" id="name" name="name" placeholder="My awesome project" autocomplete="off" required>
-                                <input type="color" name="color" value="#000000">
+                                <span class="modal-color-container">
+                                    <input type="color" name="color" class="color" value="#2b7a6d">
+                                </span>
                             </span>
                         </span>
                         <span class="modal-buttons">
@@ -69,7 +71,48 @@ if(!$jwtHandler->isLoggedIn()) {
         </nav>
         <div class="divider"></div>
         <div class="table">
+            <?php
+            
+            if($currentProject) {
+                $stmt = $pdo->prepare("SELECT * FROM projects WHERE id = :id AND owner_id = :user_id");
+                $stmt->bindParam(':id', $currentProject, PDO::PARAM_INT);
+                $stmt->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
+                $stmt->execute();
+                $project = $stmt->fetch(PDO::FETCH_ASSOC);
 
+                if($project) {
+                    echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
+                    echo '<div class="table-header">';
+                    echo '<span class="table-item">Name</span>';
+                    echo '<span class="table-item">Description</span>';
+                    echo '<span class="table-item">Due date</span>';
+                    echo '</div>';
+                    echo '<div class="table-body">';
+                    // Fetch tasks for the project
+                    $stmt = $pdo->prepare("SELECT * FROM tasks WHERE project_id = :project_id");
+                    $stmt->bindParam(':project_id', $currentProject, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    foreach($tasks as $task) {
+                        echo '<div class="table-row">';
+                        echo '<span class="table-item">' . htmlspecialchars($task['name']) . '</span>';
+                        echo '<span class="table-item">' . htmlspecialchars($task['description']) . '</span>';
+                        echo '<span class="table-item">' . htmlspecialchars($task['due_date']) . '</span>';
+                        echo '</div>';
+                    }
+                    if(count($tasks) == 0) {
+                        echo '<p class="sidebar-empty">No tasks found</p>';
+                    }
+                    echo '</div>';
+                } else {
+                    echo '<p class="sidebar-empty">Project not found</p>';
+                }
+            } else {
+                echo '<p class="sidebar-empty">Select a project to view tasks</p>';
+            }
+
+            ?>
         </div>
     </main>
     
