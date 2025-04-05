@@ -32,16 +32,22 @@ if(!$jwtHandler->isLoggedIn()) {
 
                 $user = $jwtHandler->getUser();
 
-                $stmt = $pdo->prepare("SELECT * FROM projects WHERE owner_id = :user_id");
+                $stmt = $pdo->prepare("SELECT * FROM project_members WHERE user_id = :user_id");
                 $stmt->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
                 $stmt->execute();
                 $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $projects = array_map(function($project) use ($pdo) {
+                    $stmt = $pdo->prepare("SELECT * FROM projects WHERE id = :id");
+                    $stmt->bindParam(':id', $project['project_id'], PDO::PARAM_INT);
+                    $stmt->execute();
+                    return $stmt->fetch(PDO::FETCH_ASSOC);
+                }, $projects);
 
                 $currentProject = isset($_GET['id']) ? $_GET['id'] : null;
 
                 foreach($projects as $project) {
                     echo '<a href="?id=' . $project["id"] . '" class="sidebar-item' . ($currentProject == $project["id"] ? ' active' : null) . '"><span class="text" title="' . htmlspecialchars($project['name']) . '">' . htmlspecialchars($project['name']) . '</span><span class="color-container"><input type="color" class="color" value="#' . htmlspecialchars($project['color']) . '"></span></a>';
-                    // echo '<a href="#" class="sidebar-item"><span class="text" title="' . htmlspecialchars($project['name']) . '">' . htmlspecialchars($project['name']) . '</span><span class="color" style="background-color: #' . htmlspecialchars($project['color']) . ';"></span></a>';
                 }
                 if(count($projects) == 0) {
                     echo '<p class="sidebar-empty">No projects found</p>';
@@ -78,16 +84,28 @@ if(!$jwtHandler->isLoggedIn()) {
             <?php
             
             if($currentProject) {
-                $stmt = $pdo->prepare("SELECT * FROM projects WHERE id = :id AND owner_id = :user_id");
+                $stmt = $pdo->prepare("SELECT * FROM projects WHERE id = :id");
                 $stmt->bindParam(':id', $currentProject, PDO::PARAM_INT);
-                $stmt->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
                 $stmt->execute();
                 $project = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if($project) {
+                    $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = :project_id AND user_id = :user_id");
+                    $stmt->bindParam(':project_id', $currentProject, PDO::PARAM_INT);
+                    $stmt->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $member = $stmt->fetch(PDO::FETCH_ASSOC);
+                }
+
+                if(!$member) {
+                    $project = null;
+                }
 
                 if($project) {
                     echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
                     echo '<div class="table-header">';
                     echo '<span class="table-item">Description: ' . ($project["description"] ? $project["description"] : 'No description') . '</span><br>';
+                    echo '<span class="table-item">Role: ' . ($member["role"]) . '</span><br>';
                     echo '<span class="table-item">Status: ' . ($project["is_public"] ? 'Public' : 'Private') . '</span><br>';
                     echo '<span class="table-item">Anyone can edit: ' . ($project["anyone_can_edit"] ? "Yes" : "No") . '</span><br>';
                     echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';

@@ -15,8 +15,17 @@ function createProject($data, $user, $pdo) {
     $stmt->bindParam(':owner_id', $user->user_id);
     
     if($stmt->execute()) {
+        $project_id = $pdo->lastInsertId();
+
+        $stmt = $pdo->prepare("INSERT INTO project_members (project_id, user_id, role) VALUES (:project_id, :user_id, :role)");
+        $stmt->bindParam(':project_id', $project_id);
+        $stmt->bindParam(':user_id', $user->user_id);
+        $role = "owner"; // Default role for the owner
+        $stmt->bindParam(':role', $role);
+        $stmt->execute();
+
         header("HTTP/1.1 201 Created");
-        return json_encode(["message" => "Project created successfully", "project_id" => $pdo->lastInsertId()]);
+        return json_encode(["message" => "Project created successfully", "project_id" => $project_id]);
     } else {
         header("HTTP/1.1 500 Internal Server Error");
         return json_encode(["error" => "Failed to create project"]);
@@ -29,9 +38,30 @@ function deleteProject($data, $user, $pdo) {
         return json_encode(["error" => "Missing required fields"]);
     }
 
-    $stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id AND owner_id = :owner_id");
+    $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = :id AND role = 'owner' AND user_id = :user_id");
     $stmt->bindParam(':id', $data["id"]);
-    $stmt->bindParam(':owner_id', $user->user_id);
+    $stmt->bindParam(':user_id', $user->user_id);
+    $stmt->execute();
+    $owner = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if(!$owner) {
+        header("HTTP/1.1 403 Forbidden");
+        return json_encode(["error" => "You are not the owner of this project"]);
+    }
+
+    // Delete project members first
+    $stmt = $pdo->prepare("DELETE FROM project_members WHERE project_id = :id");
+    $stmt->bindParam(':id', $data["id"]);
+    $stmt->execute();
+
+    // Delete project tasks
+    $stmt = $pdo->prepare("DELETE FROM tasks WHERE project_id = :id");
+    $stmt->bindParam(':id', $data["id"]);
+    $stmt->execute();
+
+    // Delete project
+    $stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id");
+    $stmt->bindParam(':id', $data["id"]);
     
     if($stmt->execute()) {
         return header("Location: /dashboard");

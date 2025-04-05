@@ -17,7 +17,7 @@ class Router {
         $data = $body ? json_decode($body, true) : [];
 
         if (isset($this->routes[$method][$path])) {
-            echo call_user_func($this->routes[$method][$path], $data);
+            echo call_user_func($this->routes[$method][$path], $data ? $data : $_POST);
         } else {
             http_response_code(404);
             echo "404 Not Found";

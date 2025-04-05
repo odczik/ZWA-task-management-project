@@ -86,9 +86,19 @@ $router->get("/projects-table", function() {
     $query = "SELECT * FROM projects";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
-    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($users);
+    echo json_encode($projects);
+    exit;
+});
+$router->get("/project-members-table", function() {
+    require "./src/functions/db_connect.php";
+    $query = "SELECT * FROM project_members";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($members);
     exit;
 });
 
