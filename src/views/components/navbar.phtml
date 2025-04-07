@@ -14,7 +14,6 @@
         </div>
     </div>
     <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
-        <!-- <a href="/logout" class="nav-action">Logout</a> -->
         <div class="nav-logged-in-container">
             <div class="nav-logged-in-user">
                 <span class="nav-logged-in-username"><?php echo $jwtHandler->getUser()->username ?></span>
