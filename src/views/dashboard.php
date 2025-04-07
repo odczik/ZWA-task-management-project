@@ -118,14 +118,14 @@ if(!$jwtHandler->isLoggedIn()) {
                                 break;
                         }
                         echo '</span>';
-                        echo '<span class="icon-container public-icon">';
+                        echo '<span class="icon-container public-icon"' . ($member["role"] == "owner" ? ' style="cursor: pointer;"' : null) . '>';
                         if($project["is_public"]) {
                             echo '<span class="icon public" title="Public"></span>';
                         } else {
                             echo '<span class="icon private" title="Private"></span>';
                         }
                         echo '</span>';
-                        echo '<span class="icon-container anyone-icon">';
+                        echo '<span class="icon-container anyone-icon"' . ($member["role"] == "owner" ? ' style="cursor: pointer;"' : null) . '>';
                         if($project["anyone_can_edit"]) {
                             echo '<span class="icon anyone" title="Anyone can edit"></span>';
                         } else {
