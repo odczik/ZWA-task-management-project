@@ -2,10 +2,17 @@
 
 :root {
     --background-color: #F9F5F1;
+
     --primary-light: #E7D8C9;
+    --primary-light-rgb: 231, 216, 201;
     --primary-dark: #514538;
+    --primary-dark-rgb: 81, 69, 56;
+
     --accent-dark: #2b7a6d;
+    --accent-dark-rgb: 43, 122, 109;
     --accent-light: #cbe1d6;
+    --accent-light-rgb: 203, 225, 214;
+
     --error-dark: #c72c41;
 }
 

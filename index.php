@@ -101,6 +101,26 @@ $router->get("/project-members-table", function() {
     echo json_encode($members);
     exit;
 });
+$router->get("/tasks-table", function() {
+    require "./src/functions/db_connect.php";
+    $query = "SELECT * FROM tasks";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($tasks);
+    exit;
+});
+$router->get("/invitations-table", function() {
+    require "./src/functions/db_connect.php";
+    $query = "SELECT * FROM invitations";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($tasks);
+    exit;
+});
 
 $router->dispatch();
 

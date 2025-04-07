@@ -102,13 +102,48 @@ if(!$jwtHandler->isLoggedIn()) {
                 }
 
                 if($project) {
-                    echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
                     echo '<div class="table-header">';
-                    echo '<span class="table-item">Description: ' . ($project["description"] ? $project["description"] : 'No description') . '</span><br>';
-                    echo '<span class="table-item">Role: ' . ($member["role"]) . '</span><br>';
-                    echo '<span class="table-item">Status: ' . ($project["is_public"] ? 'Public' : 'Private') . '</span><br>';
-                    echo '<span class="table-item">Anyone can edit: ' . ($project["anyone_can_edit"] ? "Yes" : "No") . '</span><br>';
+                    echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
+                    echo '<span class="table-item icons">';
+                        echo '<span class="icon-container role-icon">';
+                        switch($member["role"]) {
+                            case "owner": 
+                                echo '<span class="icon owner" title="Owner"></span>';
+                                break;
+                            case "editor":
+                                echo '<span class="icon editor" title="Editor"></span>';
+                                break;
+                            case "viewer":  
+                                echo '<span class="icon viewer" title="Viewer"></span>';
+                                break;
+                        }
+                        echo '</span>';
+                        echo '<span class="icon-container public-icon">';
+                        if($project["is_public"]) {
+                            echo '<span class="icon public" title="Public"></span>';
+                        } else {
+                            echo '<span class="icon private" title="Private"></span>';
+                        }
+                        echo '</span>';
+                        echo '<span class="icon-container anyone-icon">';
+                        if($project["anyone_can_edit"]) {
+                            echo '<span class="icon anyone" title="Anyone can edit"></span>';
+                        } else {
+                            echo '<span class="icon not-anyone" title="Only editors can edit"></span>';
+                        }
+                        echo '</span>';
+                    echo '</span>';
                     echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';
+                    echo '</div>';
+                    echo '<div class="table-body">';
+
+                    echo '<div>';
+                    echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
+                    echo '<span>Description: ' . ($project["description"] ? $project["description"] : 'No description') . '</span><br>';
+                    echo '<span>Role: ' . ($member["role"]) . '</span><br>';
+                    echo '<span>Status: ' . ($project["is_public"] ? 'Public' : 'Private') . '</span><br>';
+                    echo '<span>Anyone can edit: ' . ($project["anyone_can_edit"] ? "Yes" : "No") . '</span><br>';
+                    echo '<span><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';
                     echo '</div>';
                     echo '<div class="table-body">';
                     // Fetch tasks for the project

@@ -274,3 +274,77 @@ main .table {
     background-color: var(--accent-dark);
     color: var(--primary-light);
 }
+
+/* Tasks table */
+
+.table .table-header {
+    border: 1px dashed red;
+    padding: 0 5px;
+    margin: 0;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+
+    width: 100%;
+}
+
+.table .table-header .table-item.icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+.table .table-header .table-item.icons .icon-container {
+    position: relative;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    border-radius: 5px;
+    background-color: rgb(var(--primary-dark-rgb), 0.5);
+}
+.icon-container .icon {
+    width: 20px;
+    height: 20px;
+    
+    background-position: center;
+    background: var(--primary-dark);
+}
+.icon-container .icon.owner {
+    mask: url("https://img.icons8.com/ios-glyphs/30/crown.png");
+    mask-size: cover;
+}
+.icon-container .icon.editor {
+    mask: url("https://img.icons8.com/ios-glyphs/30/edit--v1.png");
+    mask-size: cover;
+}
+.icon-container .icon.viewer {
+    mask: url("https://img.icons8.com/ios-glyphs/30/visible--v1.png");
+    mask-size: cover;
+}
+.icon-container .icon.public {
+    mask: url("https://img.icons8.com/ios-glyphs/30/unlock.png");
+    mask-size: cover;
+}
+.icon-container .icon.private {
+    mask: url("https://img.icons8.com/ios-glyphs/30/lock--v1.png");
+    mask-size: cover;
+}
+.icon-container .icon.anyone {
+    mask: url("https://img.icons8.com/ios-glyphs/30/conference-call--v1.png");
+    mask-size: cover;
+}
+.icon-container .icon.not-anyone {
+    mask: url("https://img.icons8.com/ios-glyphs/30/conference-foreground-selected.png");
+    mask-size: cover;
+}

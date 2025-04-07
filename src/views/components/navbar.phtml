@@ -4,9 +4,13 @@
         <div class="nav-links">
             <a href="#">About</a>
             <a href="#">Contact</a>
-            <a href="/users-table">Users table</a>
-            <a href="/projects-table">Projects table</a>
-            <a href="/project-members-table">Project members table</a>
+            <span style="display: flex; flex-direction: row; flex-wrap: wrap; font-size: 0.75rem; width: 300px; gap: 5px;">
+                <a href="/users-table">Users table</a>
+                <a href="/projects-table">Projects table</a>
+                <a href="/project-members-table">Project members table</a>
+                <a href="/tasks-table">Tasks table</a>
+                <a href="/invitations-table">Invitations table</a>
+            </span>
         </div>
     </div>
     <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
