@@ -280,17 +280,38 @@ main .table {
 .table .table-header {
     /* border: 1px dashed red; */
 
-    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(var(--primary-dark-rgb), 0.25);
+
+    padding: 7px;
     margin: 0;
     box-sizing: border-box;
 
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     gap: 15px;
 
     width: 100%;
+}
+
+.table .header-left,
+.table .header-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    flex-grow: 1;
+}
+.table .header-left {
+    justify-content: flex-start;
+    margin-left: 2px;
+}
+.table .header-right {
+    justify-content: flex-end;
+    margin-right: 2px;
 }
 
 .table .table-header h2 {
@@ -308,7 +329,7 @@ main .table {
     gap: 7px;
     flex-shrink: 0;
 }
-.table .table-header .table-item.icons .icon-container {
+.table .table-header .icon-container {
     position: relative;
 
     width: 28px;
@@ -319,7 +340,7 @@ main .table {
     align-items: center;
     
     border-radius: 5px;
-    background-color: rgb(var(--primary-dark-rgb), 0.5);
+    background-color: rgb(var(--primary-dark-rgb), 0.4);
 }
 .icon-container .icon {
     width: 20px;
@@ -355,4 +376,12 @@ main .table {
 .icon-container .icon.not-anyone {
     mask: url("https://img.icons8.com/ios-glyphs/30/conference-foreground-selected.png");
     mask-size: cover;
+}
+.icon.settings {
+    mask: url("https://img.icons8.com/ios-filled/50/settings.png");
+    mask-size: cover;
+}
+.icon.settings:hover {
+    transform: rotate(90deg);
+    transition: 0.2s ease;
 }

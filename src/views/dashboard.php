@@ -103,37 +103,43 @@ if(!$jwtHandler->isLoggedIn()) {
 
                 if($project) {
                     echo '<div class="table-header">';
+                    echo '<div class="header-left">';
                     echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
-                    echo '<span class="table-item icons">';
-                        echo '<span class="icon-container role-icon">';
-                        switch($member["role"]) {
-                            case "owner": 
-                                echo '<span class="icon owner" title="Owner"></span>';
-                                break;
-                            case "editor":
-                                echo '<span class="icon editor" title="Editor"></span>';
-                                break;
-                            case "viewer":  
-                                echo '<span class="icon viewer" title="Viewer"></span>';
-                                break;
-                        }
+                        echo '<span class="table-item icons">';
+                            echo '<span class="icon-container role-icon">';
+                            switch($member["role"]) {
+                                case "owner": 
+                                    echo '<span class="icon owner" title="Owner"></span>';
+                                    break;
+                                case "editor":
+                                    echo '<span class="icon editor" title="Editor"></span>';
+                                    break;
+                                case "viewer":  
+                                    echo '<span class="icon viewer" title="Viewer"></span>';
+                                    break;
+                            }
+                            echo '</span>';
+                            echo '<span class="icon-container public-icon"' . ($member["role"] == "owner" ? ' style="cursor: pointer;"' : null) . '>';
+                            if($project["is_public"]) {
+                                echo '<span class="icon public" title="Public"></span>';
+                            } else {
+                                echo '<span class="icon private" title="Private"></span>';
+                            }
+                            echo '</span>';
+                            echo '<span class="icon-container anyone-icon"' . ($member["role"] == "owner" ? ' style="cursor: pointer;"' : null) . '>';
+                            if($project["anyone_can_edit"]) {
+                                echo '<span class="icon anyone" title="Anyone can edit"></span>';
+                            } else {
+                                echo '<span class="icon not-anyone" title="Only editors can edit"></span>';
+                            }
+                            echo '</span>';
                         echo '</span>';
-                        echo '<span class="icon-container public-icon"' . ($member["role"] == "owner" ? ' style="cursor: pointer;"' : null) . '>';
-                        if($project["is_public"]) {
-                            echo '<span class="icon public" title="Public"></span>';
-                        } else {
-                            echo '<span class="icon private" title="Private"></span>';
-                        }
-                        echo '</span>';
-                        echo '<span class="icon-container anyone-icon"' . ($member["role"] == "owner" ? ' style="cursor: pointer;"' : null) . '>';
-                        if($project["anyone_can_edit"]) {
-                            echo '<span class="icon anyone" title="Anyone can edit"></span>';
-                        } else {
-                            echo '<span class="icon not-anyone" title="Only editors can edit"></span>';
-                        }
-                        echo '</span>';
-                    echo '</span>';
-                    echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';
+                        echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';
+                    echo '</div>';
+                    echo '<div class="header-right">';
+                        echo '<span style="color: var(--primary-dark);">Settings</span>';
+                        echo '<span class="icon-container" style="cursor: pointer; background-color: var(--primary-dark);"><span class="icon settings" style="background-color: rgb(var(--primary-light-rgb), 0.8);"></span></span>';
+                    echo '</div>';
                     echo '</div>';
                     echo '<div class="table-body">';
 
