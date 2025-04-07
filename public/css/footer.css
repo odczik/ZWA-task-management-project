@@ -9,6 +9,7 @@ footer {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 20px;
 
     color: var(--primary-dark);
     font-weight: 600;
@@ -23,4 +24,14 @@ footer::before {
     left: 50%;
     transform: translateX(-50%);
     width: calc(100vw - 80px);
+}
+
+footer span a {
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+}
+footer span a:hover {
+    text-decoration: underline;
 }
