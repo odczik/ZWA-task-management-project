@@ -318,7 +318,7 @@ main .table {
 }
 .table .header-left {
     justify-content: flex-start;
-    margin-left: 2px;
+    margin-left: 6px;
 }
 .table .header-right {
     justify-content: flex-end;
