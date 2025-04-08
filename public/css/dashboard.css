@@ -43,6 +43,8 @@ main .sidebar {
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
+
+    flex-shrink: 0;
 }
 main .sidebar h2 {
     color: var(--primary-dark);
@@ -166,6 +168,8 @@ main .divider {
     box-sizing: border-box;
 
     cursor: ew-resize;
+
+    flex-shrink: 0;
 }
 main .divider::before {
     content: '';
@@ -421,13 +425,19 @@ main .table {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 5px;
+
+    min-width: 200px;
+    max-width: 250px;
 }
 
 .table .major-task h3 {
     margin: 5px;
+    margin-bottom: 10px;
     color: var(--primary-dark);
+
+    user-select: none;
 }
 .table .tasks {
     width: 100%;
@@ -449,10 +459,45 @@ main .table {
 
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+    gap: 5px;
 
-    flex-grow: 1;
     width: 100%;
+}
+.table .task:hover {
+    background-color: rgb(var(--primary-dark-rgb), 0.25);
+}
+.table .task .dragger {
+    border-left: 2px solid rgb(var(--primary-dark-rgb), 0.7);
+    border-right: 2px solid rgb(var(--primary-dark-rgb), 0.7);
+
+    position: relative;
+    width: 4px;
+
+    cursor: move;
+
+    display: none;
+}
+.table .task:hover .dragger {
+    display: block;
+}
+.table .add-task {
+    border-radius: 5px;
+
+    color: var(--primary-dark);
+    text-align: center;
+    font-size: 1.2rem;
+
+    padding: 5px;
+    box-sizing: border-box;
+
+    width: 100%;
+
+    user-select: none;
+
+    transition: 0.1s ease;
+}
+.table .add-task:hover {
+    background-color: rgb(var(--primary-dark-rgb), 1);
+    color: var(--primary-light);
+    cursor: pointer;
 }

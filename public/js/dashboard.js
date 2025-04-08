@@ -55,3 +55,57 @@ modalForm.addEventListener('submit', function(event) {
         console.error(e);
     });
 });
+
+
+
+/* ================ */
+/* Task drag-n-drop */
+/* ================ */
+
+const tableBody = document.querySelector('.table-body');
+const tasksContainer = document.querySelector('.table-tasks');
+const draggers = tasksContainer.querySelectorAll('.dragger');
+
+let draggedTask = null;
+let draggedTaskOffset = { x: 0, y: 0 };
+
+draggers.forEach(dragger => {
+    dragger.addEventListener("mousedown", e => {
+        draggedTask = dragger.parentElement;
+        tableBody.style.userSelect = "none"; // Disable text selection
+        
+        const bounds = draggedTask.getBoundingClientRect();
+        draggedTask.style.position = "absolute";
+        draggedTask.style.width = bounds.width + "px";
+        draggedTask.style.height = bounds.height + "px";
+        draggedTask.style.pointerEvents = "none"; // Disable pointer events to prevent interference with mousemove
+
+        // tasksContainer.appendChild(draggedTask);
+
+        draggedTaskOffset.x = e.clientX - bounds.left;
+        draggedTaskOffset.y = e.clientY - bounds.top + 80;
+
+        draggedTask.style.left = (e.clientX - draggedTaskOffset.x) + "px";
+        draggedTask.style.top = (e.clientY - draggedTaskOffset.y) + "px";
+    })
+
+    document.addEventListener("mousemove", e => {
+        if (draggedTask) {
+            draggedTask.style.left = (e.clientX - draggedTaskOffset.x) + "px";
+            draggedTask.style.top = (e.clientY - draggedTaskOffset.y) + "px";
+        }
+    });
+
+    document.addEventListener("mouseup", e => {
+        if (draggedTask) {
+            const target = e.target.closest('.tasks');
+            if(target) {
+                target.appendChild(draggedTask);
+            }
+
+            tableBody.style = ""; // Reset styles
+            draggedTask.style = ""; // Reset styles
+            draggedTask = null;
+        }
+    });
+});
