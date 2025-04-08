@@ -250,6 +250,22 @@ if(!$jwtHandler->isLoggedIn()) {
                             <span>+</span>
                         </div>
                     </div>
+                    <div class="major-task">
+                        <h3>Major task header 3</h3>
+                        <div class="tasks">
+                            <div class="task">
+                            <span class="dragger"></span>
+                                <span>task title 3</span>
+                            </div>
+                            <div class="task">
+                            <span class="dragger"></span>
+                                <span>task title 3</span>
+                            </div>
+                        </div>
+                        <div class="add-task">
+                            <span>+</span>
+                        </div>
+                    </div>
                     <?php
 
                     echo '</div>';
