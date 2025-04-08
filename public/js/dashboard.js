@@ -146,7 +146,7 @@ draggers.forEach(dragger => {
                     closestTask = lastClosestTask;
                 }
             }
-            
+
             if(closestTask) {
                 closestTask.parentNode.insertBefore(draggedTask, closestTask.nextSibling);
                 placeholder.parentNode.removeChild(placeholder);
@@ -164,4 +164,10 @@ draggers.forEach(dragger => {
             draggedTask = null;
         }
     });
+});
+
+// Horizontal scroll on wheel event
+tasksContainer.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    tasksContainer.scrollLeft += e.deltaY / 1.5;
 });
