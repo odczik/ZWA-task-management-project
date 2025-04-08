@@ -95,24 +95,35 @@ draggers.forEach(dragger => {
         placeholder.style.height = bounds.height + "px";
     })
 
+    let closestTask;
+    let lastClosestTask;
+    let closestTasks;
     document.addEventListener("mousemove", e => {
         if (draggedTask) {
             draggedTask.style.left = (e.clientX - draggedTaskOffset.x) + "px";
             draggedTask.style.top = (e.clientY - draggedTaskOffset.y) + "px";
 
             // Placeholder
-            let closestTask;
             try {
                 closestTask = document.elementFromPoint(e.clientX, e.clientY).closest('.task');
+                if(closestTask === lastClosestTask) return;
+                if(closestTask) {
+                    lastClosestTask = closestTask;
+                }
             } catch {
                 closestTask = null;
             }
 
-            let closestTasks;
             try {
                 closestTasks = e.target.closest(".major-task").querySelector(".tasks");
             } catch {
                 closestTasks = null;
+            }
+
+            if(e.target.classList.contains("tasks")){
+                if(!closestTask) {
+                    closestTask = lastClosestTask;
+                }
             }
 
             if (closestTask) {
@@ -127,8 +138,15 @@ draggers.forEach(dragger => {
 
     document.addEventListener("mouseup", e => {
         if (draggedTask) {
-            const closestTask = e.target.closest('.task');
-            const closestTasks = e.target.closest(".major-task").querySelector(".tasks");
+            closestTask = e.target.closest('.task');
+            closestTasks = e.target.closest(".major-task").querySelector(".tasks");
+
+            if(e.target.classList.contains("tasks")){
+                if(!closestTask) {
+                    closestTask = lastClosestTask;
+                }
+            }
+            
             if(closestTask) {
                 closestTask.parentNode.insertBefore(draggedTask, closestTask.nextSibling);
                 placeholder.parentNode.removeChild(placeholder);
