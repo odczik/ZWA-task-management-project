@@ -142,16 +142,7 @@ if(!$jwtHandler->isLoggedIn()) {
                     echo '</div>';
                     echo '</div>';
                     echo '<div class="table-body">';
-
-                    echo '<div>';
-                    echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
-                    echo '<span>Description: ' . ($project["description"] ? $project["description"] : 'No description') . '</span><br>';
-                    echo '<span>Role: ' . ($member["role"]) . '</span><br>';
-                    echo '<span>Status: ' . ($project["is_public"] ? 'Public' : 'Private') . '</span><br>';
-                    echo '<span>Anyone can edit: ' . ($project["anyone_can_edit"] ? "Yes" : "No") . '</span><br>';
-                    echo '<span><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';
-                    echo '</div>';
-                    echo '<div class="table-body">';
+                    echo '<div class="table-tasks">';
                     
                     // Fetch tasks for the project
                     $stmt = $pdo->prepare("SELECT * FROM tasks WHERE project_id = :project_id");
@@ -173,20 +164,63 @@ if(!$jwtHandler->isLoggedIn()) {
                     ?>
                     <div class="major-task">
                         <h3>Major task header</h3>
-                        <div class="task">
-                            <span>task title</span>
+                        <div class="tasks">
+                            <div class="task">
+                                <span>task title 1</span>
+                            </div>
+                            <div class="task">
+                                <span>task title 2</span>
+                            </div>
+                            <div class="task">
+                                <span>task title 3</span>
+                            </div>
+                            <div class="task">
+                                <span>task title 4</span>
+                            </div>
+                            <div class="task">
+                                <span>task title 5</span>
+                            </div>
                         </div>
                     </div>
                     <div class="major-task">
                         <h3>Major task header 2</h3>
-                        <div class="task">
-                            <span>task title 2</span>
+                        <div class="tasks">
+                            <div class="task">
+                                <span>task title 2</span>
+                            </div>
                         </div>
                     </div>
                     <div class="major-task">
                         <h3>Major task header 3</h3>
-                        <div class="task">
-                            <span>task title 3</span>
+                        <div class="tasks">
+                            <div class="task">
+                                <span>task title 3</span>
+                            </div>
+                            <div class="task">
+                                <span>task title 3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="major-task">
+                        <h3>Major task header 3</h3>
+                        <div class="tasks">
+                            <div class="task">
+                                <span>task title 3</span>
+                            </div>
+                            <div class="task">
+                                <span>task title 3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="major-task">
+                        <h3>Major task header 3</h3>
+                        <div class="tasks">
+                            <div class="task">
+                                <span>task title 3</span>
+                            </div>
+                            <div class="task">
+                                <span>task title 3</span>
+                            </div>
                         </div>
                     </div>
                     <?php

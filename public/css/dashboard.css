@@ -61,9 +61,11 @@ main .sidebar .sidebar-items {
     justify-content: flex-start;
     gap: 5px;
 
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
+
+    scrollbar-width: thin;
 }
 main .sidebar .sidebar-item {
     padding: 10px;
@@ -185,6 +187,12 @@ main .table {
     box-sizing: border-box;
 
     flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 /* Add project modal */
@@ -278,10 +286,8 @@ main .table {
 /* Tasks table */
 
 .table .table-header {
-    /* border: 1px dashed red; */
-
-    border-radius: 5px;
     background-color: rgb(var(--primary-dark-rgb), 0.25);
+    border-radius: 10px;
 
     padding: 7px;
     margin: 0;
@@ -386,18 +392,67 @@ main .table {
     transition: 0.2s ease;
 }
 
-.table .table-body {
-    display: inline-block;
+.table-body {
+    flex-grow: 1;
+}
+
+.table .table-tasks {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    overflow-x: auto;
+
+    height: 100%;
 }
 
 .table .major-task {
-    border: 2px solid rgb(var(--primary-dark-rgb), 0.25);
+    background-color: rgb(var(--primary-dark-rgb), 0.25);
+    border-radius: 10px;
+
+    padding: 10px;
+
+    overflow-y: auto;
+
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.table .major-task h3 {
+    margin: 5px;
+    color: var(--primary-dark);
+}
+.table .tasks {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+.table .task {
+    background-color: rgb(var(--primary-dark-rgb), 0.15);
     border-radius: 5px;
 
-    background-color: rgb(var(--primary-dark-rgb), 0.25);
+    color: var(--primary-dark);
 
-    display: inline-block;
+    padding: 10px;
+    box-sizing: border-box;
 
-    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 
+    flex-grow: 1;
+    width: 100%;
 }
