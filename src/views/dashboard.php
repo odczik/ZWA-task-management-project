@@ -170,15 +170,19 @@ if(!$jwtHandler->isLoggedIn()) {
                                 <span>task title 1</span>
                             </div>
                             <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 2</span>
                             </div>
                             <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 3</span>
                             </div>
                             <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 4 task title 4 task title 4</span>
                             </div>
                             <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 5</span>
                             </div>
                         </div>
@@ -190,6 +194,7 @@ if(!$jwtHandler->isLoggedIn()) {
                         <h3>Major task header 2</h3>
                         <div class="tasks">
                             <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 2</span>
                             </div>
                         </div>
@@ -201,23 +206,11 @@ if(!$jwtHandler->isLoggedIn()) {
                         <h3>Major task header 3</h3>
                         <div class="tasks">
                             <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 3</span>
                             </div>
                             <div class="task">
-                                <span>task title 3</span>
-                            </div>
-                        </div>
-                        <div class="add-task">
-                            <span>+</span>
-                        </div>
-                    </div>
-                    <div class="major-task">
-                        <h3>Major task header 3</h3>
-                        <div class="tasks">
-                            <div class="task">
-                                <span>task title 3</span>
-                            </div>
-                            <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 3</span>
                             </div>
                         </div>
@@ -229,9 +222,27 @@ if(!$jwtHandler->isLoggedIn()) {
                         <h3>Major task header 3</h3>
                         <div class="tasks">
                             <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 3</span>
                             </div>
                             <div class="task">
+                            <span class="dragger"></span>
+                                <span>task title 3</span>
+                            </div>
+                        </div>
+                        <div class="add-task">
+                            <span>+</span>
+                        </div>
+                    </div>
+                    <div class="major-task">
+                        <h3>Major task header 3</h3>
+                        <div class="tasks">
+                            <div class="task">
+                            <span class="dragger"></span>
+                                <span>task title 3</span>
+                            </div>
+                            <div class="task">
+                            <span class="dragger"></span>
                                 <span>task title 3</span>
                             </div>
                         </div>

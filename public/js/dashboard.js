@@ -65,6 +65,8 @@ modalForm.addEventListener('submit', function(event) {
 const tableBody = document.querySelector('.table-body');
 const tasksContainer = document.querySelector('.table-tasks');
 const draggers = tasksContainer.querySelectorAll('.dragger');
+const placeholder = document.createElement('div');
+placeholder.className = 'placeholder';
 
 let draggedTask = null;
 let draggedTaskOffset = { x: 0, y: 0 };
@@ -87,22 +89,34 @@ draggers.forEach(dragger => {
 
         draggedTask.style.left = (e.clientX - draggedTaskOffset.x) + "px";
         draggedTask.style.top = (e.clientY - draggedTaskOffset.y) + "px";
+
+        // Create a placeholder element
+        // placeholder.style.width = bounds.width + "px";
+        placeholder.style.height = bounds.height + "px";
     })
 
     document.addEventListener("mousemove", e => {
         if (draggedTask) {
             draggedTask.style.left = (e.clientX - draggedTaskOffset.x) + "px";
             draggedTask.style.top = (e.clientY - draggedTaskOffset.y) + "px";
+
+            const closestTask = document.elementFromPoint(e.clientX, e.clientY).closest('.task');
+            if (closestTask) {
+                closestTask.parentNode.insertBefore(placeholder, closestTask.nextSibling);
+            } else if (placeholder.parentNode) {
+                placeholder.parentNode.removeChild(placeholder);
+            }
         }
     });
 
     document.addEventListener("mouseup", e => {
         if (draggedTask) {
-            const target = e.target.closest('.tasks');
-            if(target) {
-                target.appendChild(draggedTask);
+            const closestTask = e.target.closest('.task');
+            if(closestTask) {
+                closestTask.parentNode.insertBefore(draggedTask, closestTask.nextSibling);
+                placeholder.parentNode.removeChild(placeholder);
             }
-
+            
             tableBody.style = ""; // Reset styles
             draggedTask.style = ""; // Reset styles
             draggedTask = null;
