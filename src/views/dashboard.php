@@ -152,6 +152,7 @@ if(!$jwtHandler->isLoggedIn()) {
                     echo '<span><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';
                     echo '</div>';
                     echo '<div class="table-body">';
+                    
                     // Fetch tasks for the project
                     $stmt = $pdo->prepare("SELECT * FROM tasks WHERE project_id = :project_id");
                     $stmt->bindParam(':project_id', $currentProject, PDO::PARAM_INT);
@@ -165,9 +166,31 @@ if(!$jwtHandler->isLoggedIn()) {
                         echo '<span class="table-item">' . htmlspecialchars($task['due_date']) . '</span>';
                         echo '</div>';
                     }
-                    if(count($tasks) == 0) {
-                        echo '<p class="sidebar-empty">No tasks found</p>';
-                    }
+                    // if(count($tasks) == 0) {
+                    //     echo '<p class="tasks-empty">No tasks found</p>';
+                    // }
+
+                    ?>
+                    <div class="major-task">
+                        <h3>Major task header</h3>
+                        <div class="task">
+                            <span>task title</span>
+                        </div>
+                    </div>
+                    <div class="major-task">
+                        <h3>Major task header 2</h3>
+                        <div class="task">
+                            <span>task title 2</span>
+                        </div>
+                    </div>
+                    <div class="major-task">
+                        <h3>Major task header 3</h3>
+                        <div class="task">
+                            <span>task title 3</span>
+                        </div>
+                    </div>
+                    <?php
+
                     echo '</div>';
                 } else {
                     echo '<p class="sidebar-empty">Project not found</p>';
