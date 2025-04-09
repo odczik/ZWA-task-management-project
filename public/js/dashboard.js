@@ -122,13 +122,14 @@ draggers.forEach(dragger => {
 
             if(e.target.classList.contains("tasks")){
                 if(!closestTask) {
-                    closestTask = lastClosestTask;
+                    if(e.target.parentElement === placeholder.parentElement.parentElement) closestTask = lastClosestTask;
                 }
             }
 
             if (closestTask) {
                 closestTask.parentNode.insertBefore(placeholder, closestTask.nextSibling);
             } else if(closestTasks) {
+                closestTask = closestTasks.LastChild;
                 closestTasks.appendChild(placeholder);
             } else if (placeholder.parentNode) {
                 placeholder.parentNode.removeChild(placeholder);
