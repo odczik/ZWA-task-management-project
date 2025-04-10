@@ -143,16 +143,6 @@ if(!$jwtHandler->isLoggedIn()) {
                     echo '</div>';
                     echo '<div class="table-body">';
                     echo '<div class="table-tasks">';
-                    
-                    // Fetch tasks for the project
-                    $stmt = $pdo->prepare("SELECT * FROM tasks WHERE project_id = :project_id");
-                    $stmt->bindParam(':project_id', $currentProject, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    
-                    if(count($tasks) == 0) {
-                        echo '<p class="tasks-empty">No tasks found</p>';
-                    }
 
                     ?>
                     <!-- <div class="major-task">

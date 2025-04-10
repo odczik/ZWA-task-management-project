@@ -63,6 +63,8 @@ modalForm.addEventListener('submit', function(event) {
 const tasksContainer = document.querySelector('.table-tasks');
 const projectId = location.search.split("=")[1];
 
+if(!projectId) throw new Error("Project ID not found in URL.");
+    
 fetch(`/api/tasks?project_id=${projectId}`).then(response => {
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -104,6 +106,8 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
                     <span>${task.title}</span>
                 </div>
             `;
+            taskElement.setAttribute("data-task-id", task.id);
+            taskElement.setAttribute("data-task-position", task.position);
             tasksElement.appendChild(taskElement);
             const dragger = taskElement.querySelector(".dragger");
             handleDragger(dragger);  
@@ -223,6 +227,16 @@ function handleDragger(dragger) {
             if (placeholder.parentNode) {
                 placeholder.parentNode.removeChild(placeholder);
             }
+
+            // Calculate position
+            const previousSibling = draggedTask.previousElementSibling || 0;
+            const nextSibling = draggedTask.nextElementSibling || 0;
+            let position = draggedTask.getAttribute("data-task-position") || 0;
+            if(!previousSibling) position = 0;
+            if(!nextSibling && previousSibling) position = previousSibling.getAttribute("data-task-position") + 1;
+            if(!nextSibling && !previousSibling) position = 0;
+            if(previousSibling && nextSibling) position = (parseFloat(previousSibling.getAttribute("data-task-position")) + parseFloat(nextSibling.getAttribute("data-task-position"))) / 2;
+            draggedTask.setAttribute("data-task-position", position);
 
             tableBody.style = ""; // Reset styles
             draggedTask.style = ""; // Reset styles
