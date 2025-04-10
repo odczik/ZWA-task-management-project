@@ -254,11 +254,11 @@ if(!$jwtHandler->isLoggedIn()) {
                         <h3>Major task header 3</h3>
                         <div class="tasks">
                             <div class="task">
-                            <span class="dragger"></span>
+                                <span class="dragger"></span>
                                 <span>task title 3</span>
                             </div>
                             <div class="task">
-                            <span class="dragger"></span>
+                                <span class="dragger"></span>
                                 <span>task title 3</span>
                             </div>
                         </div>
@@ -267,7 +267,7 @@ if(!$jwtHandler->isLoggedIn()) {
                         </div>
                     </div>
                     <div class="add-major-task">
-                         <span>+</span>
+                        <span>+</span>
                     </div>
                     <?php
 
