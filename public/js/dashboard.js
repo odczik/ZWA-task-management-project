@@ -181,9 +181,7 @@ tasksContainer.addEventListener('wheel', (e) => {
 /* Task adding */
 /* =========== */
 
-const addTaskButtons = document.querySelectorAll(".add-task");
-
-addTaskButtons.forEach(button => {
+function handleAddTaskButton(button) {
     button.addEventListener("click", (event) => {
         event.preventDefault();
         const taskContainer = button.closest(".major-task").querySelector(".tasks");
@@ -228,5 +226,62 @@ addTaskButtons.forEach(button => {
                 newTask.remove();
             }
         });
+    });
+}
+
+const addTaskButtons = document.querySelectorAll(".add-task");
+addTaskButtons.forEach(button => {
+    handleAddTaskButton(button);
+});
+
+const addMajorTaskButton = document.querySelector(".add-major-task");
+const majorTasksContainer = document.querySelector(".table-tasks");
+
+addMajorTaskButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    const newMajorTask = document.createElement("div");
+    newMajorTask.className = "major-task";
+    
+    majorTasksContainer.appendChild(newMajorTask);
+    majorTasksContainer.appendChild(addMajorTaskButton);
+
+    const newMajorTaskInput = document.createElement("input");
+    newMajorTaskInput.className = "major-task-input";
+    newMajorTaskInput.type = "text";
+    newMajorTaskInput.placeholder = "Title";
+    newMajorTaskInput.autocomplete = "off";
+    newMajorTaskInput.name = "Major task title";
+    newMajorTask.appendChild(newMajorTaskInput);
+
+    newMajorTaskInput.focus();
+    newMajorTaskInput.addEventListener("blur", (event) => {
+        event.preventDefault();
+        const majorTaskName = newMajorTaskInput.value.trim();
+        newMajorTaskInput.remove();
+
+        if(majorTaskName === "") {
+            newMajorTask.remove();
+            return;
+        } else {
+            newMajorTask.innerHTML = `
+                <h3>${majorTaskName}</h3>
+                <div class="tasks"></div>
+            `;
+        }
+        const addTaskButton = document.createElement("div");
+        addTaskButton.className = "add-task";
+        addTaskButton.innerHTML = `<span>+</span>`;
+        newMajorTask.appendChild(addTaskButton);
+        console.log(addTaskButton);
+        handleAddTaskButton(addTaskButton);
+        addTaskButton.click();
+    });
+    newMajorTaskInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            newMajorTaskInput.blur();
+        }
+        if (event.key === "Escape") {
+            newMajorTask.remove();
+        }
     });
 });
