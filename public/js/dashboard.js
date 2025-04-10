@@ -210,7 +210,9 @@ addTaskButtons.forEach(button => {
                         <span>${taskName}</span>
                     </div>
                 `;
-            }            
+            }        
+            const dragger = newTask.querySelector(".dragger");
+            // Add dragger event listeners    
         });
     });
 });
