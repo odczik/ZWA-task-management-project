@@ -488,6 +488,7 @@ main .table {
 .table .task-content span {
     overflow-wrap: anywhere;
 }
+.table .major-task input,
 .table .task input {
     border: none;
     background: none;

@@ -96,6 +96,15 @@ $router->post("/api/tasks", function($data) use ($jwtHandler) {
     }
     return createTask($data, $user, $pdo);
 });
+$router->patch("/api/tasks", function($data) use ($jwtHandler) {
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return updatePosition($data, $user, $pdo);
+});
 
 /* ======== */
 /* DB DEBUG */

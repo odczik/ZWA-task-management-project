@@ -81,6 +81,10 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         if(task.is_major) return;
         processedTasks.find(majorTask => majorTask.id === task.assigned_under).tasks.push(task);
     });
+    processedTasks.forEach(majorTask => {
+        majorTask.tasks.sort((a, b) => a.position - b.position);
+    });
+    processedTasks.sort((a, b) => a.position - b.position);
     console.log(processedTasks);
 
     processedTasks.forEach(majorTask => {
@@ -237,6 +241,19 @@ function handleDragger(dragger) {
             if(!nextSibling && !previousSibling) position = 0;
             if(previousSibling && nextSibling) position = (parseFloat(previousSibling.getAttribute("data-task-position")) + parseFloat(nextSibling.getAttribute("data-task-position"))) / 2;
             draggedTask.setAttribute("data-task-position", position);
+            fetch(`/api/tasks`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    task_id: draggedTask.getAttribute("data-task-id"),
+                    position: position,
+                    assigned_under: draggedTask.parentElement.parentElement.getAttribute("data-major-task-id")
+                })
+            }).then(console.log).catch(e => {
+                console.error(e);
+            });
 
             tableBody.style = ""; // Reset styles
             draggedTask.style = ""; // Reset styles
