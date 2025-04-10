@@ -71,7 +71,7 @@ placeholder.className = 'placeholder';
 let draggedTask = null;
 let draggedTaskOffset = { x: 0, y: 0 };
 
-draggers.forEach(dragger => {
+function handleDragger(dragger) {
     dragger.addEventListener("mousedown", e => {
         draggedTask = dragger.parentElement;
         tableBody.style.userSelect = "none"; // Disable text selection
@@ -165,6 +165,10 @@ draggers.forEach(dragger => {
             draggedTask = null;
         }
     });
+}
+
+draggers.forEach(dragger => {
+    handleDragger(dragger);
 });
 
 // Horizontal scroll on wheel event
@@ -212,7 +216,7 @@ addTaskButtons.forEach(button => {
                 `;
             }        
             const dragger = newTask.querySelector(".dragger");
-            // Add dragger event listeners    
+            handleDragger(dragger);  
         });
     });
 });
