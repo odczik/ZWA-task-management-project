@@ -60,6 +60,27 @@ modalForm.addEventListener('submit', function(event) {
 /* Loading tasks */
 /* ============= */
 
+function deleteTaskRequest(taskId) {
+    fetch(`/api/tasks`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            task_id: taskId
+        })
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    }).then(data => {
+        console.log(data);
+    }).catch(e => {
+        console.error(e);
+    });
+}
+
 const tasksContainer = document.querySelector('.table-tasks');
 const projectId = location.search.split("=")[1];
 
@@ -97,6 +118,16 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         titleElement.innerText = majorTask.title;
         majorTaskElement.appendChild(titleElement);
 
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-button";
+        deleteButton.innerHTML = `delete`;
+        deleteButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            deleteTaskRequest(majorTask.id);
+            majorTaskElement.remove();
+        });
+        majorTaskElement.appendChild(deleteButton);
+
         const tasksElement = document.createElement("div");
         tasksElement.className = "tasks";
         majorTaskElement.appendChild(tasksElement);
@@ -114,7 +145,17 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
             taskElement.setAttribute("data-task-position", task.position);
             tasksElement.appendChild(taskElement);
             const dragger = taskElement.querySelector(".dragger");
-            handleDragger(dragger);  
+            handleDragger(dragger);
+
+            const taskDeleteButton = document.createElement("button");
+            taskDeleteButton.className = "delete-button";
+            taskDeleteButton.innerHTML = `delete`;
+            taskDeleteButton.addEventListener("click", (event) => {
+                event.preventDefault();
+                deleteTaskRequest(task.id);
+                taskElement.remove();
+            });
+            taskElement.appendChild(taskDeleteButton);
         });
 
         const addTaskButton = document.createElement("div");

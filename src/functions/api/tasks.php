@@ -129,3 +129,59 @@ function updatePosition($data, $user, $pdo) {
         return json_encode(["error" => "Failed to update task position: " . $e->getMessage()]);
     }
 }
+
+function deleteTask($data, $user, $pdo) {
+    if (!isset($data["task_id"])) {
+        header("HTTP/1.1 400 Bad Request");
+        return json_encode(["error" => "Missing required fields"]);
+    }
+    try {
+        // Start a transaction
+        $pdo->beginTransaction();
+
+        // Validate user permissions
+        $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = (SELECT project_id FROM tasks WHERE id = :task_id) AND user_id = :user_id");
+        $stmt->bindParam(':task_id', $data["task_id"]);
+        $stmt->bindParam(':user_id', $user->user_id);
+        $stmt->execute();
+        $member = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$member) {
+            $pdo->rollBack();
+            header("HTTP/1.1 403 Forbidden");
+            return json_encode(["error" => "You do not have permission to delete this task"]);
+        }
+
+        // Get task details
+        $stmt = $pdo->prepare("SELECT * FROM tasks WHERE id = :task_id");
+        $stmt->bindParam(':task_id', $data["task_id"]);
+        $stmt->execute();
+        $task = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$task) {
+            $pdo->rollBack();
+            header("HTTP/1.1 404 Not Found");
+            return json_encode(["error" => "Task not found"]);
+        }
+        // Check if the task is a major task
+        if ($task["is_major"]) {
+            // Delete all subtasks
+            $stmt = $pdo->prepare("DELETE FROM tasks WHERE assigned_under = :task_id");
+            $stmt->bindParam(':task_id', $data["task_id"]);
+            $stmt->execute();
+        }
+        
+        // Delete the task
+        $stmt = $pdo->prepare("DELETE FROM tasks WHERE id = :task_id");
+        $stmt->bindParam(':task_id', $data["task_id"]);
+        $stmt->execute();
+
+        // Commit the transaction
+        $pdo->commit();
+        header("HTTP/1.1 200 OK");
+        return json_encode(["message" => "Task deleted successfully"]);
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        header("HTTP/1.1 500 Internal Server Error");
+        return json_encode(["error" => "Failed to delete task: " . $e->getMessage()]);
+    }
+}
