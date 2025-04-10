@@ -440,6 +440,7 @@ main .table {
     color: var(--primary-dark);
 
     user-select: none;
+    -webkit-user-select: none;
 }
 .table .tasks {
     width: 100%;
@@ -510,10 +511,34 @@ main .table {
     width: 100%;
 
     user-select: none;
+    -webkit-user-select: none;
 
     transition: 0.1s ease;
 }
 .table .add-task:hover {
+    background-color: rgb(var(--primary-dark-rgb), 1);
+    color: var(--primary-light);
+    cursor: pointer;
+}
+.table .add-major-task {
+    border-radius: 10px;
+    background-color: rgb(var(--primary-dark-rgb), 0.25);
+
+    color: var(--primary-dark);
+    text-align: center;
+    font-size: 1.2rem;
+
+    padding: 5px;
+    box-sizing: border-box;
+
+    min-width: 200px;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    transition: 0.1s ease;
+}
+.table .add-major-task:hover {
     background-color: rgb(var(--primary-dark-rgb), 1);
     color: var(--primary-light);
     cursor: pointer;

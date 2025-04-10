@@ -266,6 +266,9 @@ if(!$jwtHandler->isLoggedIn()) {
                             <span>+</span>
                         </div>
                     </div>
+                    <div class="add-major-task">
+                         <span>+</span>
+                    </div>
                     <?php
 
                     echo '</div>';

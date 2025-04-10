@@ -172,3 +172,45 @@ tasksContainer.addEventListener('wheel', (e) => {
     e.preventDefault();
     tasksContainer.scrollLeft += e.deltaY / 1.5;
 });
+
+/* =========== */
+/* Task adding */
+/* =========== */
+
+const addTaskButtons = document.querySelectorAll(".add-task");
+
+addTaskButtons.forEach(button => {
+    button.addEventListener("click", (event) => {
+        event.preventDefault();
+        const taskContainer = button.closest(".major-task").querySelector(".tasks");
+        const newTask = document.createElement("div");
+        newTask.className = "task";
+
+        newTaskInput = document.createElement("input");
+        newTaskInput.className = "task-input";
+        newTaskInput.type = "text";
+        newTaskInput.placeholder = "New Task";
+        
+        taskContainer.appendChild(newTask);
+        newTask.appendChild(newTaskInput);
+
+        newTaskInput.focus();
+        newTaskInput.addEventListener("blur", (event) => {
+            event.preventDefault();
+            const taskName = newTaskInput.value.trim();
+            newTaskInput.remove();
+
+            if(taskName === "") {
+                newTask.remove();
+                return;
+            } else {
+                newTask.innerHTML = `
+                    <div class="dragger"></div>
+                    <div class="task-content">
+                        <span>${taskName}</span>
+                    </div>
+                `;
+            }            
+        });
+    });
+});
