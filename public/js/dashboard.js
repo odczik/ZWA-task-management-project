@@ -194,6 +194,8 @@ addTaskButtons.forEach(button => {
         newTaskInput.className = "task-input";
         newTaskInput.type = "text";
         newTaskInput.placeholder = "New Task";
+        newTaskInput.autocomplete = "off";
+        newTaskInput.name = "Task title";
         
         taskContainer.appendChild(newTask);
         newTask.appendChild(newTaskInput);
@@ -217,6 +219,14 @@ addTaskButtons.forEach(button => {
             }        
             const dragger = newTask.querySelector(".dragger");
             handleDragger(dragger);  
+        });
+        newTaskInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                newTaskInput.blur();
+            }
+            if (event.key === "Escape") {
+                newTask.remove();
+            }
         });
     });
 });
