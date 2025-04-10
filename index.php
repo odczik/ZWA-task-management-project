@@ -3,9 +3,14 @@ require "./src/functions/router.php";
 require "./src/functions/jwtHandler.php";
 require "./src/functions/account.php";
 require "./src/functions/api/projects.php";
+require "./src/functions/api/tasks.php";
 
 $jwtHandler = new JWTHandler("your_secret_key");
 $router = new Router();
+
+/* ========== */
+/* Web Routes */
+/* ========== */
 
 $router->get("/", function() {
     return render("./src/views/landing.php");
@@ -50,7 +55,10 @@ $router->get("/logout", function() {
     return logout();
 });
 
+/* ========== */
 /* API Routes */
+/* ========== */
+
 $router->post("/api/projects", function($data) use ($jwtHandler) {
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
@@ -70,7 +78,29 @@ $router->delete("/api/projects", function($data) use ($jwtHandler) {
     return deleteProject($data, $user, $pdo);
 });
 
+$router->get("/api/tasks", function($data) use ($jwtHandler) {
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return getTasks($data, $user, $pdo);
+});
+$router->post("/api/tasks", function($data) use ($jwtHandler) {
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return createTask($data, $user, $pdo);
+});
+
+/* ======== */
 /* DB DEBUG */
+/* ======== */
+
 $router->get("/users-table", function() {
     require "./src/functions/db_connect.php";
     $query = "SELECT * FROM users";

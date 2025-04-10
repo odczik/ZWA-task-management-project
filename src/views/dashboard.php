@@ -149,20 +149,13 @@ if(!$jwtHandler->isLoggedIn()) {
                     $stmt->bindParam(':project_id', $currentProject, PDO::PARAM_INT);
                     $stmt->execute();
                     $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                    foreach($tasks as $task) {
-                        echo '<div class="table-row">';
-                        echo '<span class="table-item">' . htmlspecialchars($task['name']) . '</span>';
-                        echo '<span class="table-item">' . htmlspecialchars($task['description']) . '</span>';
-                        echo '<span class="table-item">' . htmlspecialchars($task['due_date']) . '</span>';
-                        echo '</div>';
+                    
+                    if(count($tasks) == 0) {
+                        echo '<p class="tasks-empty">No tasks found</p>';
                     }
-                    // if(count($tasks) == 0) {
-                    //     echo '<p class="tasks-empty">No tasks found</p>';
-                    // }
 
                     ?>
-                    <div class="major-task">
+                    <!-- <div class="major-task">
                         <h3>Major task header</h3>
                         <div class="tasks">
                             <div class="task">
@@ -233,7 +226,7 @@ if(!$jwtHandler->isLoggedIn()) {
                         <div class="add-task">
                             <span>+</span>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="add-major-task">
                         <span>+</span>
                     </div>
