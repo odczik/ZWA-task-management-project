@@ -170,6 +170,8 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
     });
 
     tasksContainer.appendChild(addMajorTaskButton);
+
+    handleTaskEditing();
 }).catch(e => {
     console.error(e);
 });
@@ -406,7 +408,8 @@ function handleAddTaskButton(button) {
             }
             if (event.key === "Escape") {
                 taskShouldBeAdded = false;
-                newTask.remove();
+                newTaskInput.value = "";
+                newTaskInput.blur();
             }
         });
     });
@@ -504,7 +507,80 @@ addMajorTaskButton.addEventListener("click", (event) => {
         }
         if (event.key === "Escape") {
             taskShouldBeAdded = false;
-            newMajorTask.remove();
+            newMajorTaskInput.value = "";
+            newMajorTaskInput.blur();
         }
     });
 });
+
+/* ============ */
+/* Task editing */
+/* ============ */
+
+function handleTaskEditing() {
+    const taskContents = document.querySelectorAll(".task-content");
+
+    taskContents.forEach(taskContent => {
+        taskContent.addEventListener("dblclick", (event) => {
+            event.preventDefault();
+            const taskElement = taskContent.parentElement;
+            const taskId = taskElement.getAttribute("data-task-id");
+            const taskName = taskContent.querySelector("span").innerText.trim();
+
+            const startValue = taskName;
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = taskName;
+            input.className = "task-edit-input";
+            input.autocomplete = "off";
+            input.name = "Task title";
+
+            taskContent.innerHTML = "";
+            taskContent.appendChild(input);
+            
+            input.focus();
+            input.addEventListener("blur", (event) => {
+                event.preventDefault();
+                const newTaskName = input.value.trim();
+                if(newTaskName === startValue) {
+                    taskContent.innerHTML = `<span>${taskName}</span>`;
+                    return;
+                }
+                if(newTaskName === "") {
+                    taskElement.remove();
+                    return;
+                } else {
+                    taskContent.innerHTML = `<span>${newTaskName}</span>`;
+                }
+                fetch('/api/tasks', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        task_id: taskId,
+                        title: newTaskName
+                    })
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                }).then(data => {
+                    console.log(data);
+                }).catch(e => {
+                    console.error(e);
+                });
+            });
+            input.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    input.blur();
+                }
+                if (event.key === "Escape") {
+                    taskContent.innerHTML = `<span>${taskName}</span>`;
+                }
+            });
+        });
+    });
+}

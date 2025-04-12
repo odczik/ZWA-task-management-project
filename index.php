@@ -78,7 +78,7 @@ $router->delete("/api/projects", function($data) use ($jwtHandler) {
     return deleteProject($data, $user, $pdo);
 });
 
-$router->get("/api/tasks", function($data) use ($jwtHandler) {
+$router->get("/api/tasks", function($data) use ($jwtHandler) { // return tasks for a project
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
     if(!$user) {
@@ -87,7 +87,7 @@ $router->get("/api/tasks", function($data) use ($jwtHandler) {
     }
     return getTasks($data, $user, $pdo);
 });
-$router->post("/api/tasks", function($data) use ($jwtHandler) {
+$router->post("/api/tasks", function($data) use ($jwtHandler) { // create task
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
     if(!$user) {
@@ -96,7 +96,7 @@ $router->post("/api/tasks", function($data) use ($jwtHandler) {
     }
     return createTask($data, $user, $pdo);
 });
-$router->delete("/api/tasks", function($data) use ($jwtHandler) {
+$router->delete("/api/tasks", function($data) use ($jwtHandler) { // delete task
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
     if(!$user) {
@@ -105,7 +105,7 @@ $router->delete("/api/tasks", function($data) use ($jwtHandler) {
     }
     return deleteTask($data, $user, $pdo);
 });
-$router->patch("/api/tasks", function($data) use ($jwtHandler) {
+$router->patch("/api/tasks", function($data) use ($jwtHandler) {  // update task
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
     if(!$user) {
