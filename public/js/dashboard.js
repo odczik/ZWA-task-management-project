@@ -114,19 +114,23 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         majorTaskElement.setAttribute("data-major-task-id", majorTask.id);
         tasksContainer.appendChild(majorTaskElement);
 
+        const header = document.createElement("div");
+        header.className = "header";
+        majorTaskElement.appendChild(header);
+
         const titleElement = document.createElement("h3");
         titleElement.innerText = majorTask.title;
-        majorTaskElement.appendChild(titleElement);
+        header.appendChild(titleElement);
 
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "delete-button";
-        deleteButton.innerHTML = `delete`;
+        const deleteButton = document.createElement("span");
+        deleteButton.className = "delete-button icon-container";
+        deleteButton.innerHTML = `<span class="icon trash"></span>`;
         deleteButton.addEventListener("click", (event) => {
             event.preventDefault();
             deleteTaskRequest(majorTask.id);
             majorTaskElement.remove();
         });
-        majorTaskElement.appendChild(deleteButton);
+        header.appendChild(deleteButton);
 
         const tasksElement = document.createElement("div");
         tasksElement.className = "tasks";
@@ -147,9 +151,9 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
             const dragger = taskElement.querySelector(".dragger");
             handleDragger(dragger);
 
-            const taskDeleteButton = document.createElement("button");
-            taskDeleteButton.className = "delete-button";
-            taskDeleteButton.innerHTML = `delete`;
+            const taskDeleteButton = document.createElement("span");
+            taskDeleteButton.className = "delete-button icon-container";
+            taskDeleteButton.innerHTML = `<span class="icon trash"></span>`;
             taskDeleteButton.addEventListener("click", (event) => {
                 event.preventDefault();
                 deleteTaskRequest(task.id);
@@ -319,7 +323,7 @@ tasksContainer.addEventListener('wheel', (e) => {
 
 let taskShouldBeAdded = false;
 
-function createTaskRequest(taskName, projectId, assigned_under) {
+function createTaskRequest(newTask, taskName, projectId, assigned_under) {
     if(!taskShouldBeAdded) return;
     
     fetch('/api/tasks', {
@@ -332,7 +336,28 @@ function createTaskRequest(taskName, projectId, assigned_under) {
             project_id: projectId,
             assigned_under: assigned_under
         })
-    }).then(console.log)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    }).then(data => {
+        console.log(data);
+        newTask.setAttribute("data-task-id", data.task_id);
+        newTask.setAttribute("data-task-position", data.position);
+
+        const deleteButton = document.createElement("span");
+        deleteButton.className = "delete-button icon-container";
+        deleteButton.innerHTML = `<span class="icon trash"></span>`;
+        deleteButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            deleteTaskRequest(data.task_id);
+            newTask.remove();
+        });
+        newTask.appendChild(deleteButton);
+    }).catch(e => {
+        console.error(e);
+    });
 }
 function handleAddTaskButton(button) {
     button.addEventListener("click", (event) => {
@@ -372,7 +397,7 @@ function handleAddTaskButton(button) {
                 const dragger = newTask.querySelector(".dragger");
                 handleDragger(dragger);  
 
-                createTaskRequest(taskName, location.search.split("=")[1], taskContainer.parentElement.getAttribute("data-major-task-id"));
+                createTaskRequest(newTask, taskName, location.search.split("=")[1], taskContainer.parentElement.getAttribute("data-major-task-id"));
             }
         });
         newTaskInput.addEventListener("keydown", (event) => {
@@ -412,6 +437,16 @@ function createMajorTaskRequest(newMajorTask, majorTaskName, projectId) {
         return response.json();
     }).then(data => {
         newMajorTask.setAttribute("data-major-task-id", data.task_id);
+
+        const deleteButton = document.createElement("span");
+        deleteButton.className = "delete-button icon-container";
+        deleteButton.innerHTML = `<span class="icon trash"></span>`;
+        deleteButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            deleteTaskRequest(data.task_id);
+            newMajorTask.remove();
+        });
+        newMajorTask.querySelector(".header").appendChild(deleteButton);
     }).catch(e => {
         console.error(e);
     });
@@ -447,7 +482,9 @@ addMajorTaskButton.addEventListener("click", (event) => {
             newMajorTask.remove();
         } else {
             newMajorTask.innerHTML = `
-                <h3>${majorTaskName}</h3>
+                <div class="header">
+                    <h3>${majorTaskName}</h3>
+                </div>
                 <div class="tasks"></div>
             `;
 

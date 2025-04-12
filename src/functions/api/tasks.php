@@ -77,10 +77,13 @@ function createTask($data, $user, $pdo) {
             $stmt->bindParam(':position', $position);
             $stmt->execute();
 
+            $task_id = $pdo->lastInsertId();
+
             // Commit the transaction
             $pdo->commit();
             header("HTTP/1.1 201 Created");
-            return json_encode(["message" => "Task created successfully"]);
+            header("Content-Type: application/json; charset=utf-8");
+            return json_encode(["task_id" => $task_id, "position" => $position]);
         }
     } catch (Exception $e) {
         $pdo->rollBack();

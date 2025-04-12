@@ -340,7 +340,7 @@ main .table {
     gap: 7px;
     flex-shrink: 0;
 }
-.table .table-header .icon-container {
+.table .icon-container {
     position: relative;
 
     width: 28px;
@@ -485,8 +485,45 @@ main .table {
 .table .task:hover .dragger {
     display: block;
 }
+.table .task-content {
+    flex-grow: 1;
+}
 .table .task-content span {
     overflow-wrap: anywhere;
+}
+.major-task .icon-container {
+    display: none;
+    margin: -5px;
+    flex-shrink: 0;
+    background-color: transparent;
+}
+.major-task .header .icon-container {
+    margin: 0;
+}
+.table .task:hover .icon-container {
+    display: flex;
+}
+.table .header:hover .icon-container {
+    display: flex;
+}
+.major-task .icon {
+    transition: 0.1s ease;
+    cursor: pointer;
+}
+.major-task .icon-container:hover .icon {
+    transform: scale(1.2);
+}
+.table .icon.trash {
+    mask: url("https://img.icons8.com/sf-regular-filled/48/trash.png");
+    mask-size: cover;
+}
+.table .major-task .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
 }
 .table .major-task input,
 .table .task input {
