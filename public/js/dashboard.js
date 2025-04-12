@@ -119,6 +119,7 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         majorTaskElement.appendChild(header);
 
         const titleElement = document.createElement("h3");
+        titleElement.className = "task-content";
         titleElement.innerText = majorTask.title;
         header.appendChild(titleElement);
 
@@ -525,7 +526,12 @@ function handleTaskEditing() {
             event.preventDefault();
             const taskElement = taskContent.parentElement;
             const taskId = taskElement.getAttribute("data-task-id");
-            const taskName = taskContent.querySelector("span").innerText.trim();
+            let taskName = taskContent.querySelector("span");
+            if(!taskName){
+                taskName = taskContent.innerText.trim();
+            } else {
+                taskName = taskContent.querySelector("span").innerText.trim();
+            }
 
             const startValue = taskName;
 
