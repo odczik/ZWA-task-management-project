@@ -112,7 +112,7 @@ $router->patch("/api/tasks", function($data) use ($jwtHandler) {  // update task
         header("HTTP/1.1 401 Unauthorized");
         exit;
     }
-    return updatePosition($data, $user, $pdo);
+    return updateTask($data, $user, $pdo);
 });
 
 /* ======== */

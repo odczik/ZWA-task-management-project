@@ -530,8 +530,9 @@ function handleTaskEditing() {
     taskContents.forEach(taskContent => {
         taskContent.addEventListener("dblclick", (event) => {
             event.preventDefault();
-            const taskElement = taskContent.parentElement;
-            const taskId = taskElement.getAttribute("data-task-id");
+            let taskElement = taskContent.parentElement;
+            if(taskElement.classList.contains("header")) taskElement = taskElement.parentElement;
+            const taskId = taskElement.getAttribute("data-task-id") || taskElement.getAttribute("data-major-task-id");
             let taskName = taskContent.querySelector("span");
             if(!taskName){
                 taskName = taskContent.innerText.trim();

@@ -92,44 +92,87 @@ function createTask($data, $user, $pdo) {
     }
 }
 
-function updatePosition($data, $user, $pdo) {
-    try {
-        // Start a transaction
-        $pdo->beginTransaction();
-
-        // Validate user permissions
-        $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = (SELECT project_id FROM tasks WHERE id = :task_id) AND user_id = :user_id");
-        $stmt->bindParam(':task_id', $data["task_id"]);
-        $stmt->bindParam(':user_id', $user->user_id);
-        $stmt->execute();
-        $member = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$member) {
+function updateTask($data, $user, $pdo) {
+    if(isset($data["position"])) {
+        try {
+            // Start a transaction
+            $pdo->beginTransaction();
+    
+            // Validate user permissions
+            $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = (SELECT project_id FROM tasks WHERE id = :task_id) AND user_id = :user_id");
+            $stmt->bindParam(':task_id', $data["task_id"]);
+            $stmt->bindParam(':user_id', $user->user_id);
+            $stmt->execute();
+            $member = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if (!$member) {
+                $pdo->rollBack();
+                header("HTTP/1.1 403 Forbidden");
+                return json_encode(["error" => "You do not have permission to modify this task"]);
+            }
+    
+            if (!isset($data["task_id"]) || !isset($data["position"]) || !isset($data["assigned_under"])) {
+                $pdo->rollBack();
+                header("HTTP/1.1 400 Bad Request");
+                return json_encode(["error" => "Missing required fields"]);
+            }
+    
+            $stmt = $pdo->prepare("UPDATE tasks SET position = :position, assigned_under = :assigned_under WHERE id = :task_id");
+            $stmt->bindParam(':position', $data["position"]);
+            $stmt->bindParam(':assigned_under', $data["assigned_under"]);
+            $stmt->bindParam(':task_id', $data["task_id"]);
+            $stmt->execute();
+    
+            // Commit the transaction
+            $pdo->commit();
+            header("HTTP/1.1 200 OK");
+            return json_encode(["message" => "Task position updated successfully"]);
+        } catch (Exception $e) {
             $pdo->rollBack();
-            header("HTTP/1.1 403 Forbidden");
-            return json_encode(["error" => "You do not have permission to modify this task"]);
+            header("HTTP/1.1 500 Internal Server Error");
+            return json_encode(["error" => "Failed to update task position: " . $e->getMessage()]);
         }
-
-        if (!isset($data["task_id"]) || !isset($data["position"]) || !isset($data["assigned_under"])) {
+    } else if(isset($data["title"])) {
+        try {
+            // Start a transaction
+            $pdo->beginTransaction();
+    
+            // Validate user permissions
+            $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = (SELECT project_id FROM tasks WHERE id = :task_id) AND user_id = :user_id");
+            $stmt->bindParam(':task_id', $data["task_id"]);
+            $stmt->bindParam(':user_id', $user->user_id);
+            $stmt->execute();
+            $member = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if (!$member) {
+                $pdo->rollBack();
+                header("HTTP/1.1 403 Forbidden");
+                return json_encode(["error" => "You do not have permission to modify this task"]);
+            }
+    
+            if (!isset($data["task_id"]) || !isset($data["title"])) {
+                $pdo->rollBack();
+                header("HTTP/1.1 400 Bad Request");
+                return json_encode(["error" => "Missing required fields"]);
+            }
+    
+            $stmt = $pdo->prepare("UPDATE tasks SET title = :title WHERE id = :task_id");
+            $stmt->bindParam(':title', $data["title"]);
+            $stmt->bindParam(':task_id', $data["task_id"]);
+            $stmt->execute();
+    
+            // Commit the transaction
+            $pdo->commit();
+            header("HTTP/1.1 200 OK");
+            return json_encode(["message" => "Task title updated successfully"]);
+        } catch (Exception $e) {
             $pdo->rollBack();
-            header("HTTP/1.1 400 Bad Request");
-            return json_encode(["error" => "Missing required fields"]);
+            header("HTTP/1.1 500 Internal Server Error");
+            return json_encode(["error" => "Failed to update task title: " . $e->getMessage()]);
         }
-
-        $stmt = $pdo->prepare("UPDATE tasks SET position = :position, assigned_under = :assigned_under WHERE id = :task_id");
-        $stmt->bindParam(':position', $data["position"]);
-        $stmt->bindParam(':assigned_under', $data["assigned_under"]);
-        $stmt->bindParam(':task_id', $data["task_id"]);
-        $stmt->execute();
-
-        // Commit the transaction
-        $pdo->commit();
-        header("HTTP/1.1 200 OK");
-        return json_encode(["message" => "Task position updated successfully"]);
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        header("HTTP/1.1 500 Internal Server Error");
-        return json_encode(["error" => "Failed to update task position: " . $e->getMessage()]);
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+        return json_encode(["error" => "Missing required fields"]);
     }
 }
 
@@ -172,7 +215,7 @@ function deleteTask($data, $user, $pdo) {
             $stmt->bindParam(':task_id', $data["task_id"]);
             $stmt->execute();
         }
-        
+
         // Delete the task
         $stmt = $pdo->prepare("DELETE FROM tasks WHERE id = :task_id");
         $stmt->bindParam(':task_id', $data["task_id"]);
