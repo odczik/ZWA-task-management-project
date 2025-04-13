@@ -302,7 +302,7 @@ main .table {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
 
     width: 100%;
 }
@@ -317,22 +317,24 @@ main .table {
     flex-grow: 1;
 }
 .table .header-left {
-    justify-content: flex-start;
-    margin-left: 6px;
+    flex-grow: 1; /* Allow this element to grow */
+    min-width: 100px; /* Optional: Set a minimum width */
 }
+
 .table .header-right {
-    justify-content: flex-end;
-    margin-right: 2px;
+    flex-shrink: 0; /* Prevent shrinking */
+    flex-grow: 0; /* Prevent growing */
+    width: auto; /* Maintain natural size */
 }
 
 .table .table-header h2 {
     margin: 0;
-    font-size: 1.75rem;
+    font-size: 1.7rem;
     font-weight: 600;
     color: var(--primary-dark);
-    /* overflow: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; */
+    white-space: nowrap;
 }
 
 .table .table-header .table-item.icons {

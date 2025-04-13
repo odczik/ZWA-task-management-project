@@ -134,7 +134,7 @@ if(!$jwtHandler->isLoggedIn()) {
                             }
                             echo '</span>';
                         echo '</span>';
-                        echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span><br>';
+                        // echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span>';
                     echo '</div>';
                     echo '<div class="header-right">';
                         echo '<span style="color: var(--primary-dark);">Settings</span>';
