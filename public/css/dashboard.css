@@ -330,6 +330,9 @@ main .table {
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--primary-dark);
+    /* overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; */
 }
 
 .table .table-header .table-item.icons {
@@ -436,8 +439,9 @@ main .table {
 
 .table .major-task h3 {
     margin: 5px;
-    margin-bottom: 10px;
     color: var(--primary-dark);
+
+    overflow-wrap: anywhere;
 
     user-select: none;
     -webkit-user-select: none;
@@ -487,11 +491,10 @@ main .table {
 }
 .table .header:hover .major-dragger {
     display: block;
-    height: 80%;
+    height: 20px;
 }
 .table .task-content {
     flex-grow: 1;
-    margin: 0;
 }
 .table .task-content span {
     overflow-wrap: anywhere;
