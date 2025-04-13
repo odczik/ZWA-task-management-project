@@ -469,7 +469,7 @@ main .table {
 .table .task:hover {
     background-color: rgb(var(--primary-dark-rgb), 0.25);
 }
-.table .task .dragger {
+.table .major-task .dragger {
     border-left: 2px solid rgb(var(--primary-dark-rgb), 0.7);
     border-right: 2px solid rgb(var(--primary-dark-rgb), 0.7);
 
@@ -485,8 +485,13 @@ main .table {
 .table .task:hover .dragger {
     display: block;
 }
+.table .header:hover .major-dragger {
+    display: block;
+    height: 80%;
+}
 .table .task-content {
     flex-grow: 1;
+    margin: 0;
 }
 .table .task-content span {
     overflow-wrap: anywhere;
@@ -522,7 +527,7 @@ main .table {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     width: 100%;
 }
 .table .major-task-input,

@@ -112,11 +112,17 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         const majorTaskElement = document.createElement("div");
         majorTaskElement.className = "major-task";
         majorTaskElement.setAttribute("data-major-task-id", majorTask.id);
+        majorTaskElement.setAttribute("data-major-task-position", majorTask.position || 0);
         tasksContainer.appendChild(majorTaskElement);
 
         const header = document.createElement("div");
         header.className = "header";
         majorTaskElement.appendChild(header);
+
+        const dragger = document.createElement("div");
+        dragger.className = "dragger major-dragger";
+        header.appendChild(dragger);
+        handleDragger(dragger);
 
         const titleElement = document.createElement("h3");
         titleElement.className = "task-content";
