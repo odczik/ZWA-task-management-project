@@ -318,7 +318,8 @@ main .table {
 }
 .table .header-left {
     flex-grow: 1; /* Allow this element to grow */
-    min-width: 100px; /* Optional: Set a minimum width */
+    min-width: 200px; /* Optional: Set a minimum width */
+    margin-left: 6px;
 }
 
 .table .header-right {
