@@ -330,7 +330,7 @@ main .table {
 
 .table .table-header h2 {
     margin: 0;
-    font-size: 1.7rem;
+    font-size: 1.45rem;
     font-weight: 600;
     color: var(--primary-dark);
     overflow: hidden;
@@ -382,9 +382,15 @@ main .table {
     mask: url("https://img.icons8.com/ios-glyphs/30/unlock.png");
     mask-size: cover;
 }
+.icon-container .icon.public:hover {
+    animation: icon-jump 0.5s cubic-bezier(1, 1.4, 1, 1);
+}
 .icon-container .icon.private {
     mask: url("https://img.icons8.com/ios-glyphs/30/lock--v1.png");
     mask-size: cover;
+}
+.icon-container .icon.private:hover {
+    animation: icon-wiggle 0.5s ease-in-out;
 }
 .icon-container .icon.anyone {
     mask: url("https://img.icons8.com/ios-glyphs/30/conference-call--v1.png");
@@ -401,6 +407,34 @@ main .table {
 .icon.settings:hover {
     transform: rotate(90deg);
     transition: 0.2s ease;
+}
+@keyframes icon-wiggle {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    50% {
+        transform: rotate(10deg);
+    }
+    75% {
+        transform: rotate(-10deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+@keyframes icon-jump {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .table-body {
@@ -635,4 +669,39 @@ main .table {
     background-color: rgb(var(--primary-dark-rgb), 1);
     color: var(--primary-light);
     cursor: pointer;
+}
+
+.modal .color {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 200%;
+    height: 200%;
+
+    cursor: pointer;
+}
+
+.modal select {
+    width: 65%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 3px solid var(--primary-dark);
+    background-color: rgb(var(--primary-dark-rgb), 0);
+    color: var(--primary-dark);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left;
+    outline: none;
+    cursor: pointer;
+}
+.modal select:hover {
+    background-color: rgb(var(--primary-dark-rgb), 0.25);
+}
+.modal option {
+    font-size: 1rem;
+    font-weight: 600;
+    background: var(--primary-light);
+    color: var(--primary-dark);
 }

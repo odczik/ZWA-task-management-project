@@ -1,3 +1,7 @@
+/* ================ */
+/* Project creation */
+/* ================ */
+
 const addButton = document.querySelector(".sidebar-add-button");
 const createButton = document.querySelector("button[type='submit']");
 const cancelButton = document.querySelector(".cancel-button");
@@ -10,28 +14,28 @@ addButton.addEventListener("click", () => {
     modalForm.classList.add("open");
 });
 
-function closeModalEnd() {
+function closeAddModalEnd() {
     modalForm.classList.remove("closing");
     modalForm.style.visibility = "hidden";
     modal.style.visibility = "hidden";
 }
 
-function closeModal() {
+function closeAddModal() {
     modalForm.classList.remove("open");
     modalForm.classList.add("closing");
-    modalForm.addEventListener("animationend", closeModalEnd(), { once: true });
-    modalForm.removeEventListener("animationend", closeModalEnd());
+    modalForm.addEventListener("animationend", closeAddModalEnd(), { once: true });
+    modalForm.removeEventListener("animationend", closeAddModalEnd());
 }
 
 modal.addEventListener('click', (event) => {
     if (event.target === modal) {
-        closeModal();
+        closeAddModal();
     }
 });
 
 cancelButton.addEventListener("click", (event) => {
     event.preventDefault();
-    closeModal();
+    closeAddModal();
 });
 
 modalForm.addEventListener('submit', function(event) {
@@ -41,6 +45,67 @@ modalForm.addEventListener('submit', function(event) {
     fetch('/api/projects', {
         method: 'POST',
         body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        window.location.href = '/dashboard?id=' + data.project_id;
+    })
+    .catch(e => {
+        console.error(e);
+    });
+});
+
+/* ================ */
+/* Project settings */
+/* ================ */
+
+const settingsButton = document.querySelector(".settings");
+const settingsModal = document.querySelector(".settings-modal");
+const settingsModalForm = document.querySelector(".settings-form");
+const settingsCancelButton = document.querySelector(".settings-cancel-button");
+
+settingsButton.addEventListener("click", () => {
+    settingsModal.style.visibility = "visible";
+    settingsModalForm.style.visibility = "visible";
+    settingsModalForm.classList.add("open");
+});
+
+function closeSetingsModalEnd() {
+    settingsModalForm.classList.remove("closing");
+    settingsModalForm.style.visibility = "hidden";
+    settingsModal.style.visibility = "hidden";
+}
+
+function closeSettingsModal() {
+    settingsModalForm.classList.remove("open");
+    settingsModalForm.classList.add("closing");
+    settingsModalForm.addEventListener("animationend", closeSetingsModalEnd(), { once: true });
+    settingsModalForm.removeEventListener("animationend", closeSetingsModalEnd());
+}
+
+settingsModal.addEventListener('click', (event) => {
+    if (event.target === settingsModal) {
+        closeSettingsModal();
+    }
+});
+
+settingsCancelButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    closeSettingsModal();
+});
+
+settingsModalForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(settingsModalForm);
+
+    fetch('/api/projects', {
+        method: 'PATCH',
+        body: JSON.stringify(Object.fromEntries(formData))
     })
     .then(response => {
         if (!response.ok) {

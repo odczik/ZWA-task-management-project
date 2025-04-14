@@ -89,6 +89,8 @@ if(!$jwtHandler->isLoggedIn()) {
                 $stmt->execute();
                 $project = $stmt->fetch(PDO::FETCH_ASSOC);
 
+                $member = null;
+
                 if($project) {
                     $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = :project_id AND user_id = :user_id");
                     $stmt->bindParam(':project_id', $currentProject, PDO::PARAM_INT);
@@ -139,6 +141,45 @@ if(!$jwtHandler->isLoggedIn()) {
                     echo '<div class="header-right">';
                         echo '<span style="color: var(--primary-dark);">Settings</span>';
                         echo '<span class="icon-container" style="cursor: pointer; background-color: var(--primary-dark);"><span class="icon settings" style="background-color: rgb(var(--primary-light-rgb), 0.8);"></span></span>';
+                    ?>
+                    <div class="modal settings-modal">
+                        <form class="settings-form" action="/api/projects" method="PATCH">
+                            <input type="hidden" name="id" value="<?php echo $project['id']; ?>">
+                            <h2>Project settings</h2>
+                            <span class="modal-inputs">
+                                <label for="name">Project name</label>
+                                <span>
+                                    <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($project['name']); ?>" placeholder="My awesome project" autocomplete="off" required>
+                                    <span class="modal-color-container">
+                                        <input type="color" name="color" class="color" value="#<?php echo htmlspecialchars($project['color']); ?>">
+                                    </span>
+                                </span>
+                                <label for="description">Description</label>
+                                <span>
+                                    <input type="text" id="description" name="description" value="<?php echo htmlspecialchars($project['description']); ?>" placeholder="My awesome project" autocomplete="off">
+                                </span>
+                                <span>
+                                    <label for="is_public">Project visibility</label>
+                                    <select name="is_public" id="is_public">
+                                        <option value="1" <?php echo $project["is_public"] ? 'selected' : null; ?>>Public</option>
+                                        <option value="0" <?php echo !$project["is_public"] ? 'selected' : null; ?>>Private</option>
+                                    </select>
+                                </span>
+                                <span>
+                                    <label for="anyone_can_edit">Who can edit this project</label>
+                                    <select name="anyone_can_edit" id="anyone_can_edit">
+                                        <option value="1" <?php echo $project["anyone_can_edit"] ? 'selected' : null; ?>>Anyone with a link</option>
+                                        <option value="0" <?php echo !$project["anyone_can_edit"] ? 'selected' : null; ?>>Only editors</option>
+                                    </select>
+                                </span>
+                            </span>
+                            <span class="modal-buttons">
+                                <button type="button" class="cancel-button settings-cancel-button">Cancel</button>
+                                <button type="submit">Save</button>
+                            </span>
+                        </form>
+                    </div>
+                    <?php
                     echo '</div>';
                     echo '</div>';
                     echo '<div class="table-body">';

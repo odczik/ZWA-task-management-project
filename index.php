@@ -77,6 +77,15 @@ $router->delete("/api/projects", function($data) use ($jwtHandler) {
     }
     return deleteProject($data, $user, $pdo);
 });
+$router->patch("/api/projects", function($data) use ($jwtHandler) {
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return updateProject($data, $user, $pdo);
+});
 
 $router->get("/api/tasks", function($data) use ($jwtHandler) { // return tasks for a project
     require "./src/functions/db_connect.php";

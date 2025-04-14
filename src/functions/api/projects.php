@@ -70,3 +70,31 @@ function deleteProject($data, $user, $pdo) {
         return json_encode(["error" => "Failed to delete project"]);
     }
 }
+
+function updateProject($data, $user, $pdo) {
+    if(!isset($data["id"]) || !isset($data["name"]) || !isset($data["color"]) || !isset($data["description"]) || !isset($data["is_public"]) || !isset($data["anyone_can_edit"])) {
+        header("HTTP/1.1 400 Bad Request");
+        return json_encode(["error" => "Missing required fields"]);
+    }
+
+    $data["color"] = substr($data["color"], 1); // Remove the '#' from the color
+
+    $stmt = $pdo->prepare("UPDATE projects SET name = :name, description = :description, color = :color, is_public = :is_public, anyone_can_edit = :anyone_can_edit WHERE id = :id AND owner_id = :owner_id");
+    $stmt->bindParam(':name', $data["name"]);
+    $stmt->bindParam(':description', $data["description"]);
+    $stmt->bindParam(':color', $data["color"]);
+    $stmt->bindParam(':id', $data["id"]);
+    $stmt->bindParam(':is_public', $data["is_public"]);
+    $stmt->bindParam(':anyone_can_edit', $data["anyone_can_edit"]);
+    $stmt->bindParam(':owner_id', $user->user_id);
+    
+    if($stmt->execute()) {
+        header("HTTP/1.1 200 OK");
+        header("Content-Type: application/json; charset=utf-8");
+        return json_encode(["message" => "Project updated successfully", "project_id" => $data["id"]]);
+    } else {
+        header("HTTP/1.1 500 Internal Server Error");
+        header("Content-Type: application/json; charset=utf-8");
+        return json_encode(["error" => "Failed to update project"]);
+    }
+}
