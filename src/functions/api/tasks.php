@@ -20,6 +20,12 @@ function createTask($data, $user, $pdo) {
         // Start a transaction
         $pdo->beginTransaction();
 
+        // Fetch the project details
+        $stmt = $pdo->prepare("SELECT anyone_can_edit FROM projects WHERE id = :project_id");
+        $stmt->bindParam(':project_id', $data["project_id"]);
+        $stmt->execute();
+        $project = $stmt->fetch(PDO::FETCH_ASSOC);
+
         // Validate user permissions
         $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = :project_id AND user_id = :user_id");
         $stmt->bindParam(':project_id', $data["project_id"]);
@@ -27,7 +33,7 @@ function createTask($data, $user, $pdo) {
         $stmt->execute();
         $member = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$member) {
+        if (!$member && !$project["anyone_can_edit"]) {
             $pdo->rollBack();
             header("HTTP/1.1 403 Forbidden");
             return json_encode(["error" => "You do not have permission to modify this project"]);
@@ -97,6 +103,12 @@ function updateTask($data, $user, $pdo) {
         try {
             // Start a transaction
             $pdo->beginTransaction();
+
+            // Fetch the project details
+            $stmt = $pdo->prepare("SELECT anyone_can_edit FROM projects WHERE id = :project_id");
+            $stmt->bindParam(':project_id', $data["project_id"]);
+            $stmt->execute();
+            $project = $stmt->fetch(PDO::FETCH_ASSOC);
     
             // Validate user permissions
             $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = (SELECT project_id FROM tasks WHERE id = :task_id) AND user_id = :user_id");
@@ -105,7 +117,7 @@ function updateTask($data, $user, $pdo) {
             $stmt->execute();
             $member = $stmt->fetch(PDO::FETCH_ASSOC);
     
-            if (!$member) {
+            if (!$member && !$project["anyone_can_edit"]) {
                 $pdo->rollBack();
                 header("HTTP/1.1 403 Forbidden");
                 return json_encode(["error" => "You do not have permission to modify this task"]);
@@ -185,6 +197,12 @@ function deleteTask($data, $user, $pdo) {
         // Start a transaction
         $pdo->beginTransaction();
 
+        // Fetch the project details
+        $stmt = $pdo->prepare("SELECT anyone_can_edit FROM projects WHERE id = :project_id");
+        $stmt->bindParam(':project_id', $data["project_id"]);
+        $stmt->execute();
+        $project = $stmt->fetch(PDO::FETCH_ASSOC);
+
         // Validate user permissions
         $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = (SELECT project_id FROM tasks WHERE id = :task_id) AND user_id = :user_id");
         $stmt->bindParam(':task_id', $data["task_id"]);
@@ -192,7 +210,7 @@ function deleteTask($data, $user, $pdo) {
         $stmt->execute();
         $member = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$member) {
+        if (!$member && !$project["anyone_can_edit"]) {
             $pdo->rollBack();
             header("HTTP/1.1 403 Forbidden");
             return json_encode(["error" => "You do not have permission to delete this task"]);

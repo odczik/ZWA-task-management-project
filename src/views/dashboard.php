@@ -99,8 +99,14 @@ if(!$jwtHandler->isLoggedIn()) {
                     $member = $stmt->fetch(PDO::FETCH_ASSOC);
                 }
 
-                if(!$member) {
+                if(!$member && !$project["is_public"]) {
                     $project = null;
+                }
+
+                if(!$member){
+                    $member = [
+                        "role" => $project["anyone_can_edit"] ? "editor" : "viewer"
+                    ];
                 }
 
                 if($project) {
