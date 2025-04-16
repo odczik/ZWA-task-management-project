@@ -174,7 +174,7 @@ if(!$jwtHandler->isLoggedIn()) {
                                 <span>
                                     <label for="anyone_can_edit">Who can edit this project</label>
                                     <select name="anyone_can_edit" id="anyone_can_edit">
-                                        <option value="1" <?php echo $project["anyone_can_edit"] ? 'selected' : null; ?>>Anyone with a link</option>
+                                        <option value="1" <?php echo $project["anyone_can_edit"] ? 'selected' : null; ?>>Anyone with access to the project</option>
                                         <option value="0" <?php echo !$project["anyone_can_edit"] ? 'selected' : null; ?>>Only editors</option>
                                     </select>
                                 </span>

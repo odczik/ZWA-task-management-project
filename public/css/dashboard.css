@@ -695,6 +695,8 @@ main .table {
     text-align: left;
     outline: none;
     cursor: pointer;
+
+    text-overflow: ellipsis;
 }
 .modal select:hover {
     background-color: rgb(var(--primary-dark-rgb), 0.25);
