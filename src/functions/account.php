@@ -33,6 +33,8 @@ function login($data, $jwtHandler, $pdo) {
     $payload = [
         "user_id" => $user['id'],
         "username" => $user['username'],
+        "token_version" => $user['token_version'],
+        "iat" => time(), // Issued at
         "exp" => $expiration
     ];
     

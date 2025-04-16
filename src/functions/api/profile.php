@@ -37,6 +37,16 @@ function updateProfile($data, $user, $pdo) {
             }
         }
 
+        // Update the token version
+        $tokenVersionStmt = $pdo->prepare("UPDATE users SET token_version = token_version + 1 WHERE id = :id");
+        $tokenVersionStmt->bindParam(':id', $user->user_id);
+        if (!$tokenVersionStmt->execute()) {
+            $pdo->rollBack();
+            header("HTTP/1.1 500 Internal Server Error");
+            header("Content-Type: application/json");
+            return json_encode(["error" => "Failed to update token version"]);
+        }
+
         // Update the username and email
         $profileStmt = $pdo->prepare("UPDATE users SET username = :username, email = :email WHERE id = :id");
         $profileStmt->bindParam(':username', $data['username']);

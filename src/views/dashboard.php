@@ -28,7 +28,7 @@ if(!$jwtHandler->isLoggedIn()) {
             <div class="sidebar-items">
                 <?php
 
-                require_once 'src/functions/db_connect.php';
+                require 'src/functions/db_connect.php';
 
                 $user = $jwtHandler->getUser();
 

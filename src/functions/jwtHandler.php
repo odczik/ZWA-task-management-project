@@ -14,6 +14,8 @@ use Firebase\JWT\BeforeValidException;
 
 class JWTHandler {
     private $secret_key;
+    private $cachedPayload = null;
+    private $cachedUser = null;
 
     public function __construct($secret_key) {
         $this->secret_key = $secret_key;
@@ -26,20 +28,48 @@ class JWTHandler {
 
     // Function to verify JWT (decode and validate)
     public function verifyJWT($jwt) {
+        if ($this->cachedPayload !== null) {
+            return $this->cachedPayload; // Return cached payload if available
+        }
         try {
             // Decode JWT
             $decoded = JWT::decode($jwt, new Key($this->secret_key, 'HS256'));
+            // Check if the token is expired
+            if (isset($decoded->exp) && $decoded->exp < time()) {
+                return null; // Token is expired
+            }
+            // Check if the token is valid
+            if (isset($decoded->iat) && $decoded->iat > time()) {
+                return null; // Token is not yet valid
+            }
+            // Check if the token version is valid
+            if (isset($decoded->token_version)) {
+                // Check if the token version is cached
+                if ($this->cachedUser !== null) {
+                    // Check if the token version matches the one in the database
+                    if ($this->cachedUser['token_version'] !== $decoded->token_version) {
+                        return null; // Token version mismatch
+                    }
+                }
+                require "./src/functions/db_connect.php";
+                $stmt = $pdo->prepare("SELECT token_version FROM users WHERE id = :id");
+                $stmt->bindParam(':id', $decoded->user_id);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                // Cache the result to avoid multiple queries
+                $this->cachedUser = $result;
+                // Check if the token version matches the one in the database
+                if ($result && $result['token_version'] !== $decoded->token_version) {
+                    return null; // Token version mismatch
+                }
+            }
+
+            // Cache the payload for future use
+            $this->cachedPayload = $decoded;
+            // Return the decoded payload
             return $decoded;
         } catch (exception $e) {    // Catch all exceptions to handle invalid tokens
             return null;
-        } catch (ExpiredException $e) {
-            return ["error" => "Token has expired: " . $e->getMessage()];
-        } catch (SignatureInvalidException $e) {
-            return ["error" => "Invalid signature: " . $e->getMessage()];
-        } catch (BeforeValidException $e) {
-            return ["error" => "Token is not yet valid: " . $e->getMessage()];
-        } catch (Exception $e) {
-            return ["error" => "Invalid token: " . $e->getMessage()];
         }
     }
 
