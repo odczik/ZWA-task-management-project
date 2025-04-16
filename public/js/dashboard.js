@@ -60,6 +60,10 @@ modalForm.addEventListener('submit', function(event) {
     });
 });
 
+const projectId = location.search.split("=")[1];
+
+if(!projectId) throw new Error("Project ID not found in URL.");
+
 /* ================ */
 /* Project settings */
 /* ================ */
@@ -147,9 +151,6 @@ function deleteTaskRequest(taskId) {
 }
 
 const tasksContainer = document.querySelector('.table-tasks');
-const projectId = location.search.split("=")[1];
-
-if(!projectId) throw new Error("Project ID not found in URL.");
     
 fetch(`/api/tasks?project_id=${projectId}`).then(response => {
     if (!response.ok) {
