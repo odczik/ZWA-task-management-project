@@ -16,6 +16,30 @@ $router->get("/", function() {
     return render("./src/views/landing.php");
 });
 
+$router->get("/account", function() use ($jwtHandler) {
+    // Check if the user is logged in
+    if(!$jwtHandler->isLoggedIn()) {
+        header("Location: /");
+        exit;
+    }
+    // Decode the JWT to get user information
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("Location: /");
+        exit;
+    }
+
+    // Fetch the user data from the database
+    require "./src/functions/db_connect.php";
+    $query = "SELECT * FROM users WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $user->user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return render("./src/views/account.php", ["user" => $user]);
+});
+
 $router->get("/dashboard", function() {
     return render("./src/views/dashboard.php");
 });

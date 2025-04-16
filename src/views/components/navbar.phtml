@@ -15,10 +15,10 @@
     </div>
     <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
         <div class="nav-logged-in-container">
-            <div class="nav-logged-in-user">
+            <a href="/account" class="nav-logged-in-user">
                 <span class="nav-logged-in-username"><?php echo $jwtHandler->getUser()->username ?></span>
                 <span class="nav-logged-in-icon"></span>
-            </div>
+            </a>
             <div class="nav-logged-in-items">
                 <div class="nav-logged-in-item">
                     <a href="/dashboard">Dashboard</a>
