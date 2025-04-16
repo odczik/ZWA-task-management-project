@@ -105,8 +105,8 @@ function updateTask($data, $user, $pdo) {
             $pdo->beginTransaction();
 
             // Fetch the project details
-            $stmt = $pdo->prepare("SELECT anyone_can_edit FROM projects WHERE id = :project_id");
-            $stmt->bindParam(':project_id', $data["project_id"]);
+            $stmt = $pdo->prepare("SELECT * FROM projects WHERE id = (SELECT project_id FROM tasks WHERE id = :task_id)");
+            $stmt->bindParam(':task_id', $data["task_id"]);
             $stmt->execute();
             $project = $stmt->fetch(PDO::FETCH_ASSOC);
     

@@ -411,7 +411,6 @@ function createTaskRequest(newTask, taskName, projectId, assigned_under) {
         }
         return response.json();
     }).then(data => {
-        console.log(data);
         newTask.setAttribute("data-task-id", data.task_id);
         newTask.setAttribute("data-task-position", data.position);
 

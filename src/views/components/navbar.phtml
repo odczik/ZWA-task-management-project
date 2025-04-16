@@ -17,7 +17,7 @@
         <div class="nav-logged-in-container">
             <a href="/account" class="nav-logged-in-user">
                 <span class="nav-logged-in-username"><?php echo $jwtHandler->getUser()->username ?></span>
-                <span class="nav-logged-in-icon"><img src="public/profile-pictures/<?php echo $jwtHandler->getUser()->user_id ?>.jpg" alt="profile picture"></span>
+                <span class="nav-logged-in-icon"><img src="public/profile-pictures/<?php echo $jwtHandler->getUser()->user_id ?>.jpg" alt="profile picture" onerror="this.onerror=null; this.src='public/profile-pictures/default.jpg'; console.clear();"></span>
             </a>
             <div class="nav-logged-in-items">
                 <div class="nav-logged-in-item">
