@@ -273,8 +273,6 @@ function handleDragger(dragger) {
         draggedTask.style.height = bounds.height + "px";
         draggedTask.style.pointerEvents = "none"; // Disable pointer events to prevent interference with mousemove
 
-        // tasksContainer.appendChild(draggedTask);
-
         draggedTaskOffset.x = e.clientX - bounds.left;
         draggedTaskOffset.y = e.clientY - bounds.top + 80;
 
@@ -287,7 +285,6 @@ function handleDragger(dragger) {
     })
 
     let closestTask;
-    let lastClosestTask;
     let closestTasks;
     document.addEventListener("mousemove", e => {
         if (draggedTask) {
@@ -296,8 +293,11 @@ function handleDragger(dragger) {
 
             // Placeholder
             try {
-                closestTask = document.elementFromPoint(e.clientX, e.clientY).closest('.task');
-                if(closestTask === lastClosestTask) return;
+                const elementFromPoint = document.elementFromPoint(e.clientX, e.clientY);
+                if(!elementFromPoint || elementFromPoint.classList.contains("placeholder")) return;
+
+                closestTask = elementFromPoint.closest('.task');
+
                 if(closestTask) {
                     lastClosestTask = closestTask;
                 }
@@ -311,40 +311,34 @@ function handleDragger(dragger) {
                 closestTasks = null;
             }
 
-            if(e.target.classList.contains("tasks")){
-                if(!closestTask) {
-                    if(e.target.parentElement === placeholder.parentElement.parentElement) closestTask = lastClosestTask;
-                }
-            }
-
             if (closestTask) {
-                closestTask.parentNode.insertBefore(placeholder, closestTask.nextSibling);
-            } else if(closestTasks) {
-                closestTask = closestTasks.LastChild;
+                const closestTaskBounds = closestTask.getBoundingClientRect();
+                const offsetFromCenter = (closestTaskBounds.top + closestTaskBounds.height / 2) - (e.clientY);
+
+                if(offsetFromCenter < 0) {
+                    closestTask.parentNode.insertBefore(placeholder, closestTask.nextSibling);
+                } else {
+                    closestTask.parentNode.insertBefore(placeholder, closestTask);
+                }
+            } else if(e.target.closest(".header")) {
                 closestTasks.appendChild(placeholder);
-            } else if (placeholder.parentNode) {
-                placeholder.parentNode.removeChild(placeholder);
             }
         }
     });
 
     document.addEventListener("mouseup", e => {
         if (draggedTask) {
-            closestTask = e.target.closest('.task');
-            closestTasks = e.target.closest(".major-task").querySelector(".tasks");
-
-            if(e.target.classList.contains("tasks")){
-                if(!closestTask) {
-                    closestTask = lastClosestTask;
-                }
-            }
-
             if(closestTask) {
-                closestTask.parentNode.insertBefore(draggedTask, closestTask.nextSibling);
-                placeholder.parentNode.removeChild(placeholder);
-            } else if(closestTasks) {
+                const closestTaskBounds = closestTask.getBoundingClientRect();
+                const offsetFromCenter = (closestTaskBounds.top + closestTaskBounds.height / 2) - (e.clientY);
+
+                if(offsetFromCenter < 0) {
+                    closestTask.parentNode.insertBefore(draggedTask, placeholder.nextSibling);
+                } else {
+                    closestTask.parentNode.insertBefore(draggedTask, placeholder);
+                }
+            } else if(e.target.closest(".header")) {
                 closestTasks.appendChild(draggedTask);
-                placeholder.parentNode.removeChild(placeholder);
             }
             
             if (placeholder.parentNode) {
