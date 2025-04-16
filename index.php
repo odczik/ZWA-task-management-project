@@ -4,6 +4,7 @@ require "./src/functions/jwtHandler.php";
 require "./src/functions/account.php";
 require "./src/functions/api/projects.php";
 require "./src/functions/api/tasks.php";
+require "./src/functions/api/profile.php";
 
 $jwtHandler = new JWTHandler("your_secret_key");
 $router = new Router();
@@ -82,6 +83,16 @@ $router->get("/logout", function() {
 /* ========== */
 /* API Routes */
 /* ========== */
+
+$router->post("/api/account", function($data) use ($jwtHandler) {
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return updateProfile($data, $user, $pdo);
+});
 
 $router->post("/api/projects", function($data) use ($jwtHandler) {
     require "./src/functions/db_connect.php";

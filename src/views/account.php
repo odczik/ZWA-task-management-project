@@ -22,21 +22,35 @@ if(!$jwtHandler->isLoggedIn()) {
 <body>
     <?php include 'src/views/components/navbar.phtml'; ?>
 
-    <?php print_r($user) ?>
     <main>
-        <div class="container">
-            <h1>Account</h1>
-            <div class="account-info">
-                <h2>Account Information</h2>
-                <p><strong>Username:</strong> <?php echo htmlspecialchars($user["username"]); ?></p>
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($user["email"]); ?></p>
-                <p><strong>Created At:</strong> <?php echo htmlspecialchars($user["created_at"]); ?></p>
+        <h1>Account</h1>
+        <form class="account-info" action="/api/account" method="POST" enctype="multipart/form-data">
+            <div class="account-details-container">
+                <div class="account-info-container">
+                    <span>
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" value="<?= htmlspecialchars($user["username"]) ?>" autocomplete="off">
+                    </span>
+                    <span>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" value="<?= htmlspecialchars($user["email"]) ?>" autocomplete="off">
+                    </span>
+                    <span>
+                        <label for="password">Password</label>
+                        <input type="password" name="password-old" id="password-old" placeholder="Old Password">
+                        <input type="password" name="password" id="password" placeholder="New Password">
+                    </span>
+                </div>
+                <div class="account-profile-container">
+                    <img src="public/profile-pictures/<?= htmlspecialchars($user["id"]) ?>.jpg" alt="Profile Picture" id="profile-preview" onerror="this.onerror=null; this.src='public/profile-pictures/default.jpg'; console.clear();">
+                    <input type="file" name="profile" id="profile" accept="image/*" onchange="document.getElementById('profile-preview').src = window.URL.createObjectURL(this.files[0])">
+                </div>
             </div>
-            <div class="account-actions">
-                <h2>Actions</h2>
-                <a href="/logout" class="btn">Logout</a>
-            </div>
-        </div>
+            <span class="buttons">
+                <button type="button" onclick="location.reload()">Cancel</button>
+                <button type="submit">Save Changes</button>
+            </span>
+        </form>
     </main>
     
     <?php include 'src/views/components/footer.phtml'; ?>

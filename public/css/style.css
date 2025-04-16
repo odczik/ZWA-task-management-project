@@ -69,8 +69,6 @@ header {
 .container {
     position: relative;
 
-    border: 1px solid red;
-
     margin: 25px auto;
     padding: 15px;
     max-width: 800px;
