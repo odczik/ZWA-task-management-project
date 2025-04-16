@@ -1,5 +1,5 @@
 <?php
-function updateProfile($data, $user, $pdo) {
+function updateProfile($data, $user, $pdo, $jwtHandler) {
     // Check if the required fields are present
     if (!isset($data['username']) || !isset($data['email'])) {
         header("HTTP/1.1 400 Bad Request");
@@ -96,6 +96,33 @@ function updateProfile($data, $user, $pdo) {
 
         // Commit the transaction
         $pdo->commit();
+
+        // Fetch the updated user data
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $user->user_id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Generate a new JWT token after updating the profile
+        $payload = [
+            "user_id" => $user["id"],
+            "username" => $user["username"],
+            "token_version" => $user["token_version"],
+            "iat" => time(), // Issued at
+            "exp" => time() + 3600 // Expiration time (1 hour)
+        ];
+        $jwt = $jwtHandler->createJWT($payload);
+        error_log("JWT: " . $jwt);
+
+        // Set the new token cookie
+        setcookie("token", $jwt, [
+            'expires' => time() + 3600,
+            'secure' => isset($_SERVER['HTTPS']),
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => "Strict"
+        ]);
+
         return header("Location: /account");
     } catch (PDOException $e) {
         $pdo->rollBack();

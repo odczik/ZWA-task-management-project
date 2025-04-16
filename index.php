@@ -91,7 +91,7 @@ $router->post("/api/account", function($data) use ($jwtHandler) {
         header("HTTP/1.1 401 Unauthorized");
         exit;
     }
-    return updateProfile($data, $user, $pdo);
+    return updateProfile($data, $user, $pdo, $jwtHandler);
 });
 
 $router->post("/api/projects", function($data) use ($jwtHandler) {
