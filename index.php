@@ -5,6 +5,7 @@ require "./src/functions/account.php";
 require "./src/functions/api/projects.php";
 require "./src/functions/api/tasks.php";
 require "./src/functions/api/profile.php";
+require "./src/functions/api/members.php";
 
 $jwtHandler = new JWTHandler("your_secret_key");
 $router = new Router();
@@ -159,6 +160,25 @@ $router->patch("/api/tasks", function($data) use ($jwtHandler) {  // update task
     return updateTask($data, $user, $pdo);
 });
 
+$router->post("/api/invitation", function($data) use ($jwtHandler) { // invite member to project
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return inviteMember($data, $user, $pdo);
+});
+$router->delete("/api/invitation", function($data) use ($jwtHandler) { // revoke invite
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return revokeInvite($data, $user, $pdo);
+});
+
 /* ======== */
 /* DB DEBUG */
 /* ======== */
@@ -211,6 +231,16 @@ $router->get("/invitations-table", function() {
     $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($tasks);
+    exit;
+});
+$router->get("/preferences-table", function() {
+    require "./src/functions/db_connect.php";
+    $query = "SELECT * FROM preferences";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $preferences = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($preferences);
     exit;
 });
 

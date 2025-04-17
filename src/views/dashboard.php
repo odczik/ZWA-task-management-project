@@ -103,7 +103,7 @@ if(!$jwtHandler->isLoggedIn()) {
                     $project = null;
                 }
 
-                if(!$member){
+                if(!$member && isset($project["is_public"])) {
                     $member = [
                         "role" => $project["anyone_can_edit"] ? "editor" : "viewer"
                     ];
@@ -142,6 +142,68 @@ if(!$jwtHandler->isLoggedIn()) {
                             }
                             echo '</span>';
                         echo '</span>';
+                        ?>
+                        <span class="table-item members">
+                            <button id="manage-members-button">Manage members</button>
+                        </span>
+                        <div class="modal members-modal">
+                            <form action="/api/members" method="POST">
+                                <input type="hidden" name="id" value="<?php echo $project['id']; ?>">
+                                <h2>Project members</h2>
+                                <?php
+                                // Fetch project members & invitees
+                                $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = :project_id");
+                                $stmt->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
+                                $stmt->execute();
+                                $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $stmt = $pdo->prepare("SELECT * FROM invitations WHERE project_id = :project_id");
+                                $stmt->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
+                                $stmt->execute();
+                                $invitations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                // Display project members
+                                echo '<h3>Members</h3>';
+                                foreach($members as $member) {
+                                    if($member["user_id"] == $user->user_id) {
+                                        continue;
+                                    }
+                                    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+                                    $stmt->bindParam(':id', $member['user_id'], PDO::PARAM_INT);
+                                    $stmt->execute();
+                                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    echo '<span class="modal-member">';
+                                        echo '<span class="modal-member-name">' . htmlspecialchars($user['username']) . '</span>';
+                                        echo '<span class="modal-member-role">(' . htmlspecialchars($member['role']) . ')</span>';
+                                        if($project["is_public"] && $member["role"] != "owner") {
+                                            echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/members\', {method: \'DELETE\', body: JSON.stringify({id: ' . $member["id"] . '})})">Remove</button>';
+                                        }
+                                    echo '</span>';
+                                }
+                                if(count($members) == 1) {
+                                    echo '<p class="sidebar-empty">No members found</p>';
+                                }
+                                // Display project invitees
+                                echo '<h3>Invitations</h3>';
+                                foreach($invitations as $invitation) {
+                                    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+                                    $stmt->bindParam(':id', $invitation['user_id'], PDO::PARAM_INT);
+                                    $stmt->execute();
+                                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    echo '<span class="modal-member">';
+                                        echo '<span class="modal-member-name">' . htmlspecialchars($user['username']) . '</span>';
+                                        if($project["is_public"]) {
+                                            echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/invitation\', {method: \'DELETE\', body: JSON.stringify({id: ' . $invitation["id"] . '})}).then(response => {if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}return response.json();}).then(data => {location.reload();}).catch(e => {alert(e);});">Remove</button>';
+                                        }
+                                    echo '</span>';
+                                }
+                                if(count($invitations) == 0) {
+                                    echo '<p class="sidebar-empty">No invitations found</p>';
+                                }
+                                ?>
+                                <button id="add-member-button">Invite</button>
+                            </form>
+                        </div>
+                        <?php
                         // echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span>';
                     echo '</div>';
                     echo '<div class="header-right">';

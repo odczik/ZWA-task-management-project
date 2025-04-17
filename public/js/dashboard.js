@@ -1,6 +1,6 @@
-/* ================ */
-/* Project creation */
-/* ================ */
+/* ====== */
+/* Modals */
+/* ====== */
 
 const addButton = document.querySelector(".sidebar-add-button");
 const createButton = document.querySelector("button[type='submit']");
@@ -63,6 +63,111 @@ modalForm.addEventListener('submit', function(event) {
 const projectId = location.search.split("=")[1];
 
 if(!projectId) throw new Error("Project ID not found in URL.");
+
+const projectMembersButton = document.querySelector("#manage-members-button");
+const projectMembersModal = document.querySelector(".members-modal");
+const projectMembersModalForm = projectMembersModal.querySelector("form");
+const projectMembersAddButton = projectMembersModal.querySelector("#add-member-button");
+
+projectMembersButton.addEventListener("click", () => {
+    projectMembersModal.style.visibility = "visible";
+    projectMembersModalForm.style.visibility = "visible";
+    projectMembersModalForm.classList.add("open");
+});
+
+function closeAddModalEnd() {
+    projectMembersModalForm.classList.remove("closing");
+    projectMembersModalForm.style.visibility = "hidden";
+    projectMembersModal.style.visibility = "hidden";
+}
+
+function closeAddModal() {
+    projectMembersModalForm.classList.remove("open");
+    projectMembersModalForm.classList.add("closing");
+    projectMembersModalForm.addEventListener("animationend", closeAddModalEnd(), { once: true });
+    projectMembersModalForm.removeEventListener("animationend", closeAddModalEnd());
+}
+
+projectMembersModal.addEventListener('click', (event) => {
+    if (event.target === projectMembersModal) {
+        closeAddModal();
+    }
+});
+
+projectMembersModalForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    // const formData = new FormData(projectMembersModalForm);
+
+    // fetch('/api/members', {
+    //     method: 'POST',
+    //     body: JSON.stringify(Object.fromEntries(formData))
+    // })
+    // .then(response => {
+    //     if (!response.ok) {
+    //         throw new Error(`HTTP error! status: ${response.status}`);
+    //     }
+    //     return response.json();
+    // })
+    // .then(data => {
+    //     window.location.href = '/dashboard?id=' + data.project_id;
+    // })
+    // .catch(e => {
+    //     console.error(e);
+    // });
+});
+
+projectMembersAddButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const emailInput = document.createElement("input");
+    emailInput.type = "email";
+    emailInput.placeholder = "Email";
+    emailInput.className = "member-email-input";
+    emailInput.autocomplete = "off";
+    emailInput.name = "email";
+    emailInput.required = true;
+    projectMembersModalForm.insertBefore(emailInput, projectMembersAddButton);
+    emailInput.focus();
+
+    emailInput.addEventListener("blur", (event) => {
+        event.preventDefault();
+        const email = emailInput.value.trim();
+        if(email === "") {
+            emailInput.remove();
+            return;
+        } else {
+            // emailInput.setAttribute("disabled", "true");
+            fetch('/api/invitation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    project_id: projectId
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            }).then(data => {
+                location.reload();
+            }).catch(e => {
+                alert(e);
+            });
+        }
+    });
+    emailInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            emailInput.blur();
+        }
+        if (event.key === "Escape") {
+            emailInput.value = "";
+            emailInput.blur();
+        }
+    });
+})
 
 /* ================ */
 /* Project settings */

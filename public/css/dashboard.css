@@ -707,3 +707,54 @@ main .table {
     background: var(--primary-light);
     color: var(--primary-dark);
 }
+
+/* ============== */
+/* Manage members */
+/* ============== */
+
+.members-modal form {
+    gap: 10px;
+}
+
+.members-modal form h3 {
+    width: 100%;
+    text-align: left;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.members-modal .modal-member {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+}
+.members-modal .modal-member .modal-member-name {
+    flex-grow: 1;
+}
+.members-modal .modal-member button {
+    width: auto;
+    padding: 5px 10px;
+    flex-grow: 0;
+}
+
+.members-modal button {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    background: none;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+
+    width: 100%;
+
+    transition: 0.1s ease;
+}
+.members-modal button:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-light);
+}
