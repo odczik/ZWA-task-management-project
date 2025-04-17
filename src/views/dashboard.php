@@ -164,16 +164,25 @@ if(!$jwtHandler->isLoggedIn()) {
                                 // Display project members
                                 echo '<h3>Members</h3>';
                                 foreach($members as $member) {
-                                    if($member["user_id"] == $user->user_id) {
-                                        continue;
-                                    }
                                     $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
                                     $stmt->bindParam(':id', $member['user_id'], PDO::PARAM_INT);
                                     $stmt->execute();
                                     $user = $stmt->fetch(PDO::FETCH_ASSOC);
                                     echo '<span class="modal-member">';
+                                        echo '<span class="icon-container role-icon">';
+                                        switch($member["role"]) {
+                                            case "owner": 
+                                                echo '<span class="icon owner" title="Owner"></span>';
+                                                break;
+                                            case "editor":
+                                                echo '<span class="icon editor" title="Editor"></span>';
+                                                break;
+                                            case "viewer":  
+                                                echo '<span class="icon viewer" title="Viewer"></span>';
+                                                break;
+                                        }
+                                        echo '</span>';
                                         echo '<span class="modal-member-name">' . htmlspecialchars($user['username']) . '</span>';
-                                        echo '<span class="modal-member-role">(' . htmlspecialchars($member['role']) . ')</span>';
                                         if($project["is_public"] && $member["role"] != "owner") {
                                             echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/members\', {method: \'DELETE\', body: JSON.stringify({member_id: ' . $member["user_id"] . ', project_id: ' . $project["id"] . '})})">Remove</button>';
                                         }

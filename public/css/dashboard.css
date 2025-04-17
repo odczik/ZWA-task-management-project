@@ -733,6 +733,7 @@ main .table {
 }
 .members-modal .modal-member .modal-member-name {
     flex-grow: 1;
+    margin-left: 5px;
 }
 .members-modal .modal-member button {
     width: auto;
