@@ -117,7 +117,7 @@ function updateTask($data, $user, $pdo) {
             $stmt->execute();
             $member = $stmt->fetch(PDO::FETCH_ASSOC);
     
-            if (!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) {
+            if ((!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) || $member["role"] == "viewer") {
                 $pdo->rollBack();
                 header("HTTP/1.1 403 Forbidden");
                 return json_encode(["error" => "You do not have permission to modify this task"]);
