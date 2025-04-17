@@ -116,7 +116,7 @@ projectMembersModalForm.addEventListener('submit', function(event) {
     // });
 });
 
-projectMembersAddButton.addEventListener("click", (e) => {
+if(projectMembersAddButton) projectMembersAddButton.addEventListener("click", (e) => {
     e.preventDefault();
 
     const emailInput = document.createElement("input");
@@ -126,17 +126,20 @@ projectMembersAddButton.addEventListener("click", (e) => {
     emailInput.autocomplete = "off";
     emailInput.name = "email";
     emailInput.required = true;
-    projectMembersModalForm.insertBefore(emailInput, projectMembersAddButton);
+    projectMembersModalForm.append(emailInput);
     emailInput.focus();
+
+    projectMembersAddButton.style.display = "none";
 
     emailInput.addEventListener("blur", (event) => {
         event.preventDefault();
         const email = emailInput.value.trim();
         if(email === "") {
             emailInput.remove();
+            projectMembersAddButton.style.display = "block";
             return;
         } else {
-            // emailInput.setAttribute("disabled", "true");
+            emailInput.setAttribute("disabled", "true");
             fetch('/api/invitation', {
                 method: 'POST',
                 headers: {
@@ -155,6 +158,7 @@ projectMembersAddButton.addEventListener("click", (e) => {
                 location.reload();
             }).catch(e => {
                 alert(e);
+                location.reload();
             });
         }
     });
@@ -178,7 +182,7 @@ const settingsModal = document.querySelector(".settings-modal");
 const settingsModalForm = document.querySelector(".settings-form");
 const settingsCancelButton = document.querySelector(".settings-cancel-button");
 
-settingsButton.addEventListener("click", () => {
+if(settingsButton) settingsButton.addEventListener("click", () => {
     settingsModal.style.visibility = "visible";
     settingsModalForm.style.visibility = "visible";
     settingsModalForm.classList.add("open");
@@ -197,18 +201,18 @@ function closeSettingsModal() {
     settingsModalForm.removeEventListener("animationend", closeSetingsModalEnd());
 }
 
-settingsModal.addEventListener('click', (event) => {
+if(settingsModal) settingsModal.addEventListener('click', (event) => {
     if (event.target === settingsModal) {
         closeSettingsModal();
     }
 });
 
-settingsCancelButton.addEventListener("click", (event) => {
+if(settingsCancelButton) settingsCancelButton.addEventListener("click", (event) => {
     event.preventDefault();
     closeSettingsModal();
 });
 
-settingsModalForm.addEventListener('submit', function(event) {
+if(settingsModalForm) settingsModalForm.addEventListener('submit', function(event) {
     event.preventDefault();
     const formData = new FormData(settingsModalForm);
 

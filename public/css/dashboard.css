@@ -714,6 +714,7 @@ main .table {
 
 .members-modal form {
     gap: 10px;
+    min-width: 250px;
 }
 
 .members-modal form h3 {
