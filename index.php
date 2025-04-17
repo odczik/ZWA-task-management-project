@@ -18,6 +18,17 @@ $router->get("/", function() {
     return render("./src/views/landing.php");
 });
 
+$router->get("/invites", function() use ($jwtHandler) {
+    // Decode the JWT to get user information
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("Location: /");
+        exit;
+    }
+
+    return render("./src/views/invites.php", ["user" => $user]);
+});
+
 $router->get("/account", function() use ($jwtHandler) {
     // Check if the user is logged in
     if(!$jwtHandler->isLoggedIn()) {
@@ -160,6 +171,16 @@ $router->patch("/api/tasks", function($data) use ($jwtHandler) {  // update task
     return updateTask($data, $user, $pdo);
 });
 
+$router->delete("/api/members", function($data) use ($jwtHandler) { // remove member from project
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return removeMember($data, $user, $pdo);
+});
+
 $router->post("/api/invitation", function($data) use ($jwtHandler) { // invite member to project
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
@@ -177,6 +198,15 @@ $router->delete("/api/invitation", function($data) use ($jwtHandler) { // revoke
         exit;
     }
     return revokeInvite($data, $user, $pdo);
+});
+$router->put("/api/invitation", function($data) use ($jwtHandler) { // revoke invite
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return handleInvite($data, $user, $pdo);
 });
 
 /* ======== */

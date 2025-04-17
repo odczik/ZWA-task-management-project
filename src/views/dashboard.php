@@ -175,7 +175,7 @@ if(!$jwtHandler->isLoggedIn()) {
                                         echo '<span class="modal-member-name">' . htmlspecialchars($user['username']) . '</span>';
                                         echo '<span class="modal-member-role">(' . htmlspecialchars($member['role']) . ')</span>';
                                         if($project["is_public"] && $member["role"] != "owner") {
-                                            echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/members\', {method: \'DELETE\', body: JSON.stringify({id: ' . $member["id"] . '})})">Remove</button>';
+                                            echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/members\', {method: \'DELETE\', body: JSON.stringify({member_id: ' . $member["user_id"] . ', project_id: ' . $project["id"] . '})})">Remove</button>';
                                         }
                                     echo '</span>';
                                 }
