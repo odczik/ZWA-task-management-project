@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="icon" type="image/x-icon" href="public/favicon.ico">
     <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/invites.css">
     <link rel="stylesheet" href="public/css/navbar.css">
     <link rel="stylesheet" href="public/css/footer.css">
 </head>
@@ -42,6 +43,10 @@
             echo '<button type="button" class="accept-button" onclick="fetch(\'/api/invitation\', {method: \'PUT\', body: JSON.stringify({id: ' . $invite["id"] . ', accept: true})}).then(response => {if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}return response.json();}).then(data => {location.href = `/dashboard?id=${data.id}`}).catch(e => {alert(e);});">Accept</button>';
             echo '<button type="button" class="decline-button" onclick="fetch(\'/api/invitation\', {method: \'PUT\', body: JSON.stringify({id: ' . $invite["id"] . '})}).then(response => {if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}return response.json();}).then(data => {location.reload()}).catch(e => {alert(e);});">Decline</button>';
             echo "</div>";
+        }
+
+        if (empty($invitations)) {
+            echo "<p>No invitations found.</p>";
         }
         ?>
     </main>

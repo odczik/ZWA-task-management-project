@@ -376,6 +376,7 @@ function handleDragger(dragger) {
     dragger.addEventListener("mousedown", e => {
         draggedTask = dragger.parentElement;
         tableBody.style.userSelect = "none"; // Disable text selection
+        tableBody.style.webkitUserSelect = "none"; // Disable text selection
         
         const bounds = draggedTask.getBoundingClientRect();
         draggedTask.style.position = "absolute";
