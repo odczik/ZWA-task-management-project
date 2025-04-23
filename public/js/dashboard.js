@@ -347,7 +347,7 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         const addTaskButton = document.createElement("div");
         addTaskButton.className = "add-task";
         addTaskButton.innerHTML = `<span>+</span>`;
-        majorTaskElement.appendChild(addTaskButton);
+        tasksElement.appendChild(addTaskButton);
         handleAddTaskButton(addTaskButton);
     });
 
@@ -432,36 +432,26 @@ function handleDragger(dragger) {
                     closestTask.parentNode.insertBefore(placeholder, closestTask);
                 }
             } else if(e.target.closest(".header")) {
-                closestTasks.appendChild(placeholder);
+                closestTasks.insertBefore(placeholder, closestTasks.querySelector(".add-task"));
             }
         }
     });
 
     document.addEventListener("mouseup", e => {
-        if (draggedTask) {
-            if(closestTask) {
-                const closestTaskBounds = closestTask.getBoundingClientRect();
-                const offsetFromCenter = (closestTaskBounds.top + closestTaskBounds.height / 2) - (e.clientY);
-
-                if(offsetFromCenter < 0) {
-                    closestTask.parentNode.insertBefore(draggedTask, placeholder.nextSibling);
-                } else {
-                    closestTask.parentNode.insertBefore(draggedTask, placeholder);
-                }
-            } else if(e.target.closest(".header")) {
-                closestTasks.appendChild(draggedTask);
-            }
-            
+        if (draggedTask) {            
+            // Replace the placeholder with the dragged task
             if (placeholder.parentNode) {
+                placeholder.parentNode.insertBefore(draggedTask, placeholder);
                 placeholder.parentNode.removeChild(placeholder);
             }
 
             // Calculate position
             const previousSibling = draggedTask.previousElementSibling || 0;
-            const nextSibling = draggedTask.nextElementSibling || 0;
+            let nextSibling = draggedTask.nextElementSibling || 0;
+            if(nextSibling.classList.contains("add-task")) nextSibling = 0;
             let position = draggedTask.getAttribute("data-task-position") || 0;
-            if(!previousSibling) position = 0;
-            if(!nextSibling && previousSibling) position = previousSibling.getAttribute("data-task-position") + 1;
+            if(!previousSibling && nextSibling) position = Number(nextSibling.getAttribute("data-task-position")) - 1;
+            if(!nextSibling && previousSibling) position = Number(previousSibling.getAttribute("data-task-position")) + 1;
             if(!nextSibling && !previousSibling) position = 0;
             if(previousSibling && nextSibling) position = (parseFloat(previousSibling.getAttribute("data-task-position")) + parseFloat(nextSibling.getAttribute("data-task-position"))) / 2;
             draggedTask.setAttribute("data-task-position", position);
@@ -491,10 +481,10 @@ draggers.forEach(dragger => {
 });
 
 // Horizontal scroll on wheel event
-tasksContainer.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    tasksContainer.scrollLeft += e.deltaY / 1.5;
-});
+// tasksContainer.addEventListener('wheel', (e) => {
+//     e.preventDefault();
+//     tasksContainer.scrollLeft += e.deltaY / 1.5;
+// });
 
 /* =========== */
 /* Task adding */
@@ -551,7 +541,7 @@ function handleAddTaskButton(button) {
         newTaskInput.autocomplete = "off";
         newTaskInput.name = "Task title";
         
-        taskContainer.appendChild(newTask);
+        taskContainer.insertBefore(newTask, button);
         newTask.appendChild(newTaskInput);
 
         taskShouldBeAdded = true;
@@ -670,7 +660,7 @@ addMajorTaskButton.addEventListener("click", (event) => {
             const addTaskButton = document.createElement("div");
             addTaskButton.className = "add-task";
             addTaskButton.innerHTML = `<span>+</span>`;
-            newMajorTask.appendChild(addTaskButton);
+            newMajorTask.querySelector(".tasks").appendChild(addTaskButton);
             handleAddTaskButton(addTaskButton);
             addTaskButton.click();
     
