@@ -157,6 +157,9 @@
                                     $stmt->execute();
                                     $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
                                     echo '<span class="modal-member">';
+                                    echo '<div class="modal-member-left">';
+                                        echo '<span class="modal-member-profile-picture"><img src="public/profile-pictures/' . htmlspecialchars($userInfo['id']) . '.jpg" alt="Profile Picture" onerror="this.onerror=null; this.src=`public/profile-pictures/default.jpg`; console.clear();"></span>';
+                                        echo '<span class="modal-member-name">' . htmlspecialchars($userInfo['username']) . '</span>';
                                         echo '<span class="icon-container role-icon">';
                                         switch($member["role"]) {
                                             case "owner": 
@@ -170,14 +173,13 @@
                                                 break;
                                         }
                                         echo '</span>';
-                                        echo '<span class="modal-member-name">' . htmlspecialchars($userInfo['username']) . '</span>';
+                                    echo '</div>';
+                                    echo '<div class="modal-member-right">';
                                         if($member["role"] != "owner" && $project["owner_id"] == $user["id"]) {
                                             echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/members\', {method: \'DELETE\', body: JSON.stringify({member_id: ' . $member["user_id"] . ', project_id: ' . $project["id"] . '})})">Remove</button>';
                                         }
+                                    echo '</div>';
                                     echo '</span>';
-                                }
-                                if(count($members) == 1) {
-                                    echo '<p class="sidebar-empty">No members found</p>';
                                 }
                                 // Display project invitees
                                 echo '<h3>Invitations</h3>';
@@ -211,7 +213,7 @@
                     <div class="header-right">
                     <?php if($user["id"] == $project["owner_id"]) { ?>
                         <span style="color: var(--primary-dark);">Settings</span>
-                        <span class="icon-container" style="cursor: pointer; background-color: var(--primary-dark);"><span class="icon settings" style="background-color: rgb(var(--primary-light-rgb), 0.8);"></span></span>
+                        <span class="icon-container settings-button" style="cursor: pointer; background-color: var(--primary-dark);"><span class="icon settings" style="background-color: rgb(var(--primary-light-rgb), 0.8);"></span></span>
                         <div class="modal settings-modal">
                             <form class="settings-form" action="/api/projects" method="PATCH">
                                 <input type="hidden" name="id" value="<?php echo $project['id']; ?>">

@@ -404,7 +404,7 @@ main .table {
     mask: url("https://img.icons8.com/ios-filled/50/settings.png");
     mask-size: cover;
 }
-.icon.settings:hover {
+.settings-button:hover .icon.settings {
     transform: rotate(90deg);
     transition: 0.2s ease;
 }
@@ -729,12 +729,52 @@ main .table {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 
     width: 100%;
 }
-.members-modal .modal-member .modal-member-name {
+.members-modal .modal-member .modal-member-left {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+
     flex-grow: 1;
-    margin-left: 5px;
+}
+.members-modal .modal-member .modal-member-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+
+    flex-grow: 0;
+}
+.members-modal .modal-member .modal-member-profile-picture {
+    position: relative;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    border: 1px solid rgba(var(--primary-dark-rgb), 0.1);
+}
+.members-modal .modal-member .modal-member-profile-picture  img {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+}
+.members-modal .modal-member .icon-container {
+    width: 24px;
+    height: 24px;
+}
+.members-modal .modal-member .icon {
+    width: 16px;
+    height: 16px;
 }
 .members-modal .modal-member button {
     width: auto;
