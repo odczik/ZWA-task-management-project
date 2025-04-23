@@ -177,7 +177,7 @@ if(projectMembersAddButton) projectMembersAddButton.addEventListener("click", (e
 /* Project settings */
 /* ================ */
 
-const settingsButton = document.querySelector(".settings");
+const settingsButton = document.querySelector(".settings-button");
 const settingsModal = document.querySelector(".settings-modal");
 const settingsModalForm = document.querySelector(".settings-form");
 const settingsCancelButton = document.querySelector(".settings-cancel-button");
