@@ -699,6 +699,7 @@ function createMajorTaskRequest(newMajorTask, majorTaskName, projectId) {
         return response.json();
     }).then(data => {
         newMajorTask.setAttribute("data-major-task-id", data.task_id);
+        newMajorTask.setAttribute("data-major-task-position", data.position);
 
         const deleteButton = document.createElement("span");
         deleteButton.className = "delete-button icon-container";

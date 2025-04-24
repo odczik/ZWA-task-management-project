@@ -46,10 +46,20 @@ function createTask($data, $user, $pdo) {
                 return json_encode(["error" => "Missing required fields"]);
             }
 
-            $stmt = $pdo->prepare("INSERT INTO tasks (title, project_id, is_major) VALUES (:title, :project_id, :is_major)");
+            $position = 0;
+            $stmt = $pdo->prepare("SELECT MAX(position) FROM tasks WHERE project_id = :project_id AND assigned_under IS NULL");
+            $stmt->bindParam(':project_id', $data["project_id"]);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($result && $result["MAX(position)"] !== null) {
+                $position = $result["MAX(position)"] + 1;
+            }
+
+            $stmt = $pdo->prepare("INSERT INTO tasks (title, project_id, is_major, position) VALUES (:title, :project_id, :is_major, :position)");
             $stmt->bindParam(':title', $data["title"]);
             $stmt->bindParam(':project_id', $data["project_id"]);
             $stmt->bindParam(':is_major', $data["is_major"]);
+            $stmt->bindParam(':position', $position);
             $stmt->execute();
 
             $task_id = $pdo->lastInsertId();
@@ -58,7 +68,7 @@ function createTask($data, $user, $pdo) {
             $pdo->commit();
             header("HTTP/1.1 201 Created");
             header("Content-Type: application/json; charset=utf-8");
-            return json_encode(["task_id" => $task_id]);
+            return json_encode(["task_id" => $task_id, "position" => $position]);
         } else {
             if (!isset($data["title"]) || !isset($data["project_id"]) || !isset($data["assigned_under"])) {
                 $pdo->rollBack();
