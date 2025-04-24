@@ -123,15 +123,19 @@ function updateTask($data, $user, $pdo) {
                 return json_encode(["error" => "You do not have permission to modify this task"]);
             }
     
-            if (!isset($data["task_id"]) || !isset($data["position"]) || !isset($data["assigned_under"])) {
+            if (!isset($data["task_id"]) || !isset($data["position"])) {
                 $pdo->rollBack();
                 header("HTTP/1.1 400 Bad Request");
                 return json_encode(["error" => "Missing required fields"]);
             }
     
-            $stmt = $pdo->prepare("UPDATE tasks SET position = :position, assigned_under = :assigned_under WHERE id = :task_id");
+            if(isset($data["assigned_under"])) {
+                $stmt = $pdo->prepare("UPDATE tasks SET position = :position, assigned_under = :assigned_under WHERE id = :task_id");
+                $stmt->bindParam(':assigned_under', $data["assigned_under"]);
+            } else {
+                $stmt = $pdo->prepare("UPDATE tasks SET position = :position WHERE id = :task_id");
+            }
             $stmt->bindParam(':position', $data["position"]);
-            $stmt->bindParam(':assigned_under', $data["assigned_under"]);
             $stmt->bindParam(':task_id', $data["task_id"]);
             $stmt->execute();
     

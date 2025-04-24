@@ -297,7 +297,7 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         const dragger = document.createElement("div");
         dragger.className = "dragger major-dragger";
         header.appendChild(dragger);
-        handleDragger(dragger);
+        handleMajorDragger(dragger);
 
         const titleElement = document.createElement("h3");
         titleElement.className = "task-content";
@@ -369,8 +369,105 @@ const draggers = tasksContainer.querySelectorAll('.dragger');
 const placeholder = document.createElement('div');
 placeholder.className = 'placeholder';
 
-let draggedTask = null;
+let draggedMajorTask = null;
+
 let draggedTaskOffset = { x: 0, y: 0 };
+
+function handleMajorDragger(dragger) {
+    dragger.addEventListener("mousedown", e => {
+        draggedMajorTask = dragger.parentElement.parentElement;
+        tableBody.style.userSelect = "none"; // Disable text selection
+        tableBody.style.webkitUserSelect = "none"; // Disable text selection
+        
+        const bounds = draggedMajorTask.getBoundingClientRect();
+        draggedMajorTask.style.position = "absolute";
+        draggedMajorTask.style.width = bounds.width + "px";
+        draggedMajorTask.style.height = bounds.height + "px";
+        draggedMajorTask.style.pointerEvents = "none"; // Disable pointer events to prevent interference with mousemove
+
+        draggedTaskOffset.x = e.clientX - bounds.left;
+        draggedTaskOffset.y = e.clientY - bounds.top + 80;
+
+        draggedMajorTask.style.left = (e.clientX - draggedTaskOffset.x) + "px";
+        draggedMajorTask.style.top = (e.clientY - draggedTaskOffset.y) + "px";
+
+        // Create a placeholder element
+        placeholder.style.width = bounds.width + "px";
+        placeholder.style.height = bounds.height + "px";
+    })
+
+    let closestTask;
+    document.addEventListener("mousemove", e => {
+        if (draggedMajorTask) {
+            draggedMajorTask.style.left = (e.clientX - draggedTaskOffset.x) + "px";
+            draggedMajorTask.style.top = (e.clientY - draggedTaskOffset.y) + "px";
+
+            // Placeholder
+            try {
+                const elementFromPoint = document.elementFromPoint(e.clientX, e.clientY);
+                if(!elementFromPoint || elementFromPoint.classList.contains("placeholder")) return;
+
+                closestTask = elementFromPoint.closest('.major-task');
+
+                if(closestTask) {
+                    lastClosestTask = closestTask;
+                }
+            } catch {
+                closestTask = null;
+            }
+
+            if (closestTask) {
+                const closestTaskBounds = closestTask.getBoundingClientRect();
+                const offsetFromCenter = (closestTaskBounds.left + closestTaskBounds.width / 2) - (e.clientX);
+
+                if(offsetFromCenter < 0) {
+                    closestTask.parentNode.insertBefore(placeholder, closestTask.nextSibling);
+                } else {
+                    closestTask.parentNode.insertBefore(placeholder, closestTask);
+                }
+            }
+        }
+    });
+
+    document.addEventListener("mouseup", e => {
+        if (draggedMajorTask) {            
+            // Replace the placeholder with the dragged task
+            if (placeholder.parentNode) {
+                placeholder.parentNode.insertBefore(draggedMajorTask, placeholder);
+                placeholder.parentNode.removeChild(placeholder);
+            }
+
+            // Calculate position
+            const previousSibling = draggedMajorTask.previousElementSibling || 0;
+            let nextSibling = draggedMajorTask.nextElementSibling || 0;
+            if(nextSibling.classList.contains("add-major-task")) nextSibling = 0;
+            let position = draggedMajorTask.getAttribute("data-major-task-position") || 0;
+            if(!previousSibling && nextSibling) position = Number(nextSibling.getAttribute("data-major-task-position")) - 1;
+            if(!nextSibling && previousSibling) position = Number(previousSibling.getAttribute("data-major-task-position")) + 1;
+            if(!nextSibling && !previousSibling) position = 0;
+            if(previousSibling && nextSibling) position = (parseFloat(previousSibling.getAttribute("data-major-task-position")) + parseFloat(nextSibling.getAttribute("data-major-task-position"))) / 2;
+            draggedMajorTask.setAttribute("data-major-task-position", position);
+            fetch(`/api/tasks`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    task_id: draggedMajorTask.getAttribute("data-major-task-id"),
+                    position: position
+                })
+            }).then(console.log).catch(e => {
+                console.error(e);
+            });
+
+            tableBody.style = ""; // Reset styles
+            draggedMajorTask.style = ""; // Reset styles
+            draggedMajorTask = null;
+        }
+    });
+}
+
+let draggedTask = null;
 
 function handleDragger(dragger) {
     dragger.addEventListener("mousedown", e => {
@@ -475,10 +572,6 @@ function handleDragger(dragger) {
         }
     });
 }
-
-draggers.forEach(dragger => {
-    handleDragger(dragger);
-});
 
 // Horizontal scroll on wheel event
 // tasksContainer.addEventListener('wheel', (e) => {
