@@ -537,7 +537,7 @@ main .table {
 }
 .table .header:hover .major-dragger {
     display: block;
-    height: 20px;
+    margin: 5px 0;
 }
 .table .task-content {
     flex-grow: 1;
