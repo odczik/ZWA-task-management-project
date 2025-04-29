@@ -294,25 +294,29 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         header.className = "header";
         majorTaskElement.appendChild(header);
 
-        const dragger = document.createElement("div");
-        dragger.className = "dragger major-dragger";
-        header.appendChild(dragger);
-        handleMajorDragger(dragger);
+        if(projectMembersModal) {
+            const dragger = document.createElement("div");
+            dragger.className = "dragger major-dragger";
+            header.appendChild(dragger);
+            handleMajorDragger(dragger);
+        }
 
         const titleElement = document.createElement("h3");
         titleElement.className = "task-content";
         titleElement.innerText = majorTask.title;
         header.appendChild(titleElement);
 
-        const deleteButton = document.createElement("span");
-        deleteButton.className = "delete-button icon-container";
-        deleteButton.innerHTML = `<span class="icon trash"></span>`;
-        deleteButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            deleteTaskRequest(majorTask.id);
-            majorTaskElement.remove();
-        });
-        header.appendChild(deleteButton);
+        if(projectMembersModal) {
+            const deleteButton = document.createElement("span");
+            deleteButton.className = "delete-button icon-container";
+            deleteButton.innerHTML = `<span class="icon trash"></span>`;
+            deleteButton.addEventListener("click", (event) => {
+                event.preventDefault();
+                deleteTaskRequest(majorTask.id);
+                majorTaskElement.remove();
+            });
+            header.appendChild(deleteButton);
+        }
 
         const tasksElement = document.createElement("div");
         tasksElement.className = "tasks";
@@ -332,28 +336,38 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
             tasksElement.appendChild(taskElement);
             const dragger = taskElement.querySelector(".dragger");
             handleDragger(dragger);
+            if(!projectMembersModal) {
+                taskElement.removeChild(dragger);
+            }
 
-            const taskDeleteButton = document.createElement("span");
-            taskDeleteButton.className = "delete-button icon-container";
-            taskDeleteButton.innerHTML = `<span class="icon trash"></span>`;
-            taskDeleteButton.addEventListener("click", (event) => {
-                event.preventDefault();
-                deleteTaskRequest(task.id);
-                taskElement.remove();
-            });
-            taskElement.appendChild(taskDeleteButton);
+            if(projectMembersModal) {
+                const taskDeleteButton = document.createElement("span");
+                taskDeleteButton.className = "delete-button icon-container";
+                taskDeleteButton.innerHTML = `<span class="icon trash"></span>`;
+                taskDeleteButton.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    deleteTaskRequest(task.id);
+                    taskElement.remove();
+                });
+                taskElement.appendChild(taskDeleteButton);
+            }
         });
 
-        const addTaskButton = document.createElement("div");
-        addTaskButton.className = "add-task";
-        addTaskButton.innerHTML = `<span>+</span>`;
-        tasksElement.appendChild(addTaskButton);
-        handleAddTaskButton(addTaskButton);
+        if(projectMembersModal) {
+            const addTaskButton = document.createElement("div");
+            addTaskButton.className = "add-task";
+            addTaskButton.innerHTML = `<span>+</span>`;
+            tasksElement.appendChild(addTaskButton);
+            handleAddTaskButton(addTaskButton);
+        }
     });
 
     tasksContainer.appendChild(addMajorTaskButton);
-
-    handleTaskEditing();
+    if(!projectMembersModal) {
+        tasksContainer.removeChild(addMajorTaskButton)
+    } else {
+        handleTaskEditing();
+    }
 }).catch(e => {
     console.error(e);
 });
