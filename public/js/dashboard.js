@@ -66,10 +66,10 @@ if(!projectId) throw new Error("Project ID not found in URL.");
 
 const projectMembersButton = document.querySelector("#manage-members-button");
 const projectMembersModal = document.querySelector(".members-modal");
-const projectMembersModalForm = projectMembersModal.querySelector("form");
-const projectMembersAddButton = projectMembersModal.querySelector("#add-member-button");
+const projectMembersModalForm = projectMembersModal?.querySelector("form");
+const projectMembersAddButton = projectMembersModal?.querySelector("#add-member-button");
 
-projectMembersButton.addEventListener("click", () => {
+projectMembersButton?.addEventListener("click", () => {
     projectMembersModal.style.visibility = "visible";
     projectMembersModalForm.style.visibility = "visible";
     projectMembersModalForm.classList.add("open");
@@ -88,13 +88,13 @@ function closeAddMembersModal() {
     projectMembersModalForm.removeEventListener("animationend", closeAddMembersModalEnd());
 }
 
-projectMembersModal.addEventListener('click', (event) => {
+projectMembersModal?.addEventListener('click', (event) => {
     if (event.target === projectMembersModal) {
         closeAddMembersModal();
     }
 });
 
-projectMembersModalForm.addEventListener('submit', function(event) {
+projectMembersModalForm?.addEventListener('submit', function(event) {
     event.preventDefault();
     // const formData = new FormData(projectMembersModalForm);
 

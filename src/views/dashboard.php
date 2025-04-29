@@ -88,6 +88,9 @@
                     $member = $stmt->fetch(PDO::FETCH_ASSOC);
                 }
 
+                $isMember = false;
+                if($member) $isMember = true;
+
                 if(!$member && !$project["is_public"]) {
                     $project = null;
                 }
@@ -131,6 +134,8 @@
                             }
                             echo '</span>';
                         echo '</span>';
+
+                        if($isMember){
                         ?>
                         <span class="table-item members">
                             <button id="manage-members-button"><?php echo ($user["id"] == $project["owner_id"]) ? "Manage members" : "Project members" ?></button>
@@ -207,6 +212,7 @@
                             </form>
                         </div>
                         <?php
+                        }
                         // echo '<span class="table-item"><button onclick="fetch(\'/api/projects\', {method: \'DELETE\', body: JSON.stringify({id: ' . $project["id"] . '})})">Delete</button></span>';
                     echo '</div>';
                     ?>
