@@ -502,7 +502,7 @@ function handleDragger(dragger) {
         draggedTask.style.top = (e.clientY - draggedTaskOffset.y) + "px";
 
         // Create a placeholder element
-        // placeholder.style.width = bounds.width + "px";
+        placeholder.style.minWidth = bounds.width + "px";
         placeholder.style.height = bounds.height + "px";
     })
 
