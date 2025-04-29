@@ -75,22 +75,22 @@ projectMembersButton.addEventListener("click", () => {
     projectMembersModalForm.classList.add("open");
 });
 
-function closeAddModalEnd() {
+function closeAddMembersModalEnd() {
     projectMembersModalForm.classList.remove("closing");
     projectMembersModalForm.style.visibility = "hidden";
     projectMembersModal.style.visibility = "hidden";
 }
 
-function closeAddModal() {
+function closeAddMembersModal() {
     projectMembersModalForm.classList.remove("open");
     projectMembersModalForm.classList.add("closing");
-    projectMembersModalForm.addEventListener("animationend", closeAddModalEnd(), { once: true });
-    projectMembersModalForm.removeEventListener("animationend", closeAddModalEnd());
+    projectMembersModalForm.addEventListener("animationend", closeAddMembersModalEnd(), { once: true });
+    projectMembersModalForm.removeEventListener("animationend", closeAddMembersModalEnd());
 }
 
 projectMembersModal.addEventListener('click', (event) => {
     if (event.target === projectMembersModal) {
-        closeAddModal();
+        closeAddMembersModal();
     }
 });
 
@@ -656,7 +656,9 @@ function handleAddTaskButton(button) {
                     </div>
                 `;
                 const dragger = newTask.querySelector(".dragger");
-                handleDragger(dragger);  
+                handleDragger(dragger);
+                const taskContent = newTask.querySelector(".task-content");
+                handleTaskEdit(taskContent);
 
                 createTaskRequest(newTask, taskName, location.search.split("=")[1], taskContainer.parentElement.getAttribute("data-major-task-id"));
             }
@@ -777,76 +779,80 @@ addMajorTaskButton.addEventListener("click", (event) => {
 /* Task editing */
 /* ============ */
 
+function handleTaskEdit(taskContent) {
+    taskContent.addEventListener("dblclick", (event) => {
+        event.preventDefault();
+        let taskElement = taskContent.parentElement;
+        if(taskElement.classList.contains("header")) taskElement = taskElement.parentElement;
+        const taskId = taskElement.getAttribute("data-task-id") || taskElement.getAttribute("data-major-task-id");
+        let taskName = taskContent.querySelector("span");
+        if(!taskName){
+            taskName = taskContent.innerText.trim();
+        } else {
+            taskName = taskContent.querySelector("span").innerText.trim();
+        }
+
+        const startValue = taskName;
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = taskName;
+        input.className = "task-edit-input";
+        input.autocomplete = "off";
+        input.name = "Task title";
+
+        taskContent.innerHTML = "";
+        taskContent.appendChild(input);
+        
+        input.focus();
+        input.addEventListener("blur", (event) => {
+            event.preventDefault();
+            const newTaskName = input.value.trim();
+            if(newTaskName === startValue) {
+                taskContent.innerHTML = `<span>${taskName}</span>`;
+                return;
+            }
+            if(newTaskName === "") {
+                taskElement.remove();
+                return;
+            } else {
+                taskContent.innerHTML = `<span>${newTaskName}</span>`;
+            }
+            fetch('/api/tasks', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    task_id: taskId,
+                    title: newTaskName
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            }).then(data => {
+                console.log(data);
+            }).catch(e => {
+                console.error(e);
+            });
+        });
+        input.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                input.blur();
+            }
+            if (event.key === "Escape") {
+                taskContent.innerHTML = `<span>${taskName}</span>`;
+            }
+        });
+    });
+}
+
 function handleTaskEditing() {
     const taskContents = document.querySelectorAll(".task-content");
 
     taskContents.forEach(taskContent => {
-        taskContent.addEventListener("dblclick", (event) => {
-            event.preventDefault();
-            let taskElement = taskContent.parentElement;
-            if(taskElement.classList.contains("header")) taskElement = taskElement.parentElement;
-            const taskId = taskElement.getAttribute("data-task-id") || taskElement.getAttribute("data-major-task-id");
-            let taskName = taskContent.querySelector("span");
-            if(!taskName){
-                taskName = taskContent.innerText.trim();
-            } else {
-                taskName = taskContent.querySelector("span").innerText.trim();
-            }
-
-            const startValue = taskName;
-
-            const input = document.createElement("input");
-            input.type = "text";
-            input.value = taskName;
-            input.className = "task-edit-input";
-            input.autocomplete = "off";
-            input.name = "Task title";
-
-            taskContent.innerHTML = "";
-            taskContent.appendChild(input);
-            
-            input.focus();
-            input.addEventListener("blur", (event) => {
-                event.preventDefault();
-                const newTaskName = input.value.trim();
-                if(newTaskName === startValue) {
-                    taskContent.innerHTML = `<span>${taskName}</span>`;
-                    return;
-                }
-                if(newTaskName === "") {
-                    taskElement.remove();
-                    return;
-                } else {
-                    taskContent.innerHTML = `<span>${newTaskName}</span>`;
-                }
-                fetch('/api/tasks', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        task_id: taskId,
-                        title: newTaskName
-                    })
-                }).then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                }).then(data => {
-                    console.log(data);
-                }).catch(e => {
-                    console.error(e);
-                });
-            });
-            input.addEventListener("keydown", (event) => {
-                if (event.key === "Enter") {
-                    input.blur();
-                }
-                if (event.key === "Escape") {
-                    taskContent.innerHTML = `<span>${taskName}</span>`;
-                }
-            });
-        });
+        handleTaskEdit(taskContent);
     });
 }
