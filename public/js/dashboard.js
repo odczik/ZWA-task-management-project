@@ -782,9 +782,14 @@ addMajorTaskButton.addEventListener("click", (event) => {
 function handleTaskEdit(taskContent) {
     taskContent.addEventListener("dblclick", (event) => {
         event.preventDefault();
+        
+        if(taskContent.firstElementChild.classList.contains("task-edit-input")) return; // Return if already editing
+
         let taskElement = taskContent.parentElement;
         if(taskElement.classList.contains("header")) taskElement = taskElement.parentElement;
+
         const taskId = taskElement.getAttribute("data-task-id") || taskElement.getAttribute("data-major-task-id");
+
         let taskName = taskContent.querySelector("span");
         if(!taskName){
             taskName = taskContent.innerText.trim();
