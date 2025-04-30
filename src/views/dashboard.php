@@ -124,14 +124,14 @@
                                     break;
                             }
                             echo '</span>';
-                            echo '<span class="icon-container public-icon"' . ($member["role"] == "owner" ? ' style="cursor: pointer;"' : null) . '>';
+                            echo '<span class="icon-container public-icon">';
                             if($project["is_public"]) {
                                 echo '<span class="icon public" title="Public"></span>';
                             } else {
                                 echo '<span class="icon private" title="Private"></span>';
                             }
                             echo '</span>';
-                            echo '<span class="icon-container anyone-icon"' . ($member["role"] == "owner" ? ' style="cursor: pointer;"' : null) . '>';
+                            echo '<span class="icon-container anyone-icon">';
                             if($project["anyone_can_edit"]) {
                                 echo '<span class="icon anyone" title="Anyone can edit"></span>';
                             } else {
@@ -170,7 +170,7 @@
                                     echo '<div class="modal-member-left">';
                                         echo '<span class="modal-member-profile-picture"><img src="public/profile-pictures/' . htmlspecialchars($userInfo['id']) . '.jpg" alt="Profile Picture" onerror="this.onerror=null; this.src=`public/profile-pictures/default.jpg`; console.clear();"></span>';
                                         echo '<span class="modal-member-name">' . htmlspecialchars($userInfo['username']) . '</span>';
-                                        echo '<span class="icon-container role-icon">';
+                                        echo '<span class="icon-container role-icon"' . (($member["role"] != "owner" && $user["id"] == $project["owner_id"]) ? "style=\"cursor: pointer;\"": "") . '>';
                                         switch($member["role"]) {
                                             case "owner": 
                                                 echo '<span class="icon owner" title="Owner"></span>';
