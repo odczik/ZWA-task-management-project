@@ -91,6 +91,11 @@
                 $isMember = false;
                 if($member) $isMember = true;
 
+                $canEdit = false;
+                if($member && ($member["role"] == "owner" || $member["role"] == "editor")) {
+                    $canEdit = true;
+                }
+
                 if(!$member && $project && !$project["is_public"]) {
                     $project = null;
                 }
@@ -102,7 +107,7 @@
                 }
 
                 if($project) {
-                    echo '<div class="table-header">';
+                    echo '<div class="table-header"' . ($canEdit ? "data-can-edit=\"true\"": "") . '>';
                     echo '<div class="header-left">';
                     echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
                         echo '<span class="table-item icons">';

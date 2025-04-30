@@ -64,6 +64,13 @@ const projectId = location.search.split("=")[1];
 
 if(!projectId) throw new Error("Project ID not found in URL.");
 
+let canEdit = document.querySelector(".table-header").getAttribute("data-can-edit");
+if(canEdit === "true") {
+    canEdit = 1;
+} else {
+    canEdit = 0;
+}
+
 const projectMembersButton = document.querySelector("#manage-members-button");
 const projectMembersModal = document.querySelector(".members-modal");
 const projectMembersModalForm = projectMembersModal?.querySelector("form");
@@ -294,7 +301,7 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         header.className = "header";
         majorTaskElement.appendChild(header);
 
-        if(projectMembersModal) {
+        if(canEdit) {
             const dragger = document.createElement("div");
             dragger.className = "dragger major-dragger";
             header.appendChild(dragger);
@@ -306,7 +313,7 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
         titleElement.innerText = majorTask.title;
         header.appendChild(titleElement);
 
-        if(projectMembersModal) {
+        if(canEdit) {
             const deleteButton = document.createElement("span");
             deleteButton.className = "delete-button icon-container";
             deleteButton.innerHTML = `<span class="icon trash"></span>`;
@@ -336,11 +343,11 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
             tasksElement.appendChild(taskElement);
             const dragger = taskElement.querySelector(".dragger");
             handleDragger(dragger);
-            if(!projectMembersModal) {
+            if(!canEdit) {
                 taskElement.removeChild(dragger);
             }
 
-            if(projectMembersModal) {
+            if(canEdit) {
                 const taskDeleteButton = document.createElement("span");
                 taskDeleteButton.className = "delete-button icon-container";
                 taskDeleteButton.innerHTML = `<span class="icon trash"></span>`;
@@ -353,7 +360,7 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
             }
         });
 
-        if(projectMembersModal) {
+        if(canEdit) {
             const addTaskButton = document.createElement("div");
             addTaskButton.className = "add-task";
             addTaskButton.innerHTML = `<span>+</span>`;
@@ -363,7 +370,7 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
     });
 
     tasksContainer.appendChild(addMajorTaskButton);
-    if(!projectMembersModal) {
+    if(!canEdit) {
         tasksContainer.removeChild(addMajorTaskButton)
     } else {
         handleTaskEditing();
