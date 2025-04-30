@@ -43,27 +43,32 @@ header {
 
     width: 100%;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 15px;
 
     font-size: 1.5rem;
 
     color: var(--primary-dark);
 }
+header button {
+    padding: 7px 14px;
+    border-radius: 5px;
+    border: none;
 
-.home-content {
-    border: 1px solid red;
-
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 15px;
+    background-color: transparent;
+    color: var(--accent-dark);
+    border: 3px solid var(--accent-dark);
 
     font-size: 1rem;
+    font-weight: 600;
 
-    color: var(--primary-dark);
+    cursor: pointer;
 
-    height: 100vh;
+    transition: all 0.1s ease-out;
+}
+header button:hover {
+    background-color: var(--accent-dark);
+    color: var(--primary-light);
 }
 
 .container {
@@ -78,3 +83,36 @@ header {
     align-items: center;
     justify-content: space-between;
 }
+
+.home-content {
+    width: 100%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 15px;
+
+    font-size: 1rem;
+
+    color: var(--primary-dark);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+}
+
+.home-content .landing-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
+
+    width: 100%;
+}
+.home-content .landing-text img {
+    width: 220px;
+    border-radius: 15px;
+}
+.home-content .landing-text img:nth-child(even) { transform: rotate(10deg); }
+.home-content .landing-text img:nth-child(odd) { transform: rotate(-10deg); }
