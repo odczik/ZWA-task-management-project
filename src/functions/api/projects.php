@@ -49,26 +49,37 @@ function deleteProject($data, $user, $pdo) {
         return json_encode(["error" => "You are not the owner of this project"]);
     }
 
-    // Delete project members first
-    $stmt = $pdo->prepare("DELETE FROM project_members WHERE project_id = :id");
-    $stmt->bindParam(':id', $data["id"]);
-    $stmt->execute();
+    try {
+        $pdo->beginTransaction();
 
-    // Delete project tasks
-    $stmt = $pdo->prepare("DELETE FROM tasks WHERE project_id = :id");
-    $stmt->bindParam(':id', $data["id"]);
-    $stmt->execute();
+        // Delete project members first
+        $stmt = $pdo->prepare("DELETE FROM project_members WHERE project_id = :id");
+        $stmt->bindParam(':id', $data["id"]);
+        $stmt->execute();
 
-    // Delete project
-    $stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id");
-    $stmt->bindParam(':id', $data["id"]);
-    
-    if($stmt->execute()) {
-        return header("Location: /dashboard");
-    } else {
+        // Delete project tasks
+        $stmt = $pdo->prepare("DELETE FROM tasks WHERE project_id = :id");
+        $stmt->bindParam(':id', $data["id"]);
+        $stmt->execute();
+
+        // Delete project
+        $stmt = $pdo->prepare("DELETE FROM projects WHERE id = :id");
+        $stmt->bindParam(':id', $data["id"]);
+
+        if($stmt->execute()) {
+            $pdo->commit();
+            header("HTTP/1.1 200 OK");
+            header("Content-Type: application/json; charset=utf-8");
+            return json_encode(["message" => "Project deleted successfully"]);
+        } else {
+            header("HTTP/1.1 500 Internal Server Error");
+            return json_encode(["error" => "Failed to delete project"]);
+        }
+    } catch (Exception $e) {
+        $pdo->rollBack();
         header("HTTP/1.1 500 Internal Server Error");
         return json_encode(["error" => "Failed to delete project"]);
-    }
+    }    
 }
 
 function updateProject($data, $user, $pdo) {

@@ -258,7 +258,7 @@ main .table {
 
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     gap: 7px;
 
@@ -286,6 +286,9 @@ main .table {
 .modal-buttons button[type="submit"]:hover {
     background-color: var(--accent-dark);
     color: var(--primary-light);
+}
+.modal-buttons .settings-delete-button {
+    color: var(--error-dark);
 }
 
 /* Tasks table */

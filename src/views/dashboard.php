@@ -91,7 +91,7 @@
                 $isMember = false;
                 if($member) $isMember = true;
 
-                if(!$member && !$project["is_public"]) {
+                if(!$member && $project && !$project["is_public"]) {
                     $project = null;
                 }
 
@@ -252,8 +252,13 @@
                                     </span>
                                 </span>
                                 <span class="modal-buttons">
-                                    <button type="button" class="cancel-button settings-cancel-button">Cancel</button>
-                                    <button type="submit">Save</button>
+                                    <div>
+                                        <button type="button" class="settings-delete-button">Delete</button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="cancel-button settings-cancel-button">Cancel</button>
+                                        <button type="submit">Save</button>
+                                    </div>
                                 </span>
                             </form>
                         </div>

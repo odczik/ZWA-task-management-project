@@ -875,3 +875,34 @@ function handleTaskEditing() {
         handleTaskEdit(taskContent);
     });
 }
+
+/* ============== */
+/* Project delete */
+/* ============== */
+
+const deleteProjectButton = document.querySelector(".settings-delete-button");
+
+deleteProjectButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    const confirmation = confirm("Are you sure you want to delete this project? This action cannot be undone.");
+    if(confirmation) {
+        fetch(`/api/projects`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: projectId
+            })
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }).then(data => {
+            window.location.href = '/dashboard';
+        }).catch(e => {
+            console.error(e);
+        });
+    }
+});
