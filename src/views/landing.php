@@ -15,7 +15,11 @@
     <header>
         <h1>Mango</h1>
         <p>Interaktivní <b>správce projektů</b> pro týmy i individuály.</p>
-        <button>Začínáme</button>
+        <?php if (isset($jwtHandler) && $jwtHandler->isLoggedIn()): ?>
+            <button onclick="window.location.href='/dashboard'">Začínáme</button>
+        <?php else: ?>
+            <button onclick="document.querySelector('.nav-action').click()">Začínáme</button>
+        <?php endif; ?>
     </header>
 
     <main class="home-content">
