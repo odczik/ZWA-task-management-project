@@ -86,7 +86,7 @@ header button:hover {
 
 .home-content {
     width: 100%;
-    max-width: 800px;
+    max-width: min(800px, 90vw);
     margin: 50px auto;
     padding: 15px;
 

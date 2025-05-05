@@ -726,6 +726,18 @@ main .table {
 /* Manage members */
 /* ============== */
 
+#manage-members-button {
+    background: none;
+    border: none;
+    color: var(--primary-dark);
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+}
+#manage-members-button:hover {
+    text-decoration: underline;
+}
+
 .members-modal form {
     gap: 10px;
     min-width: 250px;
