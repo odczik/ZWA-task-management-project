@@ -170,7 +170,7 @@
                                     echo '<div class="modal-member-left">';
                                         echo '<span class="modal-member-profile-picture"><img src="public/profile-pictures/' . htmlspecialchars($userInfo['id']) . '.jpg" alt="Profile Picture" onerror="this.onerror=null; this.src=`public/profile-pictures/default.jpg`; console.clear();"></span>';
                                         echo '<span class="modal-member-name">' . htmlspecialchars($userInfo['username']) . '</span>';
-                                        echo '<span class="icon-container role-icon"' . (($member["role"] != "owner" && $user["id"] == $project["owner_id"]) ? "style=\"cursor: pointer;\"": "") . '>';
+                                        echo '<span class="icon-container role-icon' . (($member["role"] != "owner" && $user["id"] == $project["owner_id"]) ? (" member-role-button\"style=\"cursor: pointer;\" data-member-id=\"" .  $member["user_id"] . "\" data-member-role=\"" . $member["role"] . "\""): "\"") . '>';
                                         switch($member["role"]) {
                                             case "owner": 
                                                 echo '<span class="icon owner" title="Owner"></span>';

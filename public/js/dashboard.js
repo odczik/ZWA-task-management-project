@@ -913,3 +913,44 @@ deleteProjectButton?.addEventListener("click", (event) => {
         });
     }
 });
+
+/* ================== */
+/* Member role editor */
+/* ================== */
+
+const memberRoleButtons = document.querySelectorAll(".member-role-button");
+
+memberRoleButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const memberId = button.getAttribute("data-member-id");
+        let role = button.getAttribute("data-member-role");
+
+        if(role == "viewer"){
+            role = "editor";
+        } else {
+            role = "viewer";
+        }
+
+        fetch('/api/members', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                project_id: projectId,
+                member_id: memberId,
+                role: role
+            })
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }).then(data => {
+            window.location.reload();
+        }).catch(e => {
+            console.error(e);
+        });
+    });
+});

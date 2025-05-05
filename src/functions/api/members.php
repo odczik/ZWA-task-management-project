@@ -164,6 +164,41 @@ function handleInvite($data, $user, $pdo) {
     }
 }
 
+function updateMember($data, $user, $pdo) {
+    error_log("updateMember called with data: " . json_encode($data)); // Debugging line
+    $projectId = $data['project_id'];
+    $memberId = $data['member_id'];
+    $newRole = $data['role'];
+
+    // Check if the user is a project owner
+    $stmt = $pdo->prepare("SELECT role FROM project_members WHERE project_id = :project_id AND user_id = :user_id");
+    $stmt->bindParam(':project_id', $projectId, PDO::PARAM_INT);
+    $stmt->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $role = $stmt->fetchColumn();
+
+    if ($role !== 'owner') {
+        header("HTTP/1.1 403 Forbidden");
+        header("Content-Type: application/json");
+        return json_encode(["error" => "You do not have permission to update members in this project."]);
+    }
+
+    // Update the member's role
+    $stmt = $pdo->prepare("UPDATE project_members SET role = :role WHERE project_id = :project_id AND user_id = :member_id");
+    $stmt->bindParam(':role', $newRole, PDO::PARAM_STR);
+    $stmt->bindParam(':project_id', $projectId, PDO::PARAM_INT);
+    $stmt->bindParam(':member_id', $memberId, PDO::PARAM_INT);
+    if ($stmt->execute()) {
+        header("HTTP/1.1 200 OK");
+        header("Content-Type: application/json");
+        return json_encode(["success" => "Member role updated successfully."]);
+    } else {
+        header("HTTP/1.1 500 Internal Server Error");
+        header("Content-Type: application/json");
+        return json_encode(["error" => "Failed to update member role."]);
+    }
+}
+
 function removeMember($data, $user, $pdo) {
     error_log("removeMember called with data: " . json_encode($data)); // Debugging line
     $projectId = $data['project_id'];

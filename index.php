@@ -116,6 +116,7 @@ $router->get("/logout", function() {
 /* API Routes */
 /* ========== */
 
+// Profile
 $router->post("/api/account", function($data) use ($jwtHandler) {
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
@@ -126,6 +127,7 @@ $router->post("/api/account", function($data) use ($jwtHandler) {
     return updateProfile($data, $user, $pdo, $jwtHandler);
 });
 
+// Projects
 $router->post("/api/projects", function($data) use ($jwtHandler) {
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
@@ -154,6 +156,7 @@ $router->patch("/api/projects", function($data) use ($jwtHandler) {
     return updateProject($data, $user, $pdo);
 });
 
+// Tasks
 $router->get("/api/tasks", function($data) use ($jwtHandler) { // return tasks for a project
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
@@ -191,6 +194,16 @@ $router->patch("/api/tasks", function($data) use ($jwtHandler) {  // update task
     return updateTask($data, $user, $pdo);
 });
 
+// Members
+$router->patch("/api/members", function($data) use ($jwtHandler) { // update member role
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return updateMember($data, $user, $pdo);
+});
 $router->delete("/api/members", function($data) use ($jwtHandler) { // remove member from project
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
@@ -201,6 +214,7 @@ $router->delete("/api/members", function($data) use ($jwtHandler) { // remove me
     return removeMember($data, $user, $pdo);
 });
 
+// Invitations
 $router->post("/api/invitation", function($data) use ($jwtHandler) { // invite member to project
     require "./src/functions/db_connect.php";
     $user = $jwtHandler->getUser();
