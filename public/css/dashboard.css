@@ -457,7 +457,7 @@ main .table {
     overflow-y: hidden;
 
     height: 100%;
-
+    padding-bottom: 7px;
 }
 
 .table .major-task {
