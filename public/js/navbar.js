@@ -20,10 +20,34 @@ if(confirmPasswordInput != null) confirmPasswordInput.addEventListener('input', 
     }
 });
 
+// Login AJAX
+const navLoginForm = document.querySelector('.nav-login-modal');
+
+navLoginForm?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(navLoginForm);
+
+    fetch('/login', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(() => {
+        window.location.href = '/dashboard';
+    });
+});
+
 // Registration AJAX
-const registerButton = document.getElementById('register-button');
 const registerForm = document.querySelector('.nav-register-modal');
-if(registerForm != null) registerForm.addEventListener('submit', function(event) {
+registerForm?.addEventListener('submit', function(event) {
     event.preventDefault();
     const formData = new FormData(registerForm);
 
