@@ -37,12 +37,18 @@
             $invitedBy = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // Display the invitation
-            echo "<div class='invite'>";
-            echo "<h2>Project name: " . htmlspecialchars($project['name']) . "</h2>";
-            echo "<p>Invited by: " . htmlspecialchars($invitedBy["username"]) . "</p>";
-            echo '<button type="button" class="accept-button" onclick="fetch(\'/api/invitation\', {method: \'PUT\', body: JSON.stringify({id: ' . $invite["id"] . ', accept: true})}).then(response => {if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}return response.json();}).then(data => {location.href = `/dashboard?id=${data.id}`}).catch(e => {alert(e);});">Accept</button>';
-            echo '<button type="button" class="decline-button" onclick="fetch(\'/api/invitation\', {method: \'PUT\', body: JSON.stringify({id: ' . $invite["id"] . '})}).then(response => {if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}return response.json();}).then(data => {location.reload()}).catch(e => {alert(e);});">Decline</button>';
-            echo "</div>";
+            ?>
+            <div class="invite">
+                <div class="invite-text">
+                    <h2>Project name: <b><?= htmlspecialchars($project["name"]) ?></b></h2>
+                    <p>Invited by: <b><?= htmlspecialchars($invitedBy["username"]) ?></b></p>
+                </div>
+                <div class="invite-buttons">
+                    <button type="button" class="accept" onclick="fetch('/api/invitation', {method: 'PUT', body: JSON.stringify({id: <?= $invite["id"] ?>, accept: true})}).then(response => {if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}return response.json();}).then(data => {location.href = `/dashboard?id=${data.id}`}).catch(e => {alert(e);});">Accept</button>
+                    <button type="button" class="decline" onclick="fetch('/api/invitation', {method: 'PUT', body: JSON.stringify({id: <?= $invite["id"] ?>})}).then(response => {if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}return response.json();}).then(data => {location.reload()}).catch(e => {alert(e);});">Decline</button>
+                </div>
+            </div>
+            <?php
         }
 
         if (empty($invitations)) {

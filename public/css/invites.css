@@ -7,4 +7,83 @@ main {
     flex-grow: 1;
     max-width: 600px;
     margin: 0 auto;
+    padding: 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+main > p {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--primary-dark);
+}
+
+.invite {
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+
+    width: 100%;
+}
+
+.invite-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-dark);
+}
+.invite-text h2 {
+    margin: 10px 0;
+}
+.invite-text p {
+    font-size: 1.25rem;
+    margin: 10px 0;
+}
+
+.invite-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.invite-buttons button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+
+    color: var(--primary-light);
+    background-color: var(--primary-light);
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.1s ease-out;
+}
+.invite-buttons button.accept {
+    border: 3px solid var(--accent-dark);
+    color: var(--accent-dark);
+}
+.invite-buttons button.accept:hover {
+    background-color: var(--accent-dark);
+    color: var(--primary-light);
+}
+.invite-buttons button.decline {
+    border: 3px solid var(--error-dark);
+    color: var(--error-dark);
+}
+.invite-buttons button.decline:hover {
+    background-color: var(--error-dark);
+    color: var(--primary-light);
 }
