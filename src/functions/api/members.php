@@ -200,9 +200,8 @@ function updateMember($data, $user, $pdo) {
 }
 
 function removeMember($data, $user, $pdo) {
-    error_log("removeMember called with data: " . json_encode($data)); // Debugging line
     $projectId = $data['project_id'];
-    $memberId = $data['member_id'];
+    if(isset($data["member_id"])) $memberId = $data['member_id'];
 
     // Check if the user is a project owner
     $stmt = $pdo->prepare("SELECT role FROM project_members WHERE project_id = :project_id AND user_id = :user_id");
@@ -211,10 +210,14 @@ function removeMember($data, $user, $pdo) {
     $stmt->execute();
     $role = $stmt->fetchColumn();
 
-    if ($role !== 'owner') {
+    if ($role !== 'owner' && isset($memberId)) {
         header("HTTP/1.1 403 Forbidden");
         header("Content-Type: application/json");
         return json_encode(["error" => "You do not have permission to remove members from this project."]);
+    }
+
+    if(!isset($memberId)) {
+        $memberId = $user->user_id; // If no member ID is provided, remove the current user
     }
 
     // Remove the member from the project

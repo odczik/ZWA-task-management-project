@@ -105,7 +105,7 @@ header button:hover {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 20px;
 
     width: 100%;
@@ -114,5 +114,5 @@ header button:hover {
     width: 220px;
     border-radius: 15px;
 }
-.home-content .landing-text img:nth-child(even) { transform: rotate(10deg); }
-.home-content .landing-text img:nth-child(odd) { transform: rotate(-10deg); }
+.home-content .landing-text img:nth-child(even) { transform: rotate(10deg) translateY(10px); }
+.home-content .landing-text img:nth-child(odd) { transform: rotate(-10deg) translateY(10px); }

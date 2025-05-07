@@ -267,6 +267,8 @@
                                 </span>
                             </form>
                         </div>
+                    <?php } else if($isMember) { ?>
+                        <button class="leave-button">Leave</button>
                     <?php } ?>
                     </div>
                     </div>

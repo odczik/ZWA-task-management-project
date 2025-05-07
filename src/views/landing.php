@@ -39,12 +39,13 @@
         <div class="landing-text">
             <img src="public/howard-technology.png" alt="Howard Stark" class="technology-image">
             <div>
-                <div style="display: flex; flex-direction: row;">
+                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                     <div>
                         <p>Backend</p>
                         <ul>
                             <li>PHP</li>
                             <li>MySQL</li>
+                            <li>Apache</li>
                         </ul>
                     </div>
                     <div>
@@ -55,8 +56,8 @@
                             <li>JavaScript</li>
                         </ul>
                     </div>
+                    <p>Takový návrat k opicím 🙈</p>
                 </div>
-                <p>Takový návrat k opicím 🙈</p>
             </div>
         </div>
     </main>

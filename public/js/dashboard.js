@@ -319,6 +319,7 @@ fetch(`/api/tasks?project_id=${projectId}`).then(response => {
             deleteButton.innerHTML = `<span class="icon trash"></span>`;
             deleteButton.addEventListener("click", (event) => {
                 event.preventDefault();
+                if(!confirm("Are you sure? This action cannot be undone.")) return;
                 deleteTaskRequest(majorTask.id);
                 majorTaskElement.remove();
             });
@@ -804,7 +805,7 @@ function handleTaskEdit(taskContent) {
     taskContent.addEventListener("dblclick", (event) => {
         event.preventDefault();
         
-        if(taskContent.firstElementChild.classList.contains("task-edit-input")) return; // Return if already editing
+        if(taskContent.firstElementChild?.classList.contains("task-edit-input")) return; // Return if already editing
 
         let taskElement = taskContent.parentElement;
         if(taskElement.classList.contains("header")) taskElement = taskElement.parentElement;
@@ -953,4 +954,35 @@ memberRoleButtons.forEach(button => {
             console.error(e);
         });
     });
+});
+
+/* ============= */
+/* Project leave */
+/* ============= */
+
+const leaveProjectButton = document.querySelector(".leave-button");
+
+leaveProjectButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    const confirmation = confirm("Are you sure you want to leave this project? You will no longer have access to it.");
+    if(confirmation) {
+        fetch(`/api/members`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                project_id: projectId
+            })
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }).then(data => {
+            window.location.href = '/dashboard';
+        }).catch(e => {
+            console.error(e);
+        });
+    }
 });
