@@ -1,13 +1,21 @@
-# Enable mod_rewrite
+# Enable URL rewriting
 RewriteEngine On
 
-# Allow access to the index.php file in the root folder
-RewriteCond %{REQUEST_URI} ^/index\.php$ [NC]
-RewriteRule ^(.*)$ - [L]
+# Set the base directory for the rewrite rules
+RewriteBase /
 
-# Allow access to the public directory
-RewriteCond %{REQUEST_URI} ^/public/ [NC]
-RewriteRule ^(.*)$ - [L]
+# Allow direct access to the public folder and its contents
+RewriteCond %{REQUEST_URI} ^/public/ [OR]
+RewriteCond %{REQUEST_URI} \.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$
+RewriteRule ^ - [L]
 
-# Deny access to everything else
-RewriteRule ^(.*)$ - [F,L]
+# Prevent direct access to sensitive files and directories
+RewriteRule ^(src|config|\.git|vendor|composer\.json|composer\.lock|\.env.*) - [F,L]
+
+# Redirect all other requests to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
+
+# Disable directory listing
+Options -Indexes
