@@ -36,28 +36,28 @@
                 $currentProject = isset($_GET['id']) ? $_GET['id'] : null;
 
                 foreach($projects as $project) {
-                    echo '<a href="?id=' . $project["id"] . '" class="sidebar-item' . ($currentProject == $project["id"] ? ' active' : null) . '"><span class="text" title="' . htmlspecialchars($project['name']) . '">' . htmlspecialchars($project['name']) . '</span><span class="color-container"><input type="color" class="color" value="#' . htmlspecialchars($project['color']) . '"></span></a>';
+                    echo '<a href="?id=' . $project["id"] . '" class="sidebar-item' . ($currentProject == $project["id"] ? ' active' : null) . '"><span class="text" title="' . htmlspecialchars($project['name']) . '">' . htmlspecialchars($project['name']) . '</span><span class="color-container" style="background-color: #' . htmlspecialchars($project['color']) . ';"></span></a>';
                 }
                 if(count($projects) == 0) {
                     echo '<p class="sidebar-empty">No projects found</p>';
                 }
                 ?>
 
-                <button href="#" class="sidebar-add-button">+</button>
+                <button class="sidebar-add-button">+</button>
                 <div class="modal project-modal">
                     <form class="create-project-modal" action="/api/projects" method="POST">
                         <h2>Create Project</h2>
                         <span class="modal-inputs">
                             <label for="name">Project name</label>
                             <span>
-                                <input type="text" id="name" name="name" placeholder="My awesome project" autocomplete="off" required>
+                                <input type="text" id="project-name" name="name" placeholder="My awesome project" autocomplete="off" required>
                                 <span class="modal-color-container">
                                     <input type="color" name="color" class="color" value="#2b7a6d">
                                 </span>
                             </span>
                             <label for="description">Description</label>
                             <span>
-                                <input type="text" id="description" name="description" placeholder="My awesome project" autocomplete="off">
+                                <input type="text" id="project-description" name="description" placeholder="My awesome project" autocomplete="off">
                             </span>
                         </span>
                         <span class="modal-buttons">
@@ -107,7 +107,7 @@
                 }
 
                 if($project) {
-                    echo '<div class="table-header"' . ($canEdit ? "data-can-edit=\"true\"": "") . '>';
+                    echo '<div class="table-header"' . ($canEdit ? " data-can-edit=\"true\"": "") . '>';
                     echo '<div class="header-left">';
                     echo '<h2>' . htmlspecialchars($project['name']) . '</h2>';
                         echo '<span class="table-item icons">';
@@ -166,11 +166,11 @@
                                     $stmt->bindParam(':id', $member['user_id'], PDO::PARAM_INT);
                                     $stmt->execute();
                                     $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
-                                    echo '<span class="modal-member">';
+                                    echo '<div class="modal-member">';
                                     echo '<div class="modal-member-left">';
                                         echo '<span class="modal-member-profile-picture"><img src="public/profile-pictures/' . htmlspecialchars($userInfo['id']) . '.jpg" alt="Profile Picture" onerror="this.onerror=null; this.src=`public/profile-pictures/default.jpg`; console.clear();"></span>';
                                         echo '<span class="modal-member-name">' . htmlspecialchars($userInfo['username']) . '</span>';
-                                        echo '<span class="icon-container role-icon' . (($member["role"] != "owner" && $user["id"] == $project["owner_id"]) ? (" member-role-button\"style=\"cursor: pointer;\" data-member-id=\"" .  $member["user_id"] . "\" data-member-role=\"" . $member["role"] . "\""): "\"") . '>';
+                                        echo '<span class="icon-container role-icon' . (($member["role"] != "owner" && $user["id"] == $project["owner_id"]) ? (" member-role-button\" style=\"cursor: pointer;\" data-member-id=\"" .  $member["user_id"] . "\" data-member-role=\"" . $member["role"] . "\""): "\"") . '>';
                                         switch($member["role"]) {
                                             case "owner": 
                                                 echo '<span class="icon owner" title="Owner"></span>';
@@ -189,7 +189,7 @@
                                             echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/members\', {method: \'DELETE\', body: JSON.stringify({member_id: ' . $member["user_id"] . ', project_id: ' . $project["id"] . '})})">Remove</button>';
                                         }
                                     echo '</div>';
-                                    echo '</span>';
+                                    echo '</div>';
                                 }
                                 // Display project invitees
                                 echo '<h3>Invitations</h3>';
@@ -226,7 +226,7 @@
                         <span style="color: var(--primary-dark);">Settings</span>
                         <span class="icon-container settings-button" style="cursor: pointer; background-color: var(--primary-dark);"><span class="icon settings" style="background-color: rgb(var(--primary-light-rgb), 0.8);"></span></span>
                         <div class="modal settings-modal">
-                            <form class="settings-form" action="/api/projects" method="PATCH">
+                            <form class="settings-form" action="/api/projects" method="POST">
                                 <input type="hidden" name="id" value="<?php echo $project['id']; ?>">
                                 <h2>Project settings</h2>
                                 <span class="modal-inputs">
@@ -256,7 +256,7 @@
                                         </select>
                                     </span>
                                 </span>
-                                <span class="modal-buttons">
+                                <div class="modal-buttons">
                                     <div>
                                         <button type="button" class="settings-delete-button">Delete</button>
                                     </div>
@@ -264,7 +264,7 @@
                                         <button type="button" class="cancel-button settings-cancel-button">Cancel</button>
                                         <button type="submit">Save</button>
                                     </div>
-                                </span>
+                                </div>
                             </form>
                         </div>
                     <?php } else if($isMember) { ?>
@@ -288,6 +288,7 @@
             }
 
             ?>
+        </div>
         </div>
     </main>
     
