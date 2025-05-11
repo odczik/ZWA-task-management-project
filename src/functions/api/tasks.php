@@ -6,6 +6,25 @@ function getTasks($data, $user, $pdo) {
         return json_encode(["error" => "Missing required fields"]);
     }
 
+    // Fetch the project details
+    $stmt = $pdo->prepare("SELECT is_public, anyone_can_edit FROM projects WHERE id = :project_id");
+    $stmt->bindParam(':project_id', $_GET["project_id"]);
+    $stmt->execute();
+    $project = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Validate user permissions
+    $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = :project_id AND user_id = :user_id");
+    $stmt->bindParam(':project_id', $_GET["project_id"]);
+    $stmt->bindParam(':user_id', $user->user_id);
+    $stmt->execute();
+    $member = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ((!$member && !$project["is_public"])) {
+        $pdo->rollBack();
+        header("HTTP/1.1 403 Forbidden");
+        return json_encode(["error" => "You do not have permission to view this project"]);
+    }
+
     $stmt = $pdo->prepare("SELECT * FROM tasks WHERE project_id = :project_id");
     $stmt->bindParam(':project_id', $_GET["project_id"]);
     $stmt->execute();
@@ -33,7 +52,10 @@ function createTask($data, $user, $pdo) {
         $stmt->execute();
         $member = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) {
+        if (
+            (!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) || // Not a member and project is not public and not editable by everyone
+            ($member && $member["role"] == "viewer" && !$project["anyone_can_edit"]) // Member but role is viewer and not editable by everyone
+        ) {
             $pdo->rollBack();
             header("HTTP/1.1 403 Forbidden");
             return json_encode(["error" => "You do not have permission to modify this project"]);
@@ -127,7 +149,10 @@ function updateTask($data, $user, $pdo) {
             $stmt->execute();
             $member = $stmt->fetch(PDO::FETCH_ASSOC);
     
-            if ((!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) || $member["role"] == "viewer") {
+            if (
+                (!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) || // Not a member and project is not public and not editable by everyone
+                ($member && $member["role"] == "viewer" && !$project["anyone_can_edit"]) // Member but role is viewer and not editable by everyone
+            ) {
                 $pdo->rollBack();
                 header("HTTP/1.1 403 Forbidden");
                 return json_encode(["error" => "You do not have permission to modify this task"]);
@@ -162,6 +187,12 @@ function updateTask($data, $user, $pdo) {
         try {
             // Start a transaction
             $pdo->beginTransaction();
+
+            // Fetch the project details
+            $stmt = $pdo->prepare("SELECT * FROM projects WHERE id = (SELECT project_id FROM tasks WHERE id = :task_id)");
+            $stmt->bindParam(':task_id', $data["task_id"]);
+            $stmt->execute();
+            $project = $stmt->fetch(PDO::FETCH_ASSOC);
     
             // Validate user permissions
             $stmt = $pdo->prepare("SELECT * FROM project_members WHERE project_id = (SELECT project_id FROM tasks WHERE id = :task_id) AND user_id = :user_id");
@@ -170,7 +201,10 @@ function updateTask($data, $user, $pdo) {
             $stmt->execute();
             $member = $stmt->fetch(PDO::FETCH_ASSOC);
     
-            if (!$member) {
+            if (
+                (!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) || // Not a member and project is not public and not editable by everyone
+                ($member && $member["role"] == "viewer" && !$project["anyone_can_edit"]) // Member but role is viewer and not editable by everyone
+            ) {
                 $pdo->rollBack();
                 header("HTTP/1.1 403 Forbidden");
                 return json_encode(["error" => "You do not have permission to modify this task"]);
@@ -224,7 +258,10 @@ function deleteTask($data, $user, $pdo) {
         $stmt->execute();
         $member = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) {
+        if (
+            (!$member && (!$project["anyone_can_edit"] || !$project["is_public"])) || // Not a member and project is not public and not editable by everyone
+            ($member && $member["role"] == "viewer" && !$project["anyone_can_edit"]) // Member but role is viewer and not editable by everyone
+        ) {
             $pdo->rollBack();
             header("HTTP/1.1 403 Forbidden");
             return json_encode(["error" => "You do not have permission to delete this task"]);

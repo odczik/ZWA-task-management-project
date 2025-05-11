@@ -48,14 +48,14 @@
                     <form class="create-project-modal" action="/api/projects" method="POST">
                         <h2>Create Project</h2>
                         <span class="modal-inputs">
-                            <label for="name">Project name</label>
+                            <label for="project-name">Project name</label>
                             <span>
                                 <input type="text" id="project-name" name="name" placeholder="My awesome project" autocomplete="off" required>
                                 <span class="modal-color-container">
                                     <input type="color" name="color" class="color" value="#2b7a6d">
                                 </span>
                             </span>
-                            <label for="description">Description</label>
+                            <label for="project-description">Description</label>
                             <span>
                                 <input type="text" id="project-description" name="description" placeholder="My awesome project" autocomplete="off">
                             </span>
@@ -92,7 +92,7 @@
                 if($member) $isMember = true;
 
                 $canEdit = false;
-                if($member && ($member["role"] == "owner" || $member["role"] == "editor")) {
+                if(($member && ($member["role"] == "owner" || $member["role"] == "editor")) || ($project && $project["anyone_can_edit"])) {
                     $canEdit = true;
                 }
 
