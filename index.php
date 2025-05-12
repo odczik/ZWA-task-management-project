@@ -10,6 +10,7 @@ require "./src/functions/api/members.php";
 $jwtHandler = new JWTHandler("your_secret_key");
 $router = new Router();
 
+
 /* ========== */
 /* Web Routes */
 /* ========== */
@@ -111,6 +112,24 @@ $router->post("/register", function($data) use ($jwtHandler) {
 $router->get("/logout", function() {
     return logout();
 });
+
+
+/* ============= */
+/* GitHub deploy */
+/* ============= */
+
+$router->get("/deploy", function(){
+    // Execute the deployment script
+    exec('./deploy.sh', $output, $return_var);
+    if ($return_var === 0) {
+        echo 'Deployment succeeded';
+        http_response_code(200);
+    } else {
+        echo 'Deployment failed';
+        http_response_code(500);
+    }
+});
+
 
 /* ========== */
 /* API Routes */
