@@ -120,14 +120,20 @@ $router->get("/logout", function() {
 
 $router->get("/deploy", function(){
     // Execute the deployment script
-    exec('./deploy.sh', $output, $return_var);
-    if ($return_var === 0) {
-        echo 'Deployment succeeded';
-        http_response_code(200);
-    } else {
-        echo 'Deployment failed';
-        http_response_code(500);
-    }
+    // exec('./deploy.sh', $output, $return_var);
+    // if ($return_var === 0) {
+    //     echo 'Deployment succeeded';
+    //     http_response_code(200);
+    // } else {
+    //     echo 'Deployment failed';
+    //     http_response_code(500);
+    // }
+
+    exec('./deploy.sh 2>&1', $output, $return_var);
+    echo "<pre>";
+    print_r($output);
+    echo "</pre>";
+    echo "Return code: $return_var";
 });
 
 
