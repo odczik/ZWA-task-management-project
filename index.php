@@ -118,7 +118,7 @@ $router->get("/logout", function() {
 /* GitHub deploy */
 /* ============= */
 
-$router->get("/deploy", function(){
+$router->post("/deploy", function(){
     // Execute the deployment script
     exec('./deploy.sh', $output, $return_var);
     if ($return_var === 0) {
