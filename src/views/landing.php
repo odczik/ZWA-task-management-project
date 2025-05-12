@@ -59,7 +59,7 @@
                     <p>Takový návrat k opicím 🙈</p>
                 </div>
                 <div>
-                    Hostováno pomocí free tieru Oracle VPS (PHP i MySQL).
+                    Hostováno pomocí free tieru Oracle VPS (PHP, MySQL).
                     <br>
                     Doménu spravuje Netlify.
                 </div>
