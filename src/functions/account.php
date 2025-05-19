@@ -108,3 +108,24 @@ function logout() {
     header("Location: /");
     exit;
 }
+
+function hasInvites($jwtHandler){
+    require "./src/functions/db_connect.php";
+
+    $user = $jwtHandler->getUser();
+    if (!$user) {
+        return false;
+    }
+
+    // Fetch invites
+    $stmt = $pdo->prepare("SELECT * FROM invitations WHERE user_id = :user_id");
+    $stmt->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $invitations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($invitations)) {
+        return false;
+    } else {
+        return true;
+    }
+}

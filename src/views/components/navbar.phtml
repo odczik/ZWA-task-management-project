@@ -25,7 +25,7 @@
                     <a href="/dashboard">Dashboard</a>
                 </div>
                 <div class="nav-logged-in-item">
-                    <a href="/invites">Invitations</a>
+                    <a href="/invites" <?php echo hasInvites($jwtHandler) ? "style='color: var(--accent-dark);'" : "" ?>>Invitations</a>
                 </div>
                 <div class="nav-logged-in-item">
                     <a href="/logout">Logout</a>
