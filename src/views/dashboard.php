@@ -186,7 +186,7 @@
                                     echo '</div>';
                                     echo '<div class="modal-member-right">';
                                         if($member["role"] != "owner" && $project["owner_id"] == $user["id"]) {
-                                            echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/members\', {method: \'DELETE\', body: JSON.stringify({member_id: ' . $member["user_id"] . ', project_id: ' . $project["id"] . '})})">Remove</button>';
+                                            echo '<button type="button" class="remove-member-button" onclick="fetch(\'/api/members\', {method: \'DELETE\', body: JSON.stringify({member_id: ' . $member["user_id"] . ', project_id: ' . $project["id"] . '})}).then(response => {if (!response.ok) {throw new Error(`HTTP error! status: ${response.status}`);}return response.json();}).then(data => {location.reload();}).catch(e => {alert(e);location.reload();});">Remove</button>';
                                         }
                                     echo '</div>';
                                     echo '</div>';
