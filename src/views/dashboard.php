@@ -205,15 +205,13 @@
                                         }
                                     echo '</span>';
                                 }
-                                if(count($invitations) == 0) {
-                                    echo '<p class="sidebar-empty">No invitations found</p>';
-                                }
                                 ?>
-                                <?php
-                                if($user["id"] == $project["owner_id"]) {
-                                    echo '<button id="add-member-button">Invite</button>';
-                                }
-                                ?>
+                                <?php if(count($invitations) == 0) { ?>
+                                    <p class="sidebar-empty">No invitations found</p>
+                                <?php } ?>
+                                <?php if($user["id"] == $project["owner_id"]) { ?>
+                                    <button type="button" id="add-member-button">Invite</button>
+                                <?php } ?>
                             </form>
                         </div>
                         <?php
