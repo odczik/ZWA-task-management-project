@@ -1,5 +1,5 @@
 <?php
-$host = "138.2.132.129";
+$host = "localhost";
 $dbname = "mango";
 $username = "user";
 $password = "user";
