@@ -28,7 +28,7 @@
                 <p>Do předmětu <i>Základy webových aplikací</i>.</p>
                 <p>Projekt je zaměřen na správu projektů a úkolů. Umožňuje uživatelům vytvářet projekty, přidávat úkoly a spravovat členy projektů.</p>
             </div>
-            <img src="public/landing-task.png" alt="Sample task" class="task-image">
+            <img src="public/assets/landing-task.png" alt="Sample task" class="task-image">
         </div>
         <p>
             Vytvořeno pomocí <b>nejnovějších&trade;</b> technologií jako jsou např. PHP.. počkat.. beru zpátky.
@@ -37,7 +37,7 @@
         </p>
         <p>60% času to funguje na 100% 👍</p>
         <div class="landing-text">
-            <img src="public/howard-technology.png" alt="Howard Stark" class="technology-image">
+            <img src="public/assets/howard-technology.png" alt="Howard Stark" class="technology-image">
             <div>
                 <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                     <div>
