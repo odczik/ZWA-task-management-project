@@ -46,7 +46,19 @@ if(!$jwtHandler->isLoggedIn()) {
                     <input type="file" name="profile" id="profile" accept="image/*" onchange="document.getElementById('profile-preview').src = window.URL.createObjectURL(this.files[0])">
                 </div>
             </div>
-            <button onclick="confirm('Are you sure? This action cannot be undone.') ? fetch('/api/account', {method: 'DELETE'}) : null" style="position: absolute; left: 20px; bottom: 20px; color: var(--error-dark); border: none; background: none; cursor: pointer; font-weight: 500;">Delete account</button>
+            <button 
+                type="button" 
+                onclick="if(confirm('Are you sure? This action cannot be undone.')) { 
+                    fetch('/api/account', {method: 'DELETE'})
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                        })
+                        .catch(error => console.error('Error:', error));
+                }"
+                style="position: absolute; left: 20px; bottom: 20px; color: var(--error-dark); border: none; background: none; cursor: pointer; font-weight: 500;">
+                Delete account
+            </button>
             <span class="buttons">
                 <button type="button" onclick="location.reload()">Cancel</button>
                 <button type="submit">Save Changes</button>
