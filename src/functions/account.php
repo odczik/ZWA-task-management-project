@@ -155,7 +155,8 @@ function deleteAccount($jwtHandler, $pdo) {
         // Delete associated data (e.g., invitations, projects, tasks, etc.)
         
         // Delete invitations associated with the user
-        $stmtInvites = $pdo->prepare("DELETE FROM invitations WHERE user_id = :user_id");
+        $stmtInvites = $pdo->prepare("DELETE FROM invitations WHERE user_id = :user_id OR invited_by = :user_id");
+        $stmtInvites->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
         $stmtInvites->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
         $stmtInvites->execute();
 

@@ -47,6 +47,7 @@ if(!$jwtHandler->isLoggedIn()) {
                 </div>
             </div>
             <button 
+                disabled
                 type="button" 
                 onclick="if(confirm('Are you sure? This action cannot be undone.')) { 
                     fetch('/api/account', {method: 'DELETE'})
