@@ -138,44 +138,65 @@ function deleteAccount($jwtHandler, $pdo) {
         return;
     }
 
-    // Delete user from database
-    $query = "DELETE FROM users WHERE id = :id";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':id', $user->user_id, PDO::PARAM_INT);
+    try {
+        $pdo->beginTransaction();
 
-    // Also delete associated data (e.g., invitations, projects, tasks, etc.)
-    // Delete invitations associated with the user
-    $stmtInvites = $pdo->prepare("DELETE FROM invitations WHERE user_id = :user_id");
-    $stmtInvites->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
-    $stmtInvites->execute();
-    // Fetch all projects owned by the user and delete them and their tasks
-    $stmtProjects = $pdo->prepare("SELECT id FROM projects WHERE owner_id = :owner_id");
-    $stmtProjects->bindParam(':owner_id', $user->user_id, PDO::PARAM_INT);
-    $stmtProjects->execute();
-    $projects = $stmtProjects->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($projects as $project) {
-        // Delete tasks associated with the project
-        $stmtTasks = $pdo->prepare("DELETE FROM tasks WHERE project_id = :project_id");
-        $stmtTasks->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
-        $stmtTasks->execute();
+        // Delete profile picture file
+        $profilePicturePath = "./public/profile-pictures/" . $user->user_id . ".jpg";
+        if (file_exists($profilePicturePath)) {
+            if (!unlink($profilePicturePath)) {
+                $pdo->rollBack();
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(["message" => "Failed to delete profile picture"]);
+                return;
+            }
+        }
+        // Delete user from database
+        $query = "DELETE FROM users WHERE id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':id', $user->user_id, PDO::PARAM_INT);
+
+        // Also delete associated data (e.g., invitations, projects, tasks, etc.)
+        // Delete invitations associated with the user
+        $stmtInvites = $pdo->prepare("DELETE FROM invitations WHERE user_id = :user_id");
+        $stmtInvites->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
+        $stmtInvites->execute();
+        // Fetch all projects owned by the user and delete them and their tasks
+        $stmtProjects = $pdo->prepare("SELECT id FROM projects WHERE owner_id = :owner_id");
+        $stmtProjects->bindParam(':owner_id', $user->user_id, PDO::PARAM_INT);
+        $stmtProjects->execute();
+        $projects = $stmtProjects->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($projects as $project) {
+            // Delete tasks associated with the project
+            $stmtTasks = $pdo->prepare("DELETE FROM tasks WHERE project_id = :project_id");
+            $stmtTasks->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
+            $stmtTasks->execute();
+            // Delete project members
+            $stmtMembers = $pdo->prepare("DELETE FROM project_members WHERE project_id = :project_id");
+            $stmtMembers->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
+            $stmtMembers->execute();
+            // Delete the project itself
+            $stmtDeleteProject = $pdo->prepare("DELETE FROM projects WHERE id = :project_id");
+            $stmtDeleteProject->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
+            $stmtDeleteProject->execute();
+        }
         // Delete project members
-        $stmtMembers = $pdo->prepare("DELETE FROM project_members WHERE project_id = :project_id");
-        $stmtMembers->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
+        $stmtMembers = $pdo->prepare("DELETE FROM project_members WHERE user_id = :user_id");
+        $stmtMembers->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
         $stmtMembers->execute();
-        // Delete the project itself
-        $stmtDeleteProject = $pdo->prepare("DELETE FROM projects WHERE id = :project_id");
-        $stmtDeleteProject->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
-        $stmtDeleteProject->execute();
-    }
-    // Delete project members
-    $stmtMembers = $pdo->prepare("DELETE FROM project_members WHERE user_id = :user_id");
-    $stmtMembers->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
-    $stmtMembers->execute();
-    
-    if ($stmt->execute()) {
-        logout();
-    } else {
+    } catch (PDOException $e) {
+        $pdo->rollBack();
         header('Content-Type: application/json; charset=utf-8');
-        echo json_encode(["message" => "Failed to delete account"]);
+        echo json_encode(["message" => "Failed to delete account: " . $e->getMessage()]);
+        return;
     }
+
+    // Commit the transaction
+    $pdo->commit();
+    // Logout the user
+    setcookie("token", "", time() - 3600, "/");
+    header('Content-Type: application/json; charset=utf-8');
+    header("Location: /");
+    echo json_encode(["message" => "Account deleted successfully"]);
+    exit;
 }
