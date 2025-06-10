@@ -142,7 +142,7 @@ function deleteAccount($jwtHandler, $pdo) {
         $pdo->beginTransaction();
 
         // Delete profile picture file
-        $profilePicturePath = "./public/profile-pictures/" . $user->user_id . ".jpg";
+        $profilePicturePath = __DIR__ . "/../../public/profile-pictures/" . $user->user_id . ".jpg";
         if (file_exists($profilePicturePath)) {
             if (!unlink($profilePicturePath)) {
                 $pdo->rollBack();
