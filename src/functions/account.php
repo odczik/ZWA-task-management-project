@@ -151,16 +151,19 @@ function deleteAccount($jwtHandler, $pdo) {
                 return;
             }
         }
+
         // Delete user from database
         $query = "DELETE FROM users WHERE id = :id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':id', $user->user_id, PDO::PARAM_INT);
+        $stmt->execute();
 
         // Also delete associated data (e.g., invitations, projects, tasks, etc.)
         // Delete invitations associated with the user
         $stmtInvites = $pdo->prepare("DELETE FROM invitations WHERE user_id = :user_id");
         $stmtInvites->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
         $stmtInvites->execute();
+
         // Fetch all projects owned by the user and delete them and their tasks
         $stmtProjects = $pdo->prepare("SELECT id FROM projects WHERE owner_id = :owner_id");
         $stmtProjects->bindParam(':owner_id', $user->user_id, PDO::PARAM_INT);
@@ -180,6 +183,7 @@ function deleteAccount($jwtHandler, $pdo) {
             $stmtDeleteProject->bindParam(':project_id', $project['id'], PDO::PARAM_INT);
             $stmtDeleteProject->execute();
         }
+
         // Delete project members
         $stmtMembers = $pdo->prepare("DELETE FROM project_members WHERE user_id = :user_id");
         $stmtMembers->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
@@ -195,8 +199,6 @@ function deleteAccount($jwtHandler, $pdo) {
     $pdo->commit();
     // Logout the user
     setcookie("token", "", time() - 3600, "/");
-    header('Content-Type: application/json; charset=utf-8');
     header("Location: /");
-    echo json_encode(["message" => "Account deleted successfully"]);
     exit;
 }
