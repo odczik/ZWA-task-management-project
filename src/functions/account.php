@@ -137,7 +137,6 @@ function deleteAccount($jwtHandler, $pdo) {
         echo json_encode(["message" => "Unauthorized"]);
         return;
     }
-    return "test";
 
     // Delete user from database
     $query = "DELETE FROM users WHERE id = :id";
