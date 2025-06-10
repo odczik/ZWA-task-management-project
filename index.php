@@ -145,6 +145,16 @@ $router->post("/api/account", function($data) use ($jwtHandler) {
     }
     return updateProfile($data, $user, $pdo, $jwtHandler);
 });
+// Delete account
+$router->delete("/api/account", function() use ($jwtHandler) {
+    require "./src/functions/db_connect.php";
+    $user = $jwtHandler->getUser();
+    if(!$user) {
+        header("HTTP/1.1 401 Unauthorized");
+        exit;
+    }
+    return deleteAccount($user, $pdo, $jwtHandler);
+});
 
 // Projects
 $router->post("/api/projects", function($data) use ($jwtHandler) {
