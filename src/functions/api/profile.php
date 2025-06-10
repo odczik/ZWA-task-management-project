@@ -84,8 +84,19 @@ function updateProfile($data, $user, $pdo, $jwtHandler) {
                 return json_encode(["error" => "File size exceeds the limit of 2MB."]);
             }
 
-            // Move the uploaded file to the desired location
             $destinationPath = __DIR__ . "/../../../public/profile-pictures/" . $user->user_id . ".jpg";
+            
+            // Check if file exists and delete it first
+            if (file_exists($destinationPath)) {
+                if (!unlink($destinationPath)) {
+                    $pdo->rollBack();
+                    header("HTTP/1.1 500 Internal Server Error");
+                    header("Content-Type: application/json");
+                    return json_encode(["error" => "Failed to delete existing profile picture. Check file permissions."]);
+                }
+            }
+
+            // Move the uploaded file to the desired location
             if (!move_uploaded_file($fileTmpPath, $destinationPath)) {
                 $pdo->rollBack();
                 header("HTTP/1.1 500 Internal Server Error");
