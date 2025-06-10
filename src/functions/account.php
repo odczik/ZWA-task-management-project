@@ -152,13 +152,8 @@ function deleteAccount($jwtHandler, $pdo) {
             }
         }
 
-        // Delete user from database
-        $query = "DELETE FROM users WHERE id = :id";
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':id', $user->user_id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        // Also delete associated data (e.g., invitations, projects, tasks, etc.)
+        // Delete associated data (e.g., invitations, projects, tasks, etc.)
+        
         // Delete invitations associated with the user
         $stmtInvites = $pdo->prepare("DELETE FROM invitations WHERE user_id = :user_id");
         $stmtInvites->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
@@ -188,6 +183,12 @@ function deleteAccount($jwtHandler, $pdo) {
         $stmtMembers = $pdo->prepare("DELETE FROM project_members WHERE user_id = :user_id");
         $stmtMembers->bindParam(':user_id', $user->user_id, PDO::PARAM_INT);
         $stmtMembers->execute();
+
+        // Delete user from database
+        $query = "DELETE FROM users WHERE id = :id";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':id', $user->user_id, PDO::PARAM_INT);
+        $stmt->execute();
     } catch (PDOException $e) {
         $pdo->rollBack();
         header('Content-Type: application/json; charset=utf-8');
